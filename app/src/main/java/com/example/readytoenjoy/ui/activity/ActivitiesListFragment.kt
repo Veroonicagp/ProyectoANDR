@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ActivitiesListFragment : Fragment() {
+
     private lateinit var binding: FragmentActivityListBinding
     private val viewModel: ActivityListViewModel by viewModels()
 
