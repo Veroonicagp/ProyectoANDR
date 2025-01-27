@@ -15,4 +15,8 @@ interface RepositoryModule {
     @Binds
     @Singleton
     fun providesAdvenRepository(repository:DefaultAdvenRepository):AdvenRepositoryInterface
+
+    @Binds
+    @Singleton
+    fun providesAdvenNetworkRepository(NetworkRepository:DefaultAdvenRepository):AdvenRepositoryInterface
 }

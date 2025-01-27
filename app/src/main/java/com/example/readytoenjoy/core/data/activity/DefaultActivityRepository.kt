@@ -25,7 +25,6 @@ fun List<ActivityResponse>.toExternal():List<Activity> {
 class DefaultActivityRepository @Inject constructor(
     private val activityNetworkRepository: ActivityNetworkRepositoryInterface
 ): ActivityRepositoryInterface {
-
     private val _state = MutableStateFlow<List<Activity>>(listOf())
     override val setStream: StateFlow<List<Activity>>
         get() = _state.asStateFlow()
