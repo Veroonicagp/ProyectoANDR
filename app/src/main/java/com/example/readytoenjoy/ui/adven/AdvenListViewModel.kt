@@ -14,11 +14,10 @@ import kotlinx.coroutines.withContext
 
 import javax.inject.Inject
 
-//@HiltViewModel// me da error si lo pongo
+@HiltViewModel// me da error si lo pongo
 class AdvenListViewModel @Inject constructor(
     private val defaultAdvenRepository: AdvenRepositoryInterface
 ): ViewModel(){
-
     private val _uiState = MutableStateFlow<AdvenListUiState>(AdvenListUiState.Loading)
     val uiState: StateFlow<AdvenListUiState>
         get() = _uiState.asStateFlow()

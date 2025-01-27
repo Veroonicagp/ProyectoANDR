@@ -19,10 +19,11 @@ import javax.inject.Singleton
 abstract class Module {
 
     @Binds
-    abstract fun provideDefaultActivityRepository(defaultPokemonRepository: DefaultActivityRepository): ActivityRepositoryInterface
+    @Singleton
+    abstract fun provideDefaultActivityRepository(defaultActivityRepository: DefaultActivityRepository): ActivityRepositoryInterface
 
     @Binds
-    abstract fun provideActivityRemoteRepository(pokemonRemoteRepository: ActivityNetworkRepository): ActivityNetworkRepositoryInterface
+    abstract fun provideActivityRemoteRepository(activityRemoteRepository: ActivityNetworkRepository): ActivityNetworkRepositoryInterface
 
 
 }
