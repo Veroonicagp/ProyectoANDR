@@ -10,34 +10,30 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.intellij.lang.annotations.Identifier
 import javax.inject.Inject
-sealed class UiState {
 
-    object Started: UiState()
-    object Loading: UiState()
-    object Success:UiState()
-    class Error(val message: String): UiState()
-
-
-
+sealed class LoginUiState {
+    object Loading: LoginUiState()
+    object Success:LoginUiState()
+    class Error(val message: String): LoginUiState()
 }
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val repository: LoginRepository): ViewModel(){
 
-    private val _user = MutableStateFlow<UiState>(UiState.Loading)
-    val user: StateFlow<UiState>
+    private val _user = MutableStateFlow<LoginUiState>(LoginUiState.Loading)
+    val uiState: StateFlow<LoginUiState>
         get() = _user.asStateFlow()
 
 
 
     fun login(identifier:String, password:String) {
         viewModelScope.launch {
-            _user.value = UiState.Loading
+            _user.value = LoginUiState.Loading
             val jwt = repository.login(identifier,password)
             if (jwt == null) {
-                _user.value = UiState.Error("Mala contraseña o usuario")
+                _user.value = LoginUiState.Error("Mala contraseña o usuario")
             }
             else {
-                _user.value = UiState.Success
+                _user.value = LoginUiState.Success
             }
 
         }
