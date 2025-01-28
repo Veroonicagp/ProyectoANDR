@@ -2,6 +2,8 @@ package com.example.readytoenjoy.di
 
 import com.example.readytoenjoy.core.data.adven.AdvenRepositoryInterface
 import com.example.readytoenjoy.core.data.adven.DefaultAdvenRepository
+import com.example.readytoenjoy.core.network.adevn.AdvenNetworkRepository
+import com.example.readytoenjoy.core.network.adevn.AdvenNetworkRepositoryInterface
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,5 +20,5 @@ interface RepositoryModule {
 
     @Binds
     @Singleton
-    fun providesAdvenNetworkRepository(NetworkRepository:DefaultAdvenRepository):AdvenRepositoryInterface
+    fun providesAdvenNetworkRepository(networkRepository:AdvenNetworkRepository):AdvenNetworkRepositoryInterface
 }

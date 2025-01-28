@@ -1,5 +1,6 @@
 package com.example.readytoenjoy.core.data.adven
 
+import com.example.readytoenjoy.core.data.activity.Activity
 import com.example.readytoenjoy.core.network.adevn.AdvenNetworkRepositoryInterface
 import com.example.readytoenjoy.core.network.adevn.AdvenResponse
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,8 +13,7 @@ fun AdvenResponse.toExternal(): Adven {
         id = this.id,
         name = this.attributes.name,
         surname =  this.attributes.surname,
-        email = this.attributes.email,
-        userId = this.attributes.userId
+        mail = this.attributes.mail
     )
 }
 
@@ -39,7 +39,9 @@ class DefaultAdvenRepository @Inject constructor(private val advenNetworkReposit
     }
 
     override suspend fun getOne(id: String): Adven {
-        TODO("Not yet implemented")
+        val response = advenNetworkRepository.readOneAdven(id)
+        return if (response.isSuccessful) response.body()!!
+        else Adven("", "","","")
     }
 
     override val setStream: StateFlow<List<Adven>>
