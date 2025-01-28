@@ -4,5 +4,5 @@ data class Adven(
     val id: String,
     val name: String,
     val surname: String,
-    val mail: String,
+    val email: String,
 )

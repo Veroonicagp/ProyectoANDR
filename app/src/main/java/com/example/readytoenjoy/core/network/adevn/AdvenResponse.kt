@@ -3,14 +3,14 @@ package com.example.readytoenjoy.core.network.adevn
 data class AdvenRequest(
     val name: String,
     val surname: String,
-    val mail: String,
+    val email: String,
     val password: String,
 )
 
 data class AdvenAttributesResponse(
     val name: String,
     val surname: String,
-    val mail: String,
+    val email: String,
 )
 
 data class AdvenListRawResponse(

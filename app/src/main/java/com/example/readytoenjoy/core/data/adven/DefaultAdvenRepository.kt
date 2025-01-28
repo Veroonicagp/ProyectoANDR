@@ -13,7 +13,7 @@ fun AdvenResponse.toExternal(): Adven {
         id = this.id,
         name = this.attributes.name,
         surname =  this.attributes.surname,
-        mail = this.attributes.mail
+        email = this.attributes.email
     )
 }
 
