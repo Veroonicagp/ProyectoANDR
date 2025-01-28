@@ -1,7 +1,5 @@
 package com.example.readytoenjoy.core.network
 
-
-import com.example.readytoenjoy.core.data.adven.Adven
 import com.example.readytoenjoy.core.network.activity.ActivityListRawResponse
 import com.example.readytoenjoy.core.network.activity.ActivityRawResponse
 import com.example.readytoenjoy.core.network.adevn.AdvenListRawResponse
@@ -17,18 +15,24 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ReadyToEnjoyApiService {
+
+    //muestra las actividades
     @GET("activities")
     suspend fun getAllActivitiesFromSercice(): Response<ActivityListRawResponse>
 
+    //
     @GET("activities/{id}")
     suspend fun readOneFomService(@Path("id") id: String): Response<ActivityRawResponse>
 
+    //muestra aventureros
     @GET("adventurers")
     suspend fun getAllAdvensFromSercice(): Response<AdvenListRawResponse>
 
+    //
     @GET("adventurers/id")
     suspend fun readOneFromService(@Path("id") id: String): Response<AdvenRawResponse>
 
+    //
     @GET("adventurers")
     suspend fun readUser(@Query("email")email:String): Response<List<AdvenRequest>>
 
