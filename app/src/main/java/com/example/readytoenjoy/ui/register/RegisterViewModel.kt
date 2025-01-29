@@ -1,6 +1,7 @@
 package com.example.readytoenjoy.ui.register
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.readytoenjoy.core.data.adven.RegisterRepository
@@ -30,11 +31,14 @@ class RegisterViewModel @Inject constructor(private val repository: RegisterRepo
     val user: StateFlow<UiState>
         get() = _user.asStateFlow()
 
-    fun register(name:String, surname:String, email:String, password:String) {
+    fun register(username:String, email:String, password:String) {
         viewModelScope.launch {
-            _user.value = if (repository.register(name,surname,password,email)) {
+
+            _user.value = if (email.isNotEmpty()) {
+                Log.d("arranca","si")
                 UiState.Success
             }else {
+                Log.d("arranca","no")
                 UiState.Error("El usuario ya existe")
             }
         }

@@ -18,6 +18,10 @@ class ActivityNetworkRepository @Inject constructor(
         return api.getAllActivitiesFromSercice()
     }
 
+    override suspend fun getActivitiesByAdvenId(id: String): Response<ActivityListRawResponse> {
+        return api.getAllMyActivitiesFromSercice(id)
+    }
+
     override suspend fun readOne(id: String): Response<Activity> {
         TODO()
         //return api.readOneFomService(id)

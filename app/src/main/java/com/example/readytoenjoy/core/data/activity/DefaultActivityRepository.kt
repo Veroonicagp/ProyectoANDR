@@ -29,6 +29,7 @@ class DefaultActivityRepository @Inject constructor(
     override val setStream: StateFlow<List<Activity>>
         get() = _state.asStateFlow()
 
+    //obtiene la lista de actividades de todos los usuarios
     override suspend fun getActivities(): List<Activity> {
        val response = activityNetworkRepository.getActivities()
         //val activityList = _state.value.toMutableList()
@@ -42,6 +43,20 @@ class DefaultActivityRepository @Inject constructor(
         }
     }
 
+    //obtienes la lista de actividades del usuario conectado
+    override suspend fun getActivitiesByAdvenId(advenId: String): List<Activity> {
+        val response = activityNetworkRepository.getActivitiesByAdvenId(advenId)
+        return if (response.isSuccessful){
+            val activities = response.body()!!.data.toExternal()
+            _state.value = activities
+            activities
+        } else {
+            _state.value = listOf()
+            listOf()
+        }
+    }
+
+    //obtiene uno
     override suspend fun getOne(id: String): Activity {
         val response = activityNetworkRepository.readOne(id)
         return if (response.isSuccessful) response.body()!!

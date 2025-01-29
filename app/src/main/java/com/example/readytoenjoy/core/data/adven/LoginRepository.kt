@@ -1,5 +1,6 @@
 package com.example.readytoenjoy.core.data.adven
 
+import android.util.Log
 import com.example.readytoenjoy.core.data.activity.Activity
 import com.example.readytoenjoy.core.network.ReadyToEnjoyApiService
 import com.example.readytoenjoy.core.network.activity.ActivityResponse
@@ -34,7 +35,9 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
         return if (response.isSuccessful) {
             // TODO GUARDAR LOCALMENTE EL TOKEN
             response.body()!!.jwt
+
         }
+
         // No me he logueado
         else {
             null

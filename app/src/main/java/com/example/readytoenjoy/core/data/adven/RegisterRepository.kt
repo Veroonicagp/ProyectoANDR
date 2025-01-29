@@ -2,6 +2,7 @@ package com.example.readytoenjoy.core.data.adven
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -15,8 +16,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val NAME_KEY  = stringPreferencesKey("name")
-private val SURNAME_KEY  = stringPreferencesKey("surname")
+private val USERNAME_KEY  = stringPreferencesKey("username")
 private val EMAIL_KEY  = stringPreferencesKey("email")
 private val PASSWORD_KEY  = stringPreferencesKey("password")
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -26,22 +26,24 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class RegisterRepository @Inject constructor(@ApplicationContext val context: Context,
                                              private val api: ReadyToEnjoyApiService) {
 
-    suspend fun register(name:String, surname:String, email:String, password:String): Boolean {
-        val response = api.register(AdvenRequest(name=name,
-            surname=surname,
+    suspend fun register(username:String, email:String, password:String): Boolean {
+        val response = api.register(AdvenRequest(
+            username=username,
             email=email,
             password=password))
 
-        return if( response.isSuccessful){
+        return if(response.isSuccessful){
             context.dataStore.edit {
                     settings ->
-                settings[NAME_KEY] = name
-                settings[SURNAME_KEY] = surname
+                settings[USERNAME_KEY] = username
                 settings[EMAIL_KEY] = email
                 settings[PASSWORD_KEY] = password
             }
+            Log.d("arranca","true")
             true
+
         } else{
+            Log.d("arranca","false")
             false
         }
 
