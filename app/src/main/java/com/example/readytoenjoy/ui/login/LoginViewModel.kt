@@ -38,4 +38,18 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
 
         }
     }
+
+    fun loginAdven(email:String, password:String) {
+        viewModelScope.launch {
+            _user.value = LoginUiState.Loading
+            val jwt = repository.login(email,password)
+            if (jwt == null) {
+                _user.value = LoginUiState.Error("Mala contraseña o usuario")
+            }
+            else {
+                _user.value = LoginUiState.Success
+            }
+
+        }
+    }
 }

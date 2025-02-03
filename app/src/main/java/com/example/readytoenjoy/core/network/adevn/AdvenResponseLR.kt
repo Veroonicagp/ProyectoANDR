@@ -1,28 +1,21 @@
 package com.example.readytoenjoy.core.network.adevn
 
-data class AdvenRequest(
-    val username:String,
-    val email: String,
-    val password: String,
+data class AdvenListRawResponse(
+    val data: List<AdvenResponseLR>
 )
 
+data class AdvenRawResponse(
+    val data: AdvenResponseLR
+)
+
+data class AdvenResponseLR(
+    val id: String,
+    val attributes: AdvenAttributesResponse
+)
 data class AdvenAttributesResponse(
     val name: String,
     val surname: String,
     val email: String,
-)
-
-data class AdvenListRawResponse(
-    val data: List<AdvenResponse>
-)
-
-data class AdvenRawResponse(
-    val data: AdvenResponse
-)
-
-data class AdvenResponse(
-    val id: String,
-    val attributes: AdvenAttributesResponse
 )
 
 data class LoginRequest(
@@ -30,7 +23,12 @@ data class LoginRequest(
     val password: String
 )
 
-data class AdvenResponseLR(
+data class AdvenRequest(
+    val email: String,
+    val password: String,
+)
+
+data class userResponseLR(
     val jwt: String,
     val user: User
 )
@@ -38,7 +36,8 @@ data class AdvenResponseLR(
 data class User(
     val id: String,
     val name: String,
-    val email: String
+    val email: String,
+    val advenId: String,
 )
 
 

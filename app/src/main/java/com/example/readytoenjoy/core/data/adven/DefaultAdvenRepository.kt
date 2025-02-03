@@ -1,14 +1,13 @@
 package com.example.readytoenjoy.core.data.adven
 
-import com.example.readytoenjoy.core.data.activity.Activity
 import com.example.readytoenjoy.core.network.adevn.AdvenNetworkRepositoryInterface
-import com.example.readytoenjoy.core.network.adevn.AdvenResponse
+import com.example.readytoenjoy.core.network.adevn.AdvenResponseLR
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
-fun AdvenResponse.toExternal(): Adven {
+fun AdvenResponseLR.toExternal(): Adven {
     return Adven(
         id = this.id,
         name = this.attributes.name,
@@ -17,8 +16,8 @@ fun AdvenResponse.toExternal(): Adven {
     )
 }
 
-fun List<AdvenResponse>.toExternal():List<Adven> {
-    return this.map(AdvenResponse::toExternal)
+fun List<AdvenResponseLR>.toExternal():List<Adven> {
+    return this.map(AdvenResponseLR::toExternal)
 }
 
 @Singleton

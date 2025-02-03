@@ -6,6 +6,7 @@ import com.example.readytoenjoy.core.network.adevn.AdvenListRawResponse
 import com.example.readytoenjoy.core.network.adevn.AdvenRawResponse
 import com.example.readytoenjoy.core.network.adevn.AdvenRequest
 import com.example.readytoenjoy.core.network.adevn.AdvenResponseLR
+import com.example.readytoenjoy.core.network.adevn.userResponseLR
 import com.example.readytoenjoy.core.network.adevn.LoginRequest
 import retrofit2.Response
 import retrofit2.http.Body
@@ -43,10 +44,11 @@ interface ReadyToEnjoyApiService {
 
     //registro
     @POST("auth/local/register")
-    suspend fun register(@Body advenRequest: AdvenRequest): Response<AdvenResponseLR>
+    suspend fun register(@Body advenRequest: AdvenRequest): Response<userResponseLR>
+
 
     //login
     @POST("auth/local")
-    suspend fun login(@Body loginData: LoginRequest): Response<AdvenResponseLR>
+    suspend fun login(@Body loginData: LoginRequest): Response<userResponseLR>
 
 }
