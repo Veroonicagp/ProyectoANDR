@@ -2,12 +2,10 @@ package com.example.readytoenjoy.core.data.adven
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
 import com.example.readytoenjoy.core.network.ReadyToEnjoyApiService
-import com.example.readytoenjoy.core.network.adevn.AdvenRequest
+import com.example.readytoenjoy.core.network.adevn.UserRequest
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,25 +24,17 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class RegisterRepository @Inject constructor(@ApplicationContext val context: Context,
                                              private val api: ReadyToEnjoyApiService) {
 
-    suspend fun register(username:String, email:String, password:String): Boolean {
-        val response = api.register(AdvenRequest(
-            username=username,
-            email=email,
-            password=password))
-
-        return if(response.isSuccessful){
-            context.dataStore.edit {
-                    settings ->
-                settings[USERNAME_KEY] = username
-                settings[EMAIL_KEY] = email
-                settings[PASSWORD_KEY] = password
-            }
-            Log.d("arranca","true")
-            true
-
-        } else{
-            Log.d("arranca","false")
-            false
+    suspend fun register(username:String, email:String, password:String): String? {
+        val userResponse = api.register(UserRequest(
+            username,email,password))
+        // Me he logueado
+        return if (userResponse.isSuccessful) {
+            // TODO GUARDAR LOCALMENTE EL TOKEN
+            userResponse.body()!!.jwt
+        }
+        // No me he logueado
+        else {
+            null
         }
 
     }

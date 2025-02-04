@@ -18,9 +18,6 @@ sealed class UiState {
     object Loading: UiState()
     object Success:UiState()
     class Error(val message: String): UiState()
-
-
-
 }
 
 
@@ -32,14 +29,18 @@ class RegisterViewModel @Inject constructor(private val repository: RegisterRepo
         get() = _user.asStateFlow()
 
     fun register(username:String, email:String, password:String) {
-        viewModelScope.launch {
 
-            _user.value = if (email.isNotEmpty()) {
-                Log.d("arranca","si")
-                UiState.Success
-            }else {
+        viewModelScope.launch {
+            val jwt = repository.register(username, email, password)
+            _user.value = UiState.Loading
+             if ( jwt==null) {
                 Log.d("arranca","no")
-                UiState.Error("El usuario ya existe")
+                 _user.value = UiState.Error("El usuario ya existe")
+
+            }else {
+                Log.d("arranca","si")
+                 _user.value = UiState.Success
+
             }
         }
     }

@@ -23,9 +23,22 @@ data class LoginRequest(
     val password: String
 )
 
-data class AdvenRequest(
+data class UserRequest(
+    val username:String,
     val email: String,
     val password: String,
+)
+
+data class AdvenRequest(
+    val data:AventureroData
+)
+
+data class AventureroData(
+    val name:String,
+    val surname:String,
+    val email: String,
+    val password: String,
+    val user: String//relacion con el usuario creado
 )
 
 data class userResponseLR(
