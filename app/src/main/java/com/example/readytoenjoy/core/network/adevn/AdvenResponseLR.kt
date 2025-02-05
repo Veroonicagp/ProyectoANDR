@@ -14,7 +14,6 @@ data class AdvenResponseLR(
 )
 data class AdvenAttributesResponse(
     val name: String,
-    val surname: String,
     val email: String,
 )
 
@@ -35,10 +34,9 @@ data class AdvenRequest(
 
 data class AventureroData(
     val name:String,
-    val surname:String,
     val email: String,
     val password: String,
-    val user: String//relacion con el usuario creado
+    val userId: String//relacion con el usuario creado
 )
 
 data class userResponseLR(

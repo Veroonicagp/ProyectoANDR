@@ -16,7 +16,6 @@ class AdvenListAdapter(): ListAdapter<Adven, AdvenListAdapter.AdvenViewHolder>(
             RecyclerView.ViewHolder(binding.root){
                 fun bind(adven:Adven){
                     binding.nombre.text=adven.name
-                    binding.apellido.text=adven.surname
                 }
             }
 
@@ -37,8 +36,7 @@ class AdvenListAdapter(): ListAdapter<Adven, AdvenListAdapter.AdvenViewHolder>(
         override fun areItemsTheSame(oldItem: Adven, newItem: Adven) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Adven, newItem: Adven) =
-                    oldItem.name == newItem.name &&
-                    oldItem.surname == newItem.surname
+                    oldItem.name == newItem.name
 
 
     }

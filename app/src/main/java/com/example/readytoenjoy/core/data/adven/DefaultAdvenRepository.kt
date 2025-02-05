@@ -11,7 +11,6 @@ fun AdvenResponseLR.toExternal(): Adven {
     return Adven(
         id = this.id,
         name = this.attributes.name,
-        surname =  this.attributes.surname,
         email = this.attributes.email
     )
 }
@@ -40,7 +39,7 @@ class DefaultAdvenRepository @Inject constructor(private val advenNetworkReposit
     override suspend fun getOne(id: String): Adven {
         val response = advenNetworkRepository.readOneAdven(id)
         return if (response.isSuccessful) response.body()!!
-        else Adven("", "","","")
+        else Adven("", "","")
     }
 
     override val setStream: StateFlow<List<Adven>>

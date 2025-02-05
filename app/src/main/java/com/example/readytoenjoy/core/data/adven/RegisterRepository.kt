@@ -8,6 +8,8 @@ import com.example.readytoenjoy.core.network.ReadyToEnjoyApiService
 import com.example.readytoenjoy.core.network.adevn.UserRequest
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.readytoenjoy.core.network.adevn.AdvenRequest
+import com.example.readytoenjoy.core.network.adevn.AventureroData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -24,13 +26,40 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class RegisterRepository @Inject constructor(@ApplicationContext val context: Context,
                                              private val api: ReadyToEnjoyApiService) {
 
-    suspend fun register(username:String, email:String, password:String): String? {
+    suspend fun register(username:String, email:String, password:String) {
         val userResponse = api.register(UserRequest(
             username,email,password))
         // Me he logueado
-        return if (userResponse.isSuccessful) {
+        if (userResponse.isSuccessful) {
             // TODO GUARDAR LOCALMENTE EL TOKEN
             userResponse.body()!!.jwt
+            val user = userResponse.body()
+            val userId = user?.user?.id
+
+            if (userId != null) {
+                println("✅ Usuario creado con ID: $userId")
+
+                // 2️⃣ Registrar Aventurero vinculado al Usuario
+                val aventureroRequest = AdvenRequest(
+                    AventureroData(
+                        name = username,
+                        email = email,
+                        password = password, // ✅ Incluido el password
+                        userId = userId // Relación con el usuario creado
+                    )
+                )
+
+                val aventureroResponse = api.registerAdven(aventureroRequest)
+
+                if (aventureroResponse.isSuccessful) {
+                    println("✅ Aventurero creado con éxito")
+                } else {
+                    println("❌ Error creando aventurero: ${aventureroResponse.errorBody()?.string()}")
+                }
+
+            } else {
+                println("❌ Error: No se obtuvo el ID del usuario.")
+            }
         }
         // No me he logueado
         else {
