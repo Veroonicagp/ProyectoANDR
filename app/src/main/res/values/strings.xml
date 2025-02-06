@@ -19,4 +19,6 @@
     <string name="description">Descripción</string>
     <string name="crear">Aceptar</string>
     <string name="prueba">Pru</string>
+    <string name="editAct">Editar Actividad</string>
+    <string name="editar">Editar</string>
 </resources>

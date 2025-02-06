@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/myActivitiesListFragment"
-        android:name="com.example.readytoenjoy.ui.activity.MyActivitiesListFragment"
+        android:name="com.example.readytoenjoy.ui.myActivities.MyActivitiesListFragment"
         android:label="fragment_my_activities_list"
         tools:layout="@layout/fragment_my_activities_list" >
         <action

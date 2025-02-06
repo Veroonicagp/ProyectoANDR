@@ -1,10 +1,9 @@
-package com.example.readytoenjoy.ui.activity
+package com.example.readytoenjoy.ui.myActivities
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.readytoenjoy.core.data.activity.Activity
 import com.example.readytoenjoy.core.data.activity.ActivityRepositoryInterface
-import com.example.readytoenjoy.core.data.adven.RegisterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

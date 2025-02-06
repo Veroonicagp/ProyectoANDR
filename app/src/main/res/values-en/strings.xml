@@ -20,4 +20,6 @@
     <string name="description">Description</string>
     <string name="crear">Crear</string>
     <string name="prueba">Pruebadda</string>
+    <string name="editAct">Editar Actividad</string>
+    <string name="editar">Editar</string>
 </resources>

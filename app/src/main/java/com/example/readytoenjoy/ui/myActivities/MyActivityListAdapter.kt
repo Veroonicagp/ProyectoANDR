@@ -1,4 +1,4 @@
-package com.example.readytoenjoy.ui.activity
+package com.example.readytoenjoy.ui.myActivities
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,41 +7,47 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.readytoenjoy.core.data.activity.Activity
 import com.example.readytoenjoy.databinding.ActivityListItemBinding
+import com.example.readytoenjoy.databinding.MyActivityListItemBinding
+
 //
-class ActivityListAdapter(private val toActivityDetail:((Activity)->Unit)): ListAdapter<Activity, ActivityListAdapter.ActivityViewHolder>(
-    ActivityDiffCallback
+class MyActivityListAdapter(private val toActivityDetail:((Activity)->Unit)): ListAdapter<Activity, MyActivityListAdapter.MyActivityViewHolder>(
+    MyActivityDiffCallback
 ) {
 
-    inner class ActivityViewHolder(private val binding: ActivityListItemBinding):
+    inner class MyActivityViewHolder(private val binding: MyActivityListItemBinding):
         RecyclerView.ViewHolder(binding.root){
         fun bind(activity: Activity){
             binding.crdTitle.text=activity.title
             binding.crdLocation.text=activity.location
             binding.crdPrice.text=activity.price
+            binding.deleteButton.setOnClickListener{
+                //TODO hacer una confirmacion de borrado
+            }
             binding.root.setOnClickListener  {
-               toActivityDetail(activity)
+                toActivityDetail(activity)
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyActivityViewHolder {
         //intanciamos el xml y lo pasamos al itemViewHolder
-        val binding: ActivityListItemBinding = ActivityListItemBinding.inflate(
+        val binding: MyActivityListItemBinding = MyActivityListItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return ActivityViewHolder(binding)
+        return MyActivityViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
+
+    override fun onBindViewHolder(holder: MyActivityViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-    object ActivityDiffCallback: DiffUtil.ItemCallback<Activity>(){
+    object MyActivityDiffCallback: DiffUtil.ItemCallback<Activity>(){
         override fun areItemsTheSame(oldItem: Activity, newItem: Activity) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Activity, newItem: Activity) =
-                    oldItem.title == newItem.title &&
+            oldItem.title == newItem.title &&
                     oldItem.location == newItem.location &&
                     oldItem.price == newItem.price
 

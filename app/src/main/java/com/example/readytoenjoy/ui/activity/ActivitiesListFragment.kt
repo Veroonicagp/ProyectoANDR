@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.readytoenjoy.core.data.activity.Activity
 import com.example.readytoenjoy.databinding.FragmentActivityListBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -38,7 +40,7 @@ class ActivitiesListFragment : Fragment() {
 
         lifecycleScope.launch {
             val rv = binding.rvActivities
-            rv.adapter = ActivityListAdapter()
+            rv.adapter = ActivityListAdapter(::toActivityDetail)
             binding.rvActivities.layoutManager = LinearLayoutManager(context)
 
             viewModel.uiState.collect{
@@ -73,10 +75,10 @@ class ActivitiesListFragment : Fragment() {
 
     //¡?
 
-    //private fun toActivityDetail(activity: Activity) {
-    //    val action = ActivitiesListFragmentDirections.actionActivitiesListFragmentToActivityInfoFragment()
-    //    findNavController().navigate(action)
-    //}
+    private fun toActivityDetail(activity: Activity) {
+        val action = ActivitiesListFragmentDirections.actionActivitiesListFragmentToActivityInfoFragment()
+        findNavController().navigate(action)
+    }
 
 
 }
