@@ -1,4 +1,4 @@
-package com.example.readytoenjoy.ui.activity
+package com.example.readytoenjoy.ui.activity.create
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

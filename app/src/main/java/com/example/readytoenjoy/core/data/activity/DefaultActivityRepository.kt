@@ -1,68 +1,73 @@
 package com.example.readytoenjoy.core.data.activity
 
+import android.net.Uri
 import com.example.readytoenjoy.core.network.activity.ActivityNetworkRepositoryInterface
 import com.example.readytoenjoy.core.network.activity.ActivityResponse
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
-fun ActivityResponse.toExternal(): Activity {
-    return Activity(
-        id = this.id,
-        title = this.attributes.title,
-        location =  this.attributes.location,
-        price = this.attributes.price,
-        description = this.attributes.description
-    )
-}
-fun List<ActivityResponse>.toExternal():List<Activity> {
-    return this.map(ActivityResponse::toExternal)
-}
+
 
 @Singleton
 class DefaultActivityRepository @Inject constructor(
-    private val activityNetworkRepository: ActivityNetworkRepositoryInterface
+    private val remote: ActivityNetworkRepositoryInterface
 ): ActivityRepositoryInterface {
     private val _state = MutableStateFlow<List<Activity>>(listOf())
-    override val setStream: StateFlow<List<Activity>>
-        get() = _state.asStateFlow()
+
+
+    /**override val setStream: StateFlow<List<Activity>>
+        get() = _state.asStateFlow()**/
 
     //obtiene la lista de actividades de todos los usuarios
-    override suspend fun getActivities(): List<Activity> {
-       val response = activityNetworkRepository.getActivities()
-        //val activityList = _state.value.toMutableList()
-        return if (response.isSuccessful){
-            val activities = response.body()!!.data.toExternal()
-            _state.value = activities
-            activities
-        } else {
-            _state.value = listOf()
-            listOf()
-        }
+    override suspend fun getActivities(): Result<List<Activity>> {
+       val result = remote.getActivities()
+        return result
+
     }
 
     //obtienes la lista de actividades del usuario conectado
-    override suspend fun getActivitiesByAdvenId(advenId: String): List<Activity> {
-        val response = activityNetworkRepository.getActivitiesByAdvenId(advenId)
-        return if (response.isSuccessful){
-            val activities = response.body()!!.data.toExternal()
-            _state.value = activities
-            activities
-        } else {
-            _state.value = listOf()
-            listOf()
-        }
+    override suspend fun getActivitiesByAdvenId(advenId: String): Result<List<Activity>> {
+        val response = remote.getActivitiesByAdvenId(advenId)
+
+        return response
     }
 
     //obtiene uno
-    override suspend fun getOne(id: String): Activity {
-        val response = activityNetworkRepository.readOne(id)
-        return if (response.isSuccessful) response.body()!!
-        else Activity("", "","","","")
+    override suspend fun getOne(id: String): Result<Activity> {
+       return remote.readOne(id)
     }
 
+    override suspend fun createActivity(
+        title: String,
+        //img: Uri?,
+        location: String,
+        price: String,
+        description: String,
+        //advenId: String?
+    ): Result<Activity> {
 
+        val result = remote.createActivity(title,location,price,description)
+        if (result.isSuccess) {
+            val activity = result.getOrNull()
+            activity?.let {
+                //local
+            }
+        }
+        return result
+
+    }
+
+    override fun setStream(): Flow<Result<List<Activity>>> {
+        val activities = flow<Result<List<Activity>>> {
+            val result = remote.getActivities()
+            emit(result)
+        }
+        return activities
+    }
 
 }

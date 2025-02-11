@@ -25,6 +25,19 @@ class ActivityListViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             withContext(Dispatchers.Main) {
+                defaultActivityRepository.setStream().collect {
+                    activities ->
+                    if (activities.isSuccess) {
+                        _uiState.value = ActivityListUiState.Success(activities.getOrNull()!!)
+                    } else {
+                        // TODO
+                        _uiState.value = ActivityListUiState.Error("Error recuperando")
+                    }
+                }
+            }
+        }
+        /**viewModelScope.launch {
+            withContext(Dispatchers.Main) {
                 defaultActivityRepository.setStream.collect {
                         activityList ->
                     if (activityList.isEmpty()) _uiState.value = ActivityListUiState.Loading
@@ -36,7 +49,7 @@ class ActivityListViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 defaultActivityRepository.getActivities()
             }
-        }
+        }**/
 
     }
 }

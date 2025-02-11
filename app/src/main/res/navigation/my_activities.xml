@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/createActivityFragment"
-        android:name="com.example.readytoenjoy.ui.activity.CreateActivityFragment"
+        android:name="com.example.readytoenjoy.ui.activity.create.CreateActivityFragment"
         android:label="fragment_create_activity"
         tools:layout="@layout/fragment_create_activity" >
         <argument

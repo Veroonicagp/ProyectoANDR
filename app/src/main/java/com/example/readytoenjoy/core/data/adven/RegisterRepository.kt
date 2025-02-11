@@ -31,34 +31,30 @@ class RegisterRepository @Inject constructor(@ApplicationContext val context: Co
             username,email,password))
         // Me he logueado
         if (userResponse.isSuccessful) {
-            // TODO GUARDAR LOCALMENTE EL TOKEN
             userResponse.body()!!.jwt
             val user = userResponse.body()
             val userId = user?.user?.id
 
             if (userId != null) {
-                println("✅ Usuario creado con ID: $userId")
 
-                // 2️⃣ Registrar Aventurero vinculado al Usuario
                 val aventureroRequest = AdvenRequest(
                     AventureroData(
                         name = username,
                         email = email,
-                        password = password, // ✅ Incluido el password
-                        userId = userId // Relación con el usuario creado
+                        password = password,
+                        userId = userId
                     )
                 )
 
                 val aventureroResponse = api.registerAdven(aventureroRequest)
 
                 if (aventureroResponse.isSuccessful) {
-                    println("✅ Aventurero creado con éxito")
                 } else {
-                    println("❌ Error creando aventurero: ${aventureroResponse.errorBody()?.string()}")
+                    null
                 }
 
             } else {
-                println("❌ Error: No se obtuvo el ID del usuario.")
+                null
             }
         }
         // No me he logueado

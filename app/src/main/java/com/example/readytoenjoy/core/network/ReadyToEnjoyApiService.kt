@@ -1,7 +1,9 @@
 package com.example.readytoenjoy.core.network
 
+import com.example.readytoenjoy.core.network.activity.ActivityAttributesResponse
 import com.example.readytoenjoy.core.network.activity.ActivityListRawResponse
 import com.example.readytoenjoy.core.network.activity.ActivityRawResponse
+import com.example.readytoenjoy.core.network.activity.CreateActivity
 import com.example.readytoenjoy.core.network.adevn.AdvenListRawResponse
 import com.example.readytoenjoy.core.network.adevn.AdvenRawResponse
 import com.example.readytoenjoy.core.network.adevn.AdvenRequest
@@ -35,10 +37,6 @@ interface ReadyToEnjoyApiService {
     @GET("adventurers")
     suspend fun getAllAdvensFromSercice(): Response<AdvenListRawResponse>
 
-    @GET("actividades")
-    suspend fun getActividadesByAventurero(
-        @Query("filters[aventurero][id][\$eq]") aventureroId: String
-    ): Response<ActivityListRawResponse>
     //
     @GET("adventurers/id")
     suspend fun readOneFromService(@Path("id") id: String): Response<AdvenRawResponse>
@@ -47,10 +45,15 @@ interface ReadyToEnjoyApiService {
     @GET("adventurers")
     suspend fun readUser(@Query("email")email:String): Response<List<UserRequest>>
 
+    //creacion de actividades
+    @POST("activities")
+    suspend fun cretaeActivities(@Body activity: CreateActivity):Response<ActivityRawResponse>
+
     //registro
     @POST("auth/local/register")
     suspend fun register(@Body userRequest: UserRequest): Response<userResponseLR>
 
+    //registroadven
     @POST("adventurers")
     suspend fun registerAdven(@Body advenRequest: AdvenRequest): Response<AdvenRawResponse>
 

@@ -1,9 +1,12 @@
 package com.example.readytoenjoy.ui.myActivities
 
+import android.util.Log
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.readytoenjoy.core.data.activity.Activity
 import com.example.readytoenjoy.core.data.activity.ActivityRepositoryInterface
+import com.example.readytoenjoy.core.data.adven.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyActivityListViewModel @Inject constructor(
-    private val defaultMyActivityRepository: ActivityRepositoryInterface
+    private val defaultMyActivityRepository: ActivityRepositoryInterface,
+    private val loginRepository: LoginRepository
 ):ViewModel() {
 
     private val _uiState = MutableStateFlow<MyActivityListUiState>(MyActivityListUiState.Loading)
@@ -24,23 +28,32 @@ class MyActivityListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            withContext(Dispatchers.Main) {
-                defaultMyActivityRepository.setStream.collect {
-                        activityList ->
-                    if (activityList.isEmpty()) _uiState.value = MyActivityListUiState.Loading
-                    else _uiState.value = MyActivityListUiState.Success(activityList)
-                }
-            }
-        }
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                //TODO tengo que recoger el advenId del adven asociado al user
-                //defaultMyActivityRepository.getActivitiesByAdvenId(advenId)
+            // Obtener el advenId desde DataStore
+            val advenId = loginRepository.getAdvenId()
+            if (!advenId.isNullOrEmpty()) {
+                // Usar advenId para obtener actividades
+                //loadActivities(advenId)
+            } else {
+                _uiState.value = MyActivityListUiState.Error("No se encontró el ID del aventurero.")
             }
         }
 
     }
+    /**private fun loadActivities(advenId: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val activities = defaultMyActivityRepository.getActivitiesByAdvenId(advenId)
+                if (activities.isEmpty()) {
+                    _uiState.value = MyActivityListUiState.Loading
+                } else {
+                    _uiState.value = MyActivityListUiState.Success(activities)
+                }
+            }
+        }
+    }**/
+
 }
+
 
 sealed class MyActivityListUiState() {
     data object Loading: MyActivityListUiState()
