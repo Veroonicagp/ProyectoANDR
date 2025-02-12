@@ -1,15 +1,15 @@
-package com.example.readytoenjoy.core.data.adven
+package com.example.readytoenjoy.core.data.repository.adven
 
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.example.readytoenjoy.core.network.ReadyToEnjoyApiService
-import com.example.readytoenjoy.core.network.adevn.UserRequest
+import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
+import com.example.readytoenjoy.core.data.network.adevn.model.UserRequest
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.readytoenjoy.core.network.adevn.AdvenRequest
-import com.example.readytoenjoy.core.network.adevn.AventureroData
+import com.example.readytoenjoy.core.data.network.adevn.model.AdvenRequest
+import com.example.readytoenjoy.core.data.network.adevn.model.AventureroData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -24,11 +24,14 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 
 @Singleton
 class RegisterRepository @Inject constructor(@ApplicationContext val context: Context,
-                                             private val api: ReadyToEnjoyApiService) {
+                                             private val api: ReadyToEnjoyApiService
+) {
 
     suspend fun register(username:String, email:String, password:String) {
-        val userResponse = api.register(UserRequest(
-            username,email,password))
+        val userResponse = api.register(
+            UserRequest(
+            username,email,password)
+        )
         // Me he logueado
         if (userResponse.isSuccessful) {
             userResponse.body()!!.jwt

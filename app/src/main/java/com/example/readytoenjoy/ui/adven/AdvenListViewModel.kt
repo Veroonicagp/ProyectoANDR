@@ -2,8 +2,8 @@ package com.example.readytoenjoy.ui.adven
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.readytoenjoy.core.data.adven.Adven
-import com.example.readytoenjoy.core.data.adven.AdvenRepositoryInterface
+import com.example.readytoenjoy.core.model.Adven
+import com.example.readytoenjoy.core.data.repository.adven.AdvenRepositoryInterface
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

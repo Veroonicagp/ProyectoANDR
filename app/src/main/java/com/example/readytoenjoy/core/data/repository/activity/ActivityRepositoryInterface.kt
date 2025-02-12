@@ -1,6 +1,6 @@
-package com.example.readytoenjoy.core.data.activity
+package com.example.readytoenjoy.core.data.repository.activity
 
-import android.net.Uri
+import com.example.readytoenjoy.core.model.Activity
 import kotlinx.coroutines.flow.Flow
 
 //mirar diferencia State flow y flow

@@ -1,14 +1,14 @@
 package com.example.readytoenjoy.di
 
-import com.example.readytoenjoy.core.data.activity.ActivityRepositoryInterface
-import com.example.readytoenjoy.core.data.activity.DefaultActivityRepository
-import com.example.readytoenjoy.core.data.adven.AdvenRepositoryInterface
-import com.example.readytoenjoy.core.data.adven.DefaultAdvenRepository
-import com.example.readytoenjoy.core.network.activity.ActivityNetworkRepository
-import com.example.readytoenjoy.core.network.activity.ActivityNetworkRepositoryInterface
-import com.example.readytoenjoy.core.network.ReadyToEnjoyApiService
-import com.example.readytoenjoy.core.network.adevn.AdvenNetworkRepository
-import com.example.readytoenjoy.core.network.adevn.AdvenNetworkRepositoryInterface
+import com.example.readytoenjoy.core.data.repository.activity.ActivityRepositoryInterface
+import com.example.readytoenjoy.core.data.repository.activity.DefaultActivityRepository
+import com.example.readytoenjoy.core.data.repository.adven.AdvenRepositoryInterface
+import com.example.readytoenjoy.core.data.repository.adven.DefaultAdvenRepository
+import com.example.readytoenjoy.core.data.network.activity.ActivityNetworkRepository
+import com.example.readytoenjoy.core.data.network.activity.ActivityNetworkRepositoryInterface
+import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
+import com.example.readytoenjoy.core.data.network.adevn.AdvenNetworkRepository
+import com.example.readytoenjoy.core.data.network.adevn.AdvenNetworkRepositoryInterface
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -38,6 +38,7 @@ abstract class Module {
     @Singleton
     abstract fun providesAdvenNetworkRepository(networkRepository: AdvenNetworkRepository): AdvenNetworkRepositoryInterface
 
+    //falta añadir los local
 }
 
 @Module

@@ -1,6 +1,7 @@
-package com.example.readytoenjoy.core.network.adevn
+package com.example.readytoenjoy.core.data.network.adevn
 
-import com.example.readytoenjoy.core.data.adven.Adven
+import com.example.readytoenjoy.core.data.network.adevn.model.AdvenListRawResponse
+import com.example.readytoenjoy.core.model.Adven
 import retrofit2.Response
 
 interface AdvenNetworkRepositoryInterface {

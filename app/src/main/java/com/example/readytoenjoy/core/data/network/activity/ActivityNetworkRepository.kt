@@ -1,18 +1,13 @@
-package com.example.readytoenjoy.core.network.activity
+package com.example.readytoenjoy.core.data.network.activity
 
 import android.content.Context
-import android.net.Uri
-import androidx.core.net.toUri
-import com.example.readytoenjoy.core.data.activity.Activity
-import com.example.readytoenjoy.core.network.ReadyToEnjoyApiService
+import com.example.readytoenjoy.core.model.Activity
+import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
+import com.example.readytoenjoy.core.data.network.activity.model.CreateActivity
+import com.example.readytoenjoy.core.data.network.activity.model.CreateActivityPayload
+import com.example.readytoenjoy.core.data.network.activity.model.toModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 

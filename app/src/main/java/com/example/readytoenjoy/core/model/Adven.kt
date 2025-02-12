@@ -1,4 +1,4 @@
-package com.example.readytoenjoy.core.data.adven
+package com.example.readytoenjoy.core.model
 
 data class Adven(
     val id: String,

@@ -1,7 +1,8 @@
-package com.example.readytoenjoy.core.network.adevn
+package com.example.readytoenjoy.core.data.network.adevn
 
-import com.example.readytoenjoy.core.data.adven.Adven
-import com.example.readytoenjoy.core.network.ReadyToEnjoyApiService
+import com.example.readytoenjoy.core.model.Adven
+import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
+import com.example.readytoenjoy.core.data.network.adevn.model.AdvenListRawResponse
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,4 +19,6 @@ class AdvenNetworkRepository @Inject constructor(
     override suspend fun readOneAdven(id: String): Response<Adven> {
         TODO("Not yet implemented")
     }
+
+
 }

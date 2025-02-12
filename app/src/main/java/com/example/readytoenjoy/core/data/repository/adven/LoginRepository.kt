@@ -1,28 +1,20 @@
-package com.example.readytoenjoy.core.data.adven
+package com.example.readytoenjoy.core.data.repository.adven
 
 import android.content.Context
-import android.util.Log
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.readytoenjoy.core.network.ReadyToEnjoyApiService
-import com.example.readytoenjoy.core.network.adevn.userResponseLR
-import com.example.readytoenjoy.core.network.adevn.LoginRequest
-import com.example.readytoenjoy.core.network.adevn.User
+import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
+import com.example.readytoenjoy.core.data.network.adevn.model.userResponseLR
+import com.example.readytoenjoy.core.data.network.adevn.model.LoginRequest
+import com.example.readytoenjoy.core.data.network.adevn.model.User
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-fun userResponseLR.toExternal(): User {
-    return User(
-        id = this.user.id,
-        name = this.user.name,
-        email =  this.user.email,
-        advenId = this.user.advenId
-    )
-}
+
 private val Context.dataStore by preferencesDataStore(name = "user_prefs")
 private val ADVEN_ID_KEY = stringPreferencesKey("advenId")
 
@@ -41,7 +33,7 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
             val advenId = userResponse?.user?.advenId
             response.body()!!.jwt
             if (advenId != null) {
-                saveAdvenId(advenId)  // Guardar advenId en DataStore
+                saveAdvenId(response.)  // Guardar advenId en DataStore
             }
             token
         }
@@ -50,9 +42,9 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
             null
         }
     }
-    private suspend fun saveAdvenId(advenId: String) {
+    private suspend fun saveAdvenId(user: User) {
         context.dataStore.edit { settings ->
-            settings[ADVEN_ID_KEY] = advenId  // Guardar el advenId
+            settings[ADVEN_ID_KEY] = user.advenId  // Guardar el advenId
 
         }
     }

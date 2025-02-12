@@ -1,26 +1,18 @@
-package com.example.readytoenjoy.core.data.adven
+package com.example.readytoenjoy.core.data.repository.adven
 
-import com.example.readytoenjoy.core.network.adevn.AdvenNetworkRepositoryInterface
-import com.example.readytoenjoy.core.network.adevn.AdvenResponseLR
+import com.example.readytoenjoy.core.data.network.adevn.AdvenNetworkRepositoryInterface
+import com.example.readytoenjoy.core.data.network.adevn.model.AdvenResponseLR
+import com.example.readytoenjoy.core.model.Adven
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
-fun AdvenResponseLR.toExternal(): Adven {
-    return Adven(
-        id = this.id,
-        name = this.attributes.name,
-        email = this.attributes.email
-    )
-}
 
-fun List<AdvenResponseLR>.toExternal():List<Adven> {
-    return this.map(AdvenResponseLR::toExternal)
-}
 
 @Singleton
-class DefaultAdvenRepository @Inject constructor(private val advenNetworkRepository: AdvenNetworkRepositoryInterface,):AdvenRepositoryInterface {
+class DefaultAdvenRepository @Inject constructor(private val advenNetworkRepository: AdvenNetworkRepositoryInterface,):
+    AdvenRepositoryInterface {
 
     //preguntar uso
     private val _state = MutableStateFlow<List<Adven>>(listOf())

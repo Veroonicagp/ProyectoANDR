@@ -1,4 +1,4 @@
-package com.example.readytoenjoy.core.network.activity
+package com.example.readytoenjoy.core.data.network.activity.model
 
 import android.net.Uri
 
@@ -52,7 +52,7 @@ data class ImageAttributes(
 //modelo crear
 
 data class CreateActivity(
-    val data:CreateActivityPayload
+    val data: CreateActivityPayload
 )
 
 // Cuerpo

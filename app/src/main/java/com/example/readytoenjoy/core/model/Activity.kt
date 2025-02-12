@@ -1,4 +1,4 @@
-package com.example.readytoenjoy.core.data.activity
+package com.example.readytoenjoy.core.model
 
 import android.net.Uri
 

@@ -9,9 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.readytoenjoy.core.data.activity.Activity
+import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.databinding.FragmentMyActivitiesListBinding
-import com.example.readytoenjoy.ui.activity.ActivityListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

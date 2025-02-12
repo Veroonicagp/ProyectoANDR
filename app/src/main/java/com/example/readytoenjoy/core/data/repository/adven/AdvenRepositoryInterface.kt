@@ -1,5 +1,6 @@
-package com.example.readytoenjoy.core.data.adven
+package com.example.readytoenjoy.core.data.repository.adven
 
+import com.example.readytoenjoy.core.model.Adven
 import kotlinx.coroutines.flow.StateFlow
 
 interface AdvenRepositoryInterface {

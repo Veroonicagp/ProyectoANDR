@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.readytoenjoy.R
-import com.example.readytoenjoy.core.network.activity.ActivityNetworkRepositoryInterface
+import com.example.readytoenjoy.core.data.network.activity.ActivityNetworkRepositoryInterface
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

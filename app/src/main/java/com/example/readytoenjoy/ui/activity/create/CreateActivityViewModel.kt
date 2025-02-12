@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.readytoenjoy.core.data.activity.ActivityRepositoryInterface
-import com.example.readytoenjoy.core.data.activity.DefaultActivityRepository
+import com.example.readytoenjoy.core.data.repository.activity.ActivityRepositoryInterface
+import com.example.readytoenjoy.core.data.repository.activity.DefaultActivityRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

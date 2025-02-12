@@ -1,4 +1,6 @@
-package com.example.readytoenjoy.core.network.adevn
+package com.example.readytoenjoy.core.data.network.adevn.model
+
+import com.example.readytoenjoy.core.model.User
 
 data class AdvenListRawResponse(
     val data: List<AdvenResponseLR>
@@ -22,14 +24,9 @@ data class LoginRequest(
     val password: String
 )
 
-data class UserRequest(
-    val username:String,
-    val email: String,
-    val password: String,
-)
 
 data class AdvenRequest(
-    val data:AventureroData
+    val data: AventureroData
 )
 
 data class AventureroData(
@@ -39,16 +36,18 @@ data class AventureroData(
     val userId: String//relacion con el usuario creado
 )
 
+//USER
+
 data class userResponseLR(
     val jwt: String,
     val user: User
 )
 
-data class User(
-    val id: String,
-    val name: String,
+
+data class UserRequest(
+    val username:String,
     val email: String,
-    val advenId: String,
+    val password: String,
 )
 
 

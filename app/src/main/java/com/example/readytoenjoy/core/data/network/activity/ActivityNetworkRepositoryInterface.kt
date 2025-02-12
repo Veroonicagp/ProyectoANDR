@@ -1,8 +1,6 @@
-package com.example.readytoenjoy.core.network.activity
+package com.example.readytoenjoy.core.data.network.activity
 
-import android.net.Uri
-import com.example.readytoenjoy.core.data.activity.Activity
-import retrofit2.Response
+import com.example.readytoenjoy.core.model.Activity
 
 interface ActivityNetworkRepositoryInterface {
     suspend fun getActivities(): Result<List<Activity>>

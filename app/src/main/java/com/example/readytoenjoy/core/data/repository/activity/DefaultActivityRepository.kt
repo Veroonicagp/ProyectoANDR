@@ -1,12 +1,9 @@
-package com.example.readytoenjoy.core.data.activity
+package com.example.readytoenjoy.core.data.repository.activity
 
-import android.net.Uri
-import com.example.readytoenjoy.core.network.activity.ActivityNetworkRepositoryInterface
-import com.example.readytoenjoy.core.network.activity.ActivityResponse
+import com.example.readytoenjoy.core.data.network.activity.ActivityNetworkRepositoryInterface
+import com.example.readytoenjoy.core.model.Activity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton

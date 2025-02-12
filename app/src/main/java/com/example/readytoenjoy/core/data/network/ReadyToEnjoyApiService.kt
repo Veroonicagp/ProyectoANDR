@@ -1,16 +1,14 @@
-package com.example.readytoenjoy.core.network
+package com.example.readytoenjoy.core.data.network
 
-import com.example.readytoenjoy.core.network.activity.ActivityAttributesResponse
-import com.example.readytoenjoy.core.network.activity.ActivityListRawResponse
-import com.example.readytoenjoy.core.network.activity.ActivityRawResponse
-import com.example.readytoenjoy.core.network.activity.CreateActivity
-import com.example.readytoenjoy.core.network.adevn.AdvenListRawResponse
-import com.example.readytoenjoy.core.network.adevn.AdvenRawResponse
-import com.example.readytoenjoy.core.network.adevn.AdvenRequest
-import com.example.readytoenjoy.core.network.adevn.UserRequest
-import com.example.readytoenjoy.core.network.adevn.AdvenResponseLR
-import com.example.readytoenjoy.core.network.adevn.userResponseLR
-import com.example.readytoenjoy.core.network.adevn.LoginRequest
+import com.example.readytoenjoy.core.data.network.activity.model.ActivityListRawResponse
+import com.example.readytoenjoy.core.data.network.activity.model.ActivityRawResponse
+import com.example.readytoenjoy.core.data.network.activity.model.CreateActivity
+import com.example.readytoenjoy.core.data.network.adevn.model.AdvenListRawResponse
+import com.example.readytoenjoy.core.data.network.adevn.model.AdvenRawResponse
+import com.example.readytoenjoy.core.data.network.adevn.model.AdvenRequest
+import com.example.readytoenjoy.core.data.network.adevn.model.UserRequest
+import com.example.readytoenjoy.core.data.network.adevn.model.userResponseLR
+import com.example.readytoenjoy.core.data.network.adevn.model.LoginRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

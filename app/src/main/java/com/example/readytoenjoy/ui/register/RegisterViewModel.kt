@@ -4,7 +4,7 @@ package com.example.readytoenjoy.ui.register
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.readytoenjoy.core.data.adven.RegisterRepository
+import com.example.readytoenjoy.core.data.repository.adven.RegisterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.readytoenjoy.core.data.activity.Activity
-import com.example.readytoenjoy.databinding.ActivityListItemBinding
+import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.databinding.MyActivityListItemBinding
 
 //

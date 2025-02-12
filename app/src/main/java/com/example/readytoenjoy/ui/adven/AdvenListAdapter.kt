@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.readytoenjoy.core.data.adven.Adven
+import com.example.readytoenjoy.core.model.Adven
 import com.example.readytoenjoy.databinding.AdvenListItemBinding
 
 class AdvenListAdapter(): ListAdapter<Adven, AdvenListAdapter.AdvenViewHolder>(
@@ -14,7 +14,7 @@ class AdvenListAdapter(): ListAdapter<Adven, AdvenListAdapter.AdvenViewHolder>(
 
     inner class AdvenViewHolder(private val binding: AdvenListItemBinding):
             RecyclerView.ViewHolder(binding.root){
-                fun bind(adven:Adven){
+                fun bind(adven: Adven){
                     binding.nombre.text=adven.name
                 }
             }

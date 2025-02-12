@@ -2,7 +2,7 @@ package com.example.readytoenjoy.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.readytoenjoy.core.data.adven.LoginRepository
+import com.example.readytoenjoy.core.data.repository.adven.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

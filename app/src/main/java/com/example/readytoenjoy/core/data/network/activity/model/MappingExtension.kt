@@ -1,7 +1,6 @@
-package com.example.readytoenjoy.core.network.activity
+package com.example.readytoenjoy.core.data.network.activity.model
 
-import androidx.core.net.toUri
-import com.example.readytoenjoy.core.data.activity.Activity
+import com.example.readytoenjoy.core.model.Activity
 
 fun ActivityResponse.toModel(): Activity {
     return Activity(
@@ -16,8 +15,9 @@ fun ActivityResponse.toModel(): Activity {
 }
 fun List<ActivityResponse>.toModel():List<Activity> = map(ActivityResponse::toModel)
 
-fun Activity.toRemoteModel():CreateActivity {
-    return CreateActivity(CreateActivityPayload(
+fun Activity.toRemoteModel(): CreateActivity {
+    return CreateActivity(
+        CreateActivityPayload(
         title = this.title,
         location = this.location,
         price = this.price,
@@ -25,5 +25,6 @@ fun Activity.toRemoteModel():CreateActivity {
         description = this.description,
         //advenId = this.advenId
 
-    ))
+    )
+    )
 }
