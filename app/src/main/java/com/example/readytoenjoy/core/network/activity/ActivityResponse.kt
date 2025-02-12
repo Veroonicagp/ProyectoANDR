@@ -4,11 +4,11 @@ import android.net.Uri
 
 data class ActivityAttributesResponse(
     val title: String,
-    //val img: Uri?,
+    val img: Uri?,
     val location: String,
     val price: String,
     val description: String,
-    //val advenId: String?=null,
+    val advenId: String?=null,
 )
 
 data class ActivityResponse(

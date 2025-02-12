@@ -7,6 +7,6 @@ import retrofit2.Response
 interface ActivityNetworkRepositoryInterface {
     suspend fun getActivities(): Result<List<Activity>>
     suspend fun getActivitiesByAdvenId(id: String): Result<List<Activity>>
-    suspend fun createActivity(title: String, location:String, price:String, description:String):Result<Activity>
+    suspend fun createActivity(title: String,location:String, price:String, description:String):Result<Activity>
     suspend fun readOne(id: String): Result<Activity>
 }
