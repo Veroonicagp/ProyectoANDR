@@ -1,6 +1,7 @@
 package com.example.readytoenjoy.core.data.network.adevn.model
 
 import com.example.readytoenjoy.core.model.Adven
+import com.example.readytoenjoy.core.model.User
 
 fun userResponseLR.toExternal(): User {
     return User(

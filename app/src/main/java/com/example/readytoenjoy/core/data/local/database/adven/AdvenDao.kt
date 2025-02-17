@@ -1,4 +1,8 @@
 package com.example.readytoenjoy.core.data.local.database.adven
 
-class AdvenDao {
+import androidx.room.Dao
+
+@Dao
+interface AdvenDao {
+
 }

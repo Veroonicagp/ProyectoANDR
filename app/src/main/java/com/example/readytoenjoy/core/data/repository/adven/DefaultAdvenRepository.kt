@@ -2,6 +2,7 @@ package com.example.readytoenjoy.core.data.repository.adven
 
 import com.example.readytoenjoy.core.data.network.adevn.AdvenNetworkRepositoryInterface
 import com.example.readytoenjoy.core.data.network.adevn.model.AdvenResponseLR
+import com.example.readytoenjoy.core.data.network.adevn.model.toExternal
 import com.example.readytoenjoy.core.model.Adven
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

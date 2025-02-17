@@ -7,7 +7,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
 import com.example.readytoenjoy.core.data.network.adevn.model.userResponseLR
 import com.example.readytoenjoy.core.data.network.adevn.model.LoginRequest
-import com.example.readytoenjoy.core.data.network.adevn.model.User
+import com.example.readytoenjoy.core.model.User
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -33,7 +33,7 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
             val advenId = userResponse?.user?.advenId
             response.body()!!.jwt
             if (advenId != null) {
-                saveAdvenId(response.)  // Guardar advenId en DataStore
+                //saveAdvenId(response.)  // Guardar advenId en DataStore
             }
             token
         }
