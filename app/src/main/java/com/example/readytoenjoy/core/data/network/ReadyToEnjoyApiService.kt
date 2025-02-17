@@ -22,6 +22,9 @@ interface ReadyToEnjoyApiService {
     @GET("activities")
     suspend fun getAllActivitiesFromSercice(): Response<ActivityListRawResponse>
 
+    @GET("adventurers")
+    suspend fun getAdvenByUserId(@Query("filters[userId]") userId: String): Response<AdvenListRawResponse>
+
     //quiero obtener las actividades de el usuario registrado
     @GET("activities?filters[advenId][id]={advenId}")
     suspend fun getAllMyActivitiesFromSercice(@Path("advenId") advenId: String): Response<ActivityListRawResponse>

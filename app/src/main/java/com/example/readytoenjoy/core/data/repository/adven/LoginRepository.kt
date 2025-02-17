@@ -22,31 +22,29 @@ private val ADVEN_ID_KEY = stringPreferencesKey("advenId")
 class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiService,
                                           @ApplicationContext private val context: Context
 ) {
-    suspend fun login(identifier:String,password:String):String? {
-        val response = api.login(
-            LoginRequest(identifier, password)
-        )
-        // Me he logueado
-        return if (response.isSuccessful) {
-            val userResponse = response.body()
-            val token = userResponse?.jwt
-            val advenId = userResponse?.user?.advenId
-            response.body()!!.jwt
-            if (advenId != null) {
-                //saveAdvenId(response.)  // Guardar advenId en DataStore
-            }
-            token
-        }
-        // No me he logueado
-        else {
-            null
-        }
-    }
-    private suspend fun saveAdvenId(user: User) {
-        context.dataStore.edit { settings ->
-            settings[ADVEN_ID_KEY] = user.advenId  // Guardar el advenId
+    suspend fun login(identifier: String, password: String): String? {
+        val response = api.login(LoginRequest(identifier, password))
 
+        if (response.isSuccessful) {
+            val userId = response.body()?.user?.id
+            println("DEBUG: UserId: $userId") // Log userId
+
+            userId?.let {
+                val advenResponse = api.getAdvenByUserId(userId)
+                println("DEBUG: AdvenResponse: ${advenResponse.body()}") // Log adven response
+
+                if (advenResponse.isSuccessful && advenResponse.body()?.data?.isNotEmpty() == true) {
+                    val advenId = advenResponse.body()?.data?.first()?.id
+                    println("DEBUG: AdvenId: $advenId") // Log advenId
+
+                    context.dataStore.edit { settings ->
+                        settings[ADVEN_ID_KEY] = advenId!!
+                    }
+                }
+            }
+            return response.body()?.jwt
         }
+        return null
     }
     suspend fun getAdvenId(): String? {
         return context.dataStore.data
@@ -55,3 +53,4 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
 
     }
 }
+

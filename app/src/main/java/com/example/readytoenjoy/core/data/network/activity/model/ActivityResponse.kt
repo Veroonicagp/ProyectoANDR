@@ -4,37 +4,17 @@ import android.net.Uri
 
 data class ActivityAttributesResponse(
     val title: String,
-    val img: Uri?,
+    val img: Media?,
     val location: String,
     val price: String,
     val description: String,
-    val advenId: String?=null,
+    val advenId: String?,
 )
-
 data class ActivityResponse(
     val id: String,
     val attributes: ActivityAttributesResponse
-    /**val title: String,
-    val img: Uri?,
-    val location: String,
-    val price: String,
-    val description: String,
-    val advenId: String?=null,**/
 )
-
-data class ActivityRequest(
-    val id: String,
-    val title: String,
-    val location: String,
-    val price: String,
-    val description: String,
-    val advenId: String?=null,
-)
-
 data class ActivityListRawResponse(
-    /**val count: String,
-    val prev: String?,
-    val next: String?,*/
     val data: List<ActivityResponse>
 )
 
@@ -47,6 +27,10 @@ data class MediaFormats(
 )
 data class ImageAttributes(
     val url: String
+)
+data class Media(
+    val documentId: String,
+    val formats: MediaFormats
 )
 
 //modelo crear
@@ -62,7 +46,7 @@ data class CreateActivityPayload(
     val location: String,
     val price: String,
     val description: String,
-    //val advenId: String?=null,
+    //val advenId: String?,
     val latitude: Double?=null,
     val longitude: Double?=null,
 )

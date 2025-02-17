@@ -1,5 +1,6 @@
 package com.example.readytoenjoy.core.data.repository.activity
 
+import android.net.Uri
 import com.example.readytoenjoy.core.model.Activity
 import kotlinx.coroutines.flow.Flow
 
@@ -14,7 +15,7 @@ interface ActivityRepositoryInterface {
     suspend fun getOne(id:String): Result<Activity>
 
     suspend fun createActivity(title: String,
-                               //img: Uri?,
+                               img: Uri?,
                                location: String,
                                price: String,
                                description: String,

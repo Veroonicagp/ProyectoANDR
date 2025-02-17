@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("androidx.navigation.safeargs.kotlin")
     kotlin("kapt")
+    id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
 
@@ -12,8 +13,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.readytoenjoy"
-        minSdk = 34
-        targetSdk = 34
+        minSdk = 31
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -48,7 +49,7 @@ dependencies {
     //fragment
     implementation(libs.androidx.fragment.ktx)
     //coil
-    implementation(libs.coil)
+    implementation("io.coil-kt:coil:2.7.0")
     // RecyclerView
     implementation(libs.androidx.recyclerview)
     //Hilt

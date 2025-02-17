@@ -44,6 +44,9 @@ abstract class Module {
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkServiceModule {
+    companion object {
+        const val STRAPI = "cloudinary://948692836266696:FWEM4P3Osq7M6JiBoFIyRgw5IbE@dsgzekhz6"
+    }
 
     @Provides
     @Singleton

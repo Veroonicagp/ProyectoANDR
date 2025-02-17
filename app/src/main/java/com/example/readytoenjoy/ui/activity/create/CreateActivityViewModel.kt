@@ -43,11 +43,11 @@ class CreateActivityViewModel @Inject constructor(private val repository: Activi
     }
 
     @SuppressLint("MissingPermission")
-    fun create( title: String, location:String, price:String, description: String){
+    fun create( title: String, img:Uri?, location:String, price:String, description: String){
         viewModelScope.launch {
             val result = repository.createActivity(
                 title,
-                //img,
+                img,
                 location,
                 price,
                 description,

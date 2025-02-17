@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.databinding.ActivityListItemBinding
 //
@@ -20,6 +21,9 @@ class ActivityListAdapter(private val toActivityDetail:((Activity)->Unit)): List
             binding.crdPrice.text=activity.price
             binding.root.setOnClickListener  {
                toActivityDetail(activity)
+            }
+            if (activity.img!=null) {
+                binding.crdImg.load(activity.img)
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.example.readytoenjoy.core.data.network.activity
 
 import android.content.Context
+import android.net.Uri
 import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
 import com.example.readytoenjoy.core.data.network.activity.model.CreateActivity
@@ -49,15 +50,15 @@ class ActivityNetworkRepository @Inject constructor(
 
     override suspend fun createActivity(
         title: String,
-        //img: Uri?,
         location: String,
         price: String,
         description: String,
+        img: Uri?,
         //advenId: String?
     ): Result<Activity> {
         val newActivity = CreateActivity(
             CreateActivityPayload(
-                title,location,price,description
+                title,location,price,description,/**advenId**/
             )
         )
         val response = api.cretaeActivities(newActivity)

@@ -21,6 +21,7 @@
             android:padding="16dp">
 
             <ImageView
+                android:id="@+id/crdImg"
                 android:layout_width="match_parent"
                 android:layout_height="194dp"
                 android:scaleType="centerCrop"

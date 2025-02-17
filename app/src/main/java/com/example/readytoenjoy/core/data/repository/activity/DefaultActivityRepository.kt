@@ -1,5 +1,6 @@
 package com.example.readytoenjoy.core.data.repository.activity
 
+import android.net.Uri
 import com.example.readytoenjoy.core.data.network.activity.ActivityNetworkRepositoryInterface
 import com.example.readytoenjoy.core.model.Activity
 import kotlinx.coroutines.flow.Flow
@@ -41,14 +42,14 @@ class DefaultActivityRepository @Inject constructor(
 
     override suspend fun createActivity(
         title: String,
-        //img: Uri?,
+        img: Uri?,
         location: String,
         price: String,
         description: String,
         //advenId: String?
     ): Result<Activity> {
 
-        val result = remote.createActivity(title,location,price,description)
+        val result = remote.createActivity(title,location,price,description,img,/**advenId**/)
         if (result.isSuccess) {
             val activity = result.getOrNull()
             activity?.let {
