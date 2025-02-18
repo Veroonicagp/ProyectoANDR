@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/editActivityFragment"
-        android:name="com.example.readytoenjoy.ui.activity.EditActivityFragment"
+        android:name="com.example.readytoenjoy.ui.activity.edit.EditActivityFragment"
         android:label="fragment_edit_activity"
         tools:layout="@layout/fragment_edit_activity" />
 </navigation>

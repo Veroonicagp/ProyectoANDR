@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/activityInfoFragment"
-        android:name="com.example.readytoenjoy.ui.activity.ActivityInfoFragment"
+        android:name="com.example.readytoenjoy.ui.activity.info.ActivityInfoFragment"
         android:label="fragment_activity_info"
         tools:layout="@layout/fragment_activity_info" />
 </navigation>
