@@ -46,6 +46,8 @@ interface ReadyToEnjoyApiService {
     @GET("adventurers/id")
     suspend fun readOneFromService(@Path("id") id: String): Response<AdvenRawResponse>
 
+    // TODO update
+
 ////////ACTIVITIES/////
 
     //muestra las actividades
@@ -63,6 +65,8 @@ interface ReadyToEnjoyApiService {
     //creacion de actividades
     @POST("activities")
     suspend fun cretaeActivities(@Body activity: CreateActivity):Response<ActivityRawResponse>
+
+    // TODO update
 
 
 
