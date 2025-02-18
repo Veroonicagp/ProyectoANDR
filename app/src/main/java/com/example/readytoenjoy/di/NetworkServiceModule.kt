@@ -14,8 +14,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -45,16 +47,23 @@ abstract class Module {
 @InstallIn(SingletonComponent::class)
 class NetworkServiceModule {
     companion object {
-        const val STRAPI = "cloudinary://948692836266696:FWEM4P3Osq7M6JiBoFIyRgw5IbE@dsgzekhz6"
+        const val STRAPI = "https://readytoenjoy2.onrender.com/api/"
     }
 
     @Provides
     @Singleton
     fun provideNetworkService(): ReadyToEnjoyApiService {
+        val client = OkHttpClient.Builder()
+            .readTimeout(120,TimeUnit.SECONDS)
+            .connectTimeout(120,TimeUnit.SECONDS)
+            .writeTimeout(120,TimeUnit.SECONDS)
+            // TODO interceptor
+            .build()
 
-        val readyToEnjoyUrl = "https://readytoenjoy2.onrender.com/api/"
+        val readyToEnjoyUrl = STRAPI
         return Retrofit.Builder()
             .baseUrl(readyToEnjoyUrl)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ReadyToEnjoyApiService::class.java)
