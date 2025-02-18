@@ -16,7 +16,8 @@ fun AdvenResponseLR.toExternal(): Adven {
     return Adven(
         id = this.id,
         name = this.attributes.name,
-        email = this.attributes.email
+        email = this.attributes.email,
+        media = this.attributes.media
     )
 }
 

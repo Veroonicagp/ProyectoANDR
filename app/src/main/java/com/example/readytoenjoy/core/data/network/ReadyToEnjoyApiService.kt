@@ -13,6 +13,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -43,9 +44,14 @@ interface ReadyToEnjoyApiService {
     suspend fun getAllAdvensFromSercice(): Response<AdvenListRawResponse>
 
     //muestra la info del aventurero
-    @GET("adventurers/id")
+    @GET("adventurers/{id}")
     suspend fun readOneFromService(@Path("id") id: String): Response<AdvenRawResponse>
 
+    @PUT("adventurers/{id}")
+    suspend fun updateAdven(
+        @Path("id") id: String,
+        @Body advenRequest: AdvenRequest
+    ): Response<AdvenRawResponse>
     // TODO update
 
 ////////ACTIVITIES/////

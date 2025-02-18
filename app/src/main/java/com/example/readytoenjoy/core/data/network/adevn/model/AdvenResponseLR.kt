@@ -1,5 +1,6 @@
 package com.example.readytoenjoy.core.data.network.adevn.model
 
+import android.net.Uri
 import com.example.readytoenjoy.core.model.User
 
 data class AdvenListRawResponse(
@@ -17,6 +18,7 @@ data class AdvenResponseLR(
 data class AdvenAttributesResponse(
     val name: String,
     val email: String,
+    val media: Uri?
 )
 
 data class LoginRequest(

@@ -7,6 +7,7 @@ interface AdvenRepositoryInterface {
 
     suspend fun getAdvens(): List<Adven>
     suspend fun getOne(id:String): Adven
+    suspend fun updateAdven(id: String, name: String, email: String): Adven
 
     val setStream: StateFlow<List<Adven>>
 }

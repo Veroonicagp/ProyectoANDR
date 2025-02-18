@@ -31,8 +31,28 @@ class DefaultAdvenRepository @Inject constructor(private val advenNetworkReposit
 
     override suspend fun getOne(id: String): Adven {
         val response = advenNetworkRepository.readOneAdven(id)
-        return if (response.isSuccessful) response.body()!!
-        else Adven("", "","")
+        return if (response.isSuccessful) {
+            response.body()!!.data.toExternal()
+        } else {
+            Adven("", "", "",null)
+        }
+    }
+
+    override suspend fun updateAdven(id: String, name: String, email: String): Adven {
+        val response = advenNetworkRepository.updateAdven(id, name, email)
+        if (response.isSuccessful) {
+            val updatedAdven = response.body()!!.data.toExternal()
+            // Actualizar el estado
+            val currentList = _state.value.toMutableList()
+            val index = currentList.indexOfFirst { it.id == id }
+            if (index != -1) {
+                currentList[index] = updatedAdven
+                _state.value = currentList
+            }
+            return updatedAdven
+        } else {
+            throw Exception("Error al actualizar el aventurero")
+        }
     }
 
     override val setStream: StateFlow<List<Adven>>
