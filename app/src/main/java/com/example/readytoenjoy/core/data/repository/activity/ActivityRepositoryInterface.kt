@@ -19,7 +19,7 @@ interface ActivityRepositoryInterface {
                                location: String,
                                price: String,
                                description: String,
-                               //advenId: String?
+                               advenId: String?
     ): Result<Activity>
 
     fun setStream(): Flow<Result<List<Activity>>>

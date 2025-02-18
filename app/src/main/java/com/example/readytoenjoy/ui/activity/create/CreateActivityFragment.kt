@@ -82,10 +82,11 @@ class CreateActivityFragment : Fragment() {
             val title = binding.title.text.toString()
             val location = binding.location.text.toString()
             val img = _img
+            val advenId = ""
             val price = binding.location.text.toString()
             val description = binding.description.text.toString()
             viewLifecycleOwner.lifecycleScope.launch {
-                vm.create(title,img,location,price,description)
+                vm.create(title,img,location,price,description,advenId)
             }
         }
 

@@ -25,7 +25,7 @@ fun Activity.toRemoteModel(): CreateActivity {
         location = this.location,
         price = this.price,
         description = this.description,
-        //advenId = this.advenId
+        advenId = this.advenId
     )
     )
 }

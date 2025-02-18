@@ -54,11 +54,11 @@ class ActivityNetworkRepository @Inject constructor(
         price: String,
         description: String,
         img: Uri?,
-        //advenId: String?
+        advenId: String?
     ): Result<Activity> {
         val newActivity = CreateActivity(
             CreateActivityPayload(
-                title,location,price,description,/**advenId**/
+                title,location,price,description,advenId
             )
         )
         val response = api.cretaeActivities(newActivity)

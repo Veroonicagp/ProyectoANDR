@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.readytoenjoy.core.data.repository.activity.ActivityRepositoryInterface
 import com.example.readytoenjoy.core.data.repository.activity.DefaultActivityRepository
+import com.example.readytoenjoy.core.data.repository.adven.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +23,7 @@ sealed class UiState {
 }
 
 @HiltViewModel
-class CreateActivityViewModel @Inject constructor(private val repository: ActivityRepositoryInterface):ViewModel() {
+class CreateActivityViewModel @Inject constructor(private val repository: ActivityRepositoryInterface, private val loginRepository: LoginRepository):ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState>
@@ -33,8 +34,11 @@ class CreateActivityViewModel @Inject constructor(private val repository: Activi
         get() = _photo.asStateFlow()
 
 
+
+
     fun onImageCaptured(uri: Uri?) {
         viewModelScope.launch {
+
             uri?.let {
                 _photo.value = uri
             }
@@ -43,15 +47,16 @@ class CreateActivityViewModel @Inject constructor(private val repository: Activi
     }
 
     @SuppressLint("MissingPermission")
-    fun create( title: String, img:Uri?, location:String, price:String, description: String){
+    fun create( title: String, img:Uri?, location:String, price:String, description: String, advenId: String){
         viewModelScope.launch {
+            val advenId = loginRepository.getAdvenId()
             val result = repository.createActivity(
                 title,
                 img,
                 location,
                 price,
                 description,
-                //advenId
+                advenId = advenId
             )
             if(result.isSuccess){
                 _uiState.value = UiState.Created(result.getOrNull()!!.id)

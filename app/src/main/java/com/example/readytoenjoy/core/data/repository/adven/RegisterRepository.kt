@@ -68,20 +68,4 @@ class RegisterRepository @Inject constructor(@ApplicationContext val context: Co
     }
 
 
-    @SuppressLint("SuspiciousIndentation")
-    suspend fun isRegistered(): Boolean {
-        val localEmail = context.dataStore.data.map {
-            it[EMAIL_KEY] ?: ""
-        }.first()
-
-
-        return if (localEmail.isBlank()) {
-            false
-        }
-        else {
-            val response = api.readUser(localEmail)
-            response.isSuccessful
-        }
-
-    }
 }

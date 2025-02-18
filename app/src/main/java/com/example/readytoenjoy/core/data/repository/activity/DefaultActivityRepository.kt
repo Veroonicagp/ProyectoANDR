@@ -46,10 +46,10 @@ class DefaultActivityRepository @Inject constructor(
         location: String,
         price: String,
         description: String,
-        //advenId: String?
+        advenId: String?
     ): Result<Activity> {
 
-        val result = remote.createActivity(title,location,price,description,img,/**advenId**/)
+        val result = remote.createActivity(title,location,price,description,img,advenId)
         if (result.isSuccess) {
             val activity = result.getOrNull()
             activity?.let {

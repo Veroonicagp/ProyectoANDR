@@ -46,7 +46,7 @@ data class CreateActivityPayload(
     val location: String,
     val price: String,
     val description: String,
-    //val advenId: String?,
+    val advenId: String?,
     val latitude: Double?=null,
     val longitude: Double?=null,
 )
