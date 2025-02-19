@@ -67,25 +67,24 @@ class MyProfileFragment : Fragment() {
         return isValid
     }
 
+    //??
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 when (state) {
                     is ProfileUiState.Loading -> {
                         binding.saveButton.isEnabled = false
-                        // Aquí podrías mostrar un progressBar si lo tienes
-                        // binding.progressBar.isVisible = true
                     }
                     is ProfileUiState.Success -> {
                         binding.saveButton.isEnabled = true
                         // binding.progressBar.isVisible = false
                         updateUI(state.adven)
                         // Opcional: mostrar mensaje de éxito
-                        Snackbar.make(
+                        /**Snackbar.make(
                             binding.root,
                             "Perfil actualizado correctamente",
                             Snackbar.LENGTH_SHORT
-                        ).show()
+                        ).show()**/
                     }
                     is ProfileUiState.Error -> {
                         binding.saveButton.isEnabled = true
