@@ -22,17 +22,13 @@ class MyProfileViewModel @Inject constructor(
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
     init {
-        loadProfile()
-    }
-
-    private fun loadProfile() {
         viewModelScope.launch {
             _uiState.value = ProfileUiState.Loading
             try {
                 val advenId = loginRepository.getAdvenId()
                 if (advenId != null) {
                     val adven = advenRepository.getOne(advenId)
-                    _uiState.value = ProfileUiState.Success(adven)
+                    _uiState.value = ProfileUiState.Wait(adven)
                 } else {
                     _uiState.value = ProfileUiState.Error("No se encontró el ID del aventurero")
                 }
@@ -40,6 +36,7 @@ class MyProfileViewModel @Inject constructor(
                 _uiState.value = ProfileUiState.Error(e.message ?: "Error desconocido")
             }
         }
+
     }
 
     fun updateProfile(name: String, email: String) {
@@ -50,6 +47,7 @@ class MyProfileViewModel @Inject constructor(
                     _uiState.value = ProfileUiState.Loading
                     val updatedAdven = advenRepository.updateAdven(advenId, name, email)
                     _uiState.value = ProfileUiState.Success(updatedAdven)
+                    _uiState.value = ProfileUiState.Wait(updatedAdven)
                 } else {
                     _uiState.value = ProfileUiState.Error("No se encontró el ID del aventurero")
                 }
@@ -62,6 +60,7 @@ class MyProfileViewModel @Inject constructor(
 
 sealed class ProfileUiState {
     object Loading : ProfileUiState()
+    data class Wait(val adven: Adven) : ProfileUiState()
     data class Success(val adven: Adven) : ProfileUiState()
     data class Error(val message: String) : ProfileUiState()
 }

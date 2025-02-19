@@ -37,7 +37,7 @@ interface ReadyToEnjoyApiService {
 
     //obtiene el aventurero con el userId asociado
     @GET("adventurers")
-    suspend fun getAdvenByUserId(@Query("filters[userId]") userId: String): Response<AdvenListRawResponse>
+    suspend fun getAdvenByUserId(@Query("filters[user]") userId: String): Response<AdvenListRawResponse>
 
     //muestra aventureros
     @GET("adventurers")
