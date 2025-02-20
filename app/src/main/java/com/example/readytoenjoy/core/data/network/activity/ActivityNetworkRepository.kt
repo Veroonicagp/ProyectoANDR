@@ -4,8 +4,8 @@ import android.content.Context
 import android.net.Uri
 import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
-import com.example.readytoenjoy.core.data.network.activity.model.CreateActivity
-import com.example.readytoenjoy.core.data.network.activity.model.CreateActivityPayload
+import com.example.readytoenjoy.core.data.network.activity.model.ActivityRequest
+import com.example.readytoenjoy.core.data.network.activity.model.ActivityData
 import com.example.readytoenjoy.core.data.network.activity.model.toModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,8 +56,8 @@ class ActivityNetworkRepository @Inject constructor(
         img: Uri?,
         advenId: String?
     ): Result<Activity> {
-        val newActivity = CreateActivity(
-            CreateActivityPayload(
+        val newActivity = ActivityRequest(
+            ActivityData(
                 title,location,price,description,advenId
             )
         )
@@ -75,14 +75,18 @@ class ActivityNetworkRepository @Inject constructor(
 
 
     override suspend fun readOne(id: String): Result<Activity> {
-        TODO()
-        //return api.readOneFomService(id)
+        val response = api.readOneActFomService(id)
+        return if (response.isSuccessful) {
+            Result.success(response.body()!!.data.toModel())
+        } else {
+            // No se ha creado
+            return Result.failure(UserNotAuthorizedException())
+        }
     }
 
 
 }
 
 class UserNotAuthorizedException :RuntimeException() {
-
     override fun toString() = "Incorrect identifier or password"
 }

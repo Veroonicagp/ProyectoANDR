@@ -1,6 +1,5 @@
 package com.example.readytoenjoy.core.data.network.adevn
 
-import com.example.readytoenjoy.core.model.Adven
 import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
 import com.example.readytoenjoy.core.data.network.adevn.model.AdvenListRawResponse
 import com.example.readytoenjoy.core.data.network.adevn.model.AdvenRawResponse
@@ -20,7 +19,7 @@ class AdvenNetworkRepository @Inject constructor(
     }
 
     override suspend fun readOneAdven(id: String): Response<AdvenRawResponse> {
-        return api.readOneFromService(id)
+        return api.readOneAdvenFromService(id)
     }
 
     override suspend fun updateAdven(

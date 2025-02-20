@@ -2,7 +2,7 @@ package com.example.readytoenjoy.core.data.network
 
 import com.example.readytoenjoy.core.data.network.activity.model.ActivityListRawResponse
 import com.example.readytoenjoy.core.data.network.activity.model.ActivityRawResponse
-import com.example.readytoenjoy.core.data.network.activity.model.CreateActivity
+import com.example.readytoenjoy.core.data.network.activity.model.ActivityRequest
 import com.example.readytoenjoy.core.data.network.adevn.model.AdvenListRawResponse
 import com.example.readytoenjoy.core.data.network.adevn.model.AdvenRawResponse
 import com.example.readytoenjoy.core.data.network.adevn.model.AdvenRequest
@@ -45,34 +45,34 @@ interface ReadyToEnjoyApiService {
 
     //muestra la info del aventurero
     @GET("adventurers/{id}")
-    suspend fun readOneFromService(@Path("id") id: String): Response<AdvenRawResponse>
+    suspend fun readOneAdvenFromService(@Path("id") id: String): Response<AdvenRawResponse>
 
+    //edición aventureros
     @PUT("adventurers/{id}")
-    suspend fun updateAdven(
-        @Path("id") id: String,
-        @Body advenRequest: AdvenRequest
-    ): Response<AdvenRawResponse>
-    // TODO update
+    suspend fun updateAdven( @Path("id") id: String, @Body advenRequest: AdvenRequest): Response<AdvenRawResponse>
+
 
 ////////ACTIVITIES/////
 
-    //muestra las actividades
-    @GET("activities")
-    suspend fun getAllActivitiesFromSercice(): Response<ActivityListRawResponse>
+    //creacion de actividades
+    @POST("activities")
+    suspend fun cretaeActivities(@Body activity: ActivityRequest):Response<ActivityRawResponse>
 
     //quiero obtener las actividades de el usuario registrado
     @GET("activities")
     suspend fun getAllMyActivitiesFromSercice(@Query("filters[advenId]") advenId: String): Response<ActivityListRawResponse>
 
+    //muestra las actividades
+    @GET("activities")
+    suspend fun getAllActivitiesFromSercice(): Response<ActivityListRawResponse>
+
     //muestra una actividad en especifico
     @GET("activities/{id}")
-    suspend fun readOneFomService(@Path("id") id: String): Response<ActivityRawResponse>
+    suspend fun readOneActFomService(@Path("id") id: String): Response<ActivityRawResponse>
 
-    //creacion de actividades
-    @POST("activities")
-    suspend fun cretaeActivities(@Body activity: CreateActivity):Response<ActivityRawResponse>
-
-    // TODO update
+    //edición actividades
+    @PUT("activities/{id}")
+    suspend fun updateActivity(@Path("id") id: String, @Body activityRequest: ActivityRequest): Response<AdvenRawResponse>
 
 
 

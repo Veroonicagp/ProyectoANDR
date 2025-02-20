@@ -58,7 +58,7 @@
             android:src="@drawable/ic_location" />
 
         <TextView
-            android:id="@+id/tvLocation"
+            android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ubicación"
@@ -68,7 +68,7 @@
 
     <!-- Descripción en un cuadro con fondo suave -->
     <TextView
-        android:id="@+id/tvDescription"
+        android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:padding="12dp"
@@ -84,13 +84,13 @@
 
     <!-- Precio en la parte inferior -->
     <TextView
-        android:id="@+id/tvPrice"
+        android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="€99.99"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tvDescription"
+        app:layout_constraintTop_toBottomOf="@id/description"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>
 

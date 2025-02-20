@@ -24,6 +24,9 @@ class MyActivityListViewModel @Inject constructor(
     val uiState: StateFlow<MyActivityListUiState>
         get() = _uiState.asStateFlow()
 
+    private val _selectedActivityId = MutableStateFlow<String?>(null)
+    val selectedActivityId = _selectedActivityId.asStateFlow()
+
     init {
         viewModelScope.launch {
             // Obtener el advenId desde DataStore
@@ -49,6 +52,10 @@ class MyActivityListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setSelectedActivity(activityId: String) {
+        _selectedActivityId.value = activityId
     }
 
 }

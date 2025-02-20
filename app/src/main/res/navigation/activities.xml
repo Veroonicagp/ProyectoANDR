@@ -18,5 +18,9 @@
         android:id="@+id/activityInfoFragment"
         android:name="com.example.readytoenjoy.ui.activity.info.ActivityInfoFragment"
         android:label="fragment_activity_info"
-        tools:layout="@layout/fragment_activity_info" />
+        tools:layout="@layout/fragment_activity_info">
+        <argument
+            android:name="activityId"
+            app:argType="string" />
+    </fragment>
 </navigation>

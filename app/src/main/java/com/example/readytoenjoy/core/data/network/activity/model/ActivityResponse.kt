@@ -1,7 +1,5 @@
 package com.example.readytoenjoy.core.data.network.activity.model
 
-import android.net.Uri
-
 data class ActivityAttributesResponse(
     val title: String,
     val img: Media?,
@@ -35,12 +33,12 @@ data class Media(
 
 //modelo crear
 
-data class CreateActivity(
-    val data: CreateActivityPayload
+data class ActivityRequest(
+    val data: ActivityData
 )
 
 // Cuerpo
-data class CreateActivityPayload(
+data class ActivityData(
     val title: String,
     //val img:Uri?,
     val location: String,

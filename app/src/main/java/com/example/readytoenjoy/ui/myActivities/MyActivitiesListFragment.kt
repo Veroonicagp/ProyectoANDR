@@ -66,21 +66,17 @@ class MyActivitiesListFragment : Fragment() {
         //val rv = binding.rvMyActivities
         //rv.adapter = adapter
         //(rv.adapter as  ActivityListAdapter).submitList(repository.getActivities())
-
         val createActivityButton = binding.floatingActionButton
         createActivityButton.setOnClickListener{
             val action = MyActivitiesListFragmentDirections.actionMyActivitiesListFragmentToCreateActivityFragment()
             findNavController().navigate(action)
         }
-
-
     }
 
     //¡?  implementar cuando lo tenga hecho
     private fun toActivityDetail(activity: Activity) {
-       val action = MyActivitiesListFragmentDirections.actionMyActivitiesListFragmentToEditActivityFragment()
-        findNavController().navigate(action)
+        findNavController().navigate(
+            MyActivitiesListFragmentDirections.actionMyActivitiesListFragmentToEditActivityFragment(activity.id)
+        )
     }
-
-
 }

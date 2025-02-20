@@ -76,7 +76,7 @@ class ActivitiesListFragment : Fragment() {
     //¡?
 
     private fun toActivityDetail(activity: Activity) {
-        val action = ActivitiesListFragmentDirections.actionActivitiesListFragmentToActivityInfoFragment()
+        val action = ActivitiesListFragmentDirections.actionActivitiesListFragmentToActivityInfoFragment(activity.id)
         findNavController().navigate(action)
     }
 
