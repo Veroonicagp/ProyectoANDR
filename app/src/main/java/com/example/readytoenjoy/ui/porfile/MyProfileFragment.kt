@@ -77,9 +77,7 @@ class MyProfileFragment : Fragment() {
                     }
                     is ProfileUiState.Success -> {
                         binding.saveButton.isEnabled = true
-                        // binding.progressBar.isVisible = false
                         updateUI(state.adven)
-                        // Opcional: mostrar mensaje de éxito
                         Snackbar.make(
                             binding.root,
                             "Perfil actualizado correctamente",
@@ -88,7 +86,6 @@ class MyProfileFragment : Fragment() {
                     }
                     is ProfileUiState.Error -> {
                         binding.saveButton.isEnabled = true
-                        // binding.progressBar.isVisible = false
                         Snackbar.make(
                             binding.root,
                             state.message,
@@ -98,7 +95,6 @@ class MyProfileFragment : Fragment() {
 
                     is ProfileUiState.Wait ->{
                         binding.saveButton.isEnabled = true
-                        // binding.progressBar.isVisible = false
                         updateUI(state.adven)
                     }
 

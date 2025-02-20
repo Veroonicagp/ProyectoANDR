@@ -2,7 +2,10 @@ package com.example.readytoenjoy.core.data.repository.activity
 
 import android.net.Uri
 import com.example.readytoenjoy.core.data.network.activity.ActivityNetworkRepositoryInterface
+import com.example.readytoenjoy.core.data.network.activity.model.toExternal
+import com.example.readytoenjoy.core.data.network.adevn.model.toExternal
 import com.example.readytoenjoy.core.model.Activity
+import com.example.readytoenjoy.core.model.Adven
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
@@ -58,6 +61,33 @@ class DefaultActivityRepository @Inject constructor(
         }
         return result
 
+    }
+
+
+
+    override suspend fun updateActivity(
+        id: String,
+        title: String,
+        //img: Uri?,
+        location: String,
+        price: String,
+        description: String
+    ): Activity {
+        //TODO ?¿¡
+        val response = remote.updateActivity(id, title,location,price,description)
+        if (response.isSuccessful) {
+            val updatedActivity = response.body()!!.data.toExternal()
+            // Actualizar el estado
+            val currentList = _state.value.toMutableList()
+            val index = currentList.indexOfFirst { it.id == id }
+            if (index != -1) {
+                currentList[index] = updatedActivity
+                _state.value = currentList
+            }
+            return updatedActivity
+        } else {
+            throw Exception("Error al actualizar el aventurero")
+        }
     }
 
     override fun setStream(): Flow<Result<List<Activity>>> {

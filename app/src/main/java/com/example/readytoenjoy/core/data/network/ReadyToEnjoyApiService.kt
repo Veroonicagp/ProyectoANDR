@@ -72,7 +72,7 @@ interface ReadyToEnjoyApiService {
 
     //edición actividades
     @PUT("activities/{id}")
-    suspend fun updateActivity(@Path("id") id: String, @Body activityRequest: ActivityRequest): Response<AdvenRawResponse>
+    suspend fun updateActivity(@Path("id") id: String, @Body activityRequest: ActivityRequest): Response<ActivityRawResponse>
 
 
 

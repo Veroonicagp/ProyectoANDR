@@ -23,7 +23,7 @@ class ActivityInfoFragment : Fragment() {
 
     private lateinit var binding: FragmentActivityInfoBinding
     private val vm: ActivityInfoViewModel by activityViewModels()
-    private val args: EditActivityFragmentArgs by navArgs()
+    private val args: ActivityInfoFragmentArgs by navArgs()
 
 
     override fun onCreateView(
@@ -45,14 +45,14 @@ class ActivityInfoFragment : Fragment() {
 
         vm.loadActivity(args.activityId)
         lifecycleScope.launch {
-            vm.uiState.collect { state ->
-                when (state) {
-                    is EditActivityUiState.Loading -> {
+            vm.uiState.collect { uiState ->
+                when (uiState) {
+                    is InfoActivityUiState.Loading -> {
                         // Mostrar progreso
                     }
 
-                    is EditActivityUiState.Success -> {
-                        val activity = state.activity
+                    is InfoActivityUiState.Success -> {
+                        val activity = uiState.activity
                         binding.apply {
                             binding.appBarLayout
                             topAppBar.title = (activity.title)
@@ -62,7 +62,7 @@ class ActivityInfoFragment : Fragment() {
                         }
                     }
 
-                    is EditActivityUiState.Error -> {
+                    is InfoActivityUiState.Error -> {
                         // Mostrar error
                     }
                 }

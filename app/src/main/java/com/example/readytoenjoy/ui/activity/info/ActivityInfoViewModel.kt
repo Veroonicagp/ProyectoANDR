@@ -16,28 +16,28 @@ import javax.inject.Inject
 class ActivityInfoViewModel @Inject constructor (private val repository: ActivityRepositoryInterface, private val loginRepository: LoginRepository):
     ViewModel() {
 
-    private val _uiState = MutableStateFlow<EditActivityUiState>(EditActivityUiState.Loading)
+    private val _uiState = MutableStateFlow<InfoActivityUiState>(InfoActivityUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     fun loadActivity(activityId: String?) {
         if (activityId == null) return
 
         viewModelScope.launch {
-            _uiState.value = EditActivityUiState.Loading
+            _uiState.value = InfoActivityUiState.Loading
             try {
                 val result = repository.getOne(activityId)
                 if (result.isSuccess) {
                     val activity = result.getOrNull()
                     if (activity != null) {
-                        _uiState.value = EditActivityUiState.Success(activity)
+                        _uiState.value = InfoActivityUiState.Success(activity)
                     } else {
-                        _uiState.value = EditActivityUiState.Error("No se encontró la actividad")
+                        _uiState.value = InfoActivityUiState.Error("No se encontró la actividad")
                     }
                 } else {
-                    _uiState.value = EditActivityUiState.Error("Error al cargar la actividad")
+                    _uiState.value = InfoActivityUiState.Error("Error al cargar la actividad")
                 }
             } catch (e: Exception) {
-                _uiState.value = EditActivityUiState.Error(e.message ?: "Error desconocido")
+                _uiState.value = InfoActivityUiState.Error(e.message ?: "Error desconocido")
             }
         }
     }

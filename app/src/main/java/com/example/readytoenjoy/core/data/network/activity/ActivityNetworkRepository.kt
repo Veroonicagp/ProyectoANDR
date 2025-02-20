@@ -6,9 +6,14 @@ import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
 import com.example.readytoenjoy.core.data.network.activity.model.ActivityRequest
 import com.example.readytoenjoy.core.data.network.activity.model.ActivityData
+import com.example.readytoenjoy.core.data.network.activity.model.ActivityRawResponse
 import com.example.readytoenjoy.core.data.network.activity.model.toModel
+import com.example.readytoenjoy.core.data.network.activity.model.toRemoteModel
+import com.example.readytoenjoy.core.data.network.adevn.model.AdvenRequest
+import com.example.readytoenjoy.core.data.network.adevn.model.AventureroData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
+import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -82,6 +87,27 @@ class ActivityNetworkRepository @Inject constructor(
             // No se ha creado
             return Result.failure(UserNotAuthorizedException())
         }
+    }
+
+    override suspend fun updateActivity(
+        id: String,
+        title: String,
+        location: String,
+        price: String,
+        description: String,
+        //img: Uri?
+    ): Response<ActivityRawResponse> {
+        val activityRequest = ActivityRequest(
+            data = ActivityData(
+                title = title,
+                location = location,
+                price = price,
+                description = description,
+                advenId = "",
+                //img = img
+            )
+        )
+        return api.updateActivity(id, activityRequest)
     }
 
 

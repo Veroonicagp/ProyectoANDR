@@ -1,10 +1,12 @@
 package com.example.readytoenjoy.ui.activity.edit
 
+import android.icu.text.CaseMap.Title
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.readytoenjoy.core.data.repository.activity.ActivityRepositoryInterface
 import com.example.readytoenjoy.core.data.repository.adven.LoginRepository
 import com.example.readytoenjoy.core.model.Activity
+import com.example.readytoenjoy.ui.porfile.ProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -43,10 +45,28 @@ class EditActivityViewModel @Inject constructor(
         }
     }
 
+    fun updateActivity(activityId: String,title: String, price: String, location:String, description:String) {
+        viewModelScope.launch {
+            try {
+                if (activityId != null) {
+                    _uiState.value = EditActivityUiState.Loading
+                    val updatedActivity = repository.updateActivity(activityId, title,location,price,description)
+                    _uiState.value = EditActivityUiState.Success(updatedActivity)
+                    _uiState.value = EditActivityUiState.Wait(updatedActivity)
+                } else {
+                    _uiState.value = EditActivityUiState.Error("No se encontró el ID de la actividad")
+                }
+            } catch (e: Exception) {
+                _uiState.value = EditActivityUiState.Error(e.message ?: "Error al actualizar")
+            }
+        }
+    }
+
 }
 
 sealed class EditActivityUiState {
     object Loading : EditActivityUiState()
+    data class Wait(val activity: Activity) : EditActivityUiState()
     data class Success(val activity: Activity) : EditActivityUiState()
     data class Error(val message: String) : EditActivityUiState()
 }
