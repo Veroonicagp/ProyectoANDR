@@ -97,16 +97,21 @@ class ActivityNetworkRepository @Inject constructor(
         description: String,
         //img: Uri?
     ): Response<ActivityRawResponse> {
-        val activityRequest = ActivityRequest(
-            data = ActivityData(
-                title = title,
-                location = location,
-                price = price,
-                description = description,
-                advenId = "",
-                //img = img
-            )
+
+        val currentActivity =  readOne(id).getOrNull()!!
+
+        val updatedActivity = Activity(
+            id = id,
+            title = title,
+            location = location,
+            price = price,
+            description = description,
+            img = currentActivity.img,
+            advenId = currentActivity.advenId
         )
+
+        val activityRequest = updatedActivity.toRemoteModel()
+
         return api.updateActivity(id, activityRequest)
     }
 
