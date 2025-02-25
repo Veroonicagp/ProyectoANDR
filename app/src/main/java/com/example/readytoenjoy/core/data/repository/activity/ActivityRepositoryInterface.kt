@@ -30,5 +30,7 @@ interface ActivityRepositoryInterface {
                                price: String,
                                description: String,): Activity
 
+    suspend fun deleteActivity(id: String): Result<Boolean>
+
     fun setStream(): Flow<Result<List<Activity>>>
 }

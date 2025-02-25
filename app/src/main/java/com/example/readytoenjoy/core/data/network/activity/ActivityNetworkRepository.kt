@@ -110,6 +110,16 @@ class ActivityNetworkRepository @Inject constructor(
         return api.updateActivity(id, activityRequest)
     }
 
+    override suspend fun deleteActivity(id: String): Result<Boolean> {
+        val response = api.deleteActivity(id)
+        if (response.isSuccessful) {
+            return Result.success(true)
+        } else {
+            return Result.failure(UserNotAuthorizedException())
+        }
+
+    }
+
 
 }
 

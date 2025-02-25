@@ -1,5 +1,6 @@
 package com.example.readytoenjoy.ui.myActivities
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,7 +10,7 @@ import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.databinding.MyActivityListItemBinding
 
 //
-class MyActivityListAdapter(private val toActivityDetail:((Activity)->Unit)): ListAdapter<Activity, MyActivityListAdapter.MyActivityViewHolder>(
+class MyActivityListAdapter(private val toActivityDetail:((Activity)->Unit), private val onDeleteActivity: ((Activity) -> Unit)): ListAdapter<Activity, MyActivityListAdapter.MyActivityViewHolder>(
     MyActivityDiffCallback
 ) {
 
@@ -20,7 +21,17 @@ class MyActivityListAdapter(private val toActivityDetail:((Activity)->Unit)): Li
             binding.crdLocation.text=activity.location
             binding.crdPrice.text=activity.price
             binding.deleteButton.setOnClickListener{
-                //TODO hacer una confirmacion de borrado
+                AlertDialog.Builder(binding.root.context)
+                    .setTitle("Confirmar eliminación")
+                    .setMessage("¿Estás seguro de que deseas eliminar la actividad '${activity.title}'?")
+                    .setPositiveButton("Eliminar") { dialog, _ ->
+                        onDeleteActivity(activity)
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton("Cancelar") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
             }
             binding.root.setOnClickListener  {
                 toActivityDetail(activity)
