@@ -23,35 +23,24 @@ class ActivityListViewModel @Inject constructor(
         get() = _uiState.asStateFlow()
 
     init {
+        refreshActivities()
+    }
+
+    fun refreshActivities() {
         viewModelScope.launch {
             withContext(Dispatchers.Main) {
                 defaultActivityRepository.setStream().collect {
-                    activities ->
-                    if (activities.isSuccess) {
-                        _uiState.value = ActivityListUiState.Success(activities.getOrNull()!!)
-                    } else {
-                        // TODO
-                        _uiState.value = ActivityListUiState.Error("Error recuperando")
-                    }
-                }
-            }
-        }
-        /**viewModelScope.launch {
-            withContext(Dispatchers.Main) {
-                defaultActivityRepository.setStream.collect {
                         activityList ->
-                    if (activityList.isEmpty()) _uiState.value = ActivityListUiState.Loading
-                    else _uiState.value = ActivityListUiState.Success(activityList)
+                    if (activityList.isSuccess)
+                        _uiState.value = ActivityListUiState.Success(activityList.getOrNull()!!)
+                    else
+                        _uiState.value = ActivityListUiState.Error("Error recuperando")
                 }
             }
         }
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                defaultActivityRepository.getActivities()
-            }
-        }**/
-
     }
+
+
 }
 
 sealed class ActivityListUiState() {

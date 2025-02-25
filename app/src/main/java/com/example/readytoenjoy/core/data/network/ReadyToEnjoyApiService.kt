@@ -11,6 +11,7 @@ import com.example.readytoenjoy.core.data.network.adevn.model.userResponseLR
 import com.example.readytoenjoy.core.data.network.adevn.model.LoginRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -74,7 +75,9 @@ interface ReadyToEnjoyApiService {
     @PUT("activities/{id}")
     suspend fun updateActivity(@Path("id") id: String, @Body activityRequest: ActivityRequest): Response<ActivityRawResponse>
 
-
+    //elimina
+    @DELETE("activities/{id}")
+    suspend fun deleteActivity(@Path("id") id: String): Response<Void>
 
 
 

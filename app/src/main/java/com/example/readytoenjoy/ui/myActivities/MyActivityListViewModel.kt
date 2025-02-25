@@ -24,10 +24,14 @@ class MyActivityListViewModel @Inject constructor(
     val uiState: StateFlow<MyActivityListUiState>
         get() = _uiState.asStateFlow()
 
-    private val _selectedActivityId = MutableStateFlow<String?>(null)
-    val selectedActivityId = _selectedActivityId.asStateFlow()
+    private val _deleteState = MutableStateFlow<DeleteActivityState>(DeleteActivityState.Loading)
+    val deleteState = _deleteState.asStateFlow()
 
     init {
+     load()
+    }
+
+    fun load(){
         viewModelScope.launch {
             // Obtener el advenId desde DataStore
             val advenId = loginRepository.getAdvenId()
@@ -38,7 +42,6 @@ class MyActivityListViewModel @Inject constructor(
                 _uiState.value = MyActivityListUiState.Error("No se encontró el ID del aventurero.")
             }
         }
-
     }
     private fun loadActivities(advenId: String) {
         viewModelScope.launch {
@@ -53,9 +56,34 @@ class MyActivityListViewModel @Inject constructor(
             }
         }
     }
+    fun deleteActivity(activity: Activity) {
+        viewModelScope.launch {
+            _deleteState.value = DeleteActivityState.Loading
 
-    fun setSelectedActivity(activityId: String) {
-        _selectedActivityId.value = activityId
+            try {
+                withContext(Dispatchers.IO) {
+                    val result = defaultMyActivityRepository.deleteActivity(activity.id)
+
+                    if (result.isSuccess) {
+                        _deleteState.value = DeleteActivityState.DeleteSuccess
+                        // Recargar actividades después de eliminar
+                        load()
+                    } else {
+                        _deleteState.value = DeleteActivityState.DeleteError(
+                            result.exceptionOrNull()?.message ?: "Error al eliminar la actividad"
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                _deleteState.value = DeleteActivityState.DeleteError(
+                    e.message ?: "Error al eliminar la actividad"
+                )
+            }
+        }
+    }
+
+    fun resetDeleteState() {
+        _deleteState.value = DeleteActivityState.Loading
     }
 
 }
@@ -65,4 +93,10 @@ sealed class MyActivityListUiState() {
     data object Loading: MyActivityListUiState()
     class Success(val myActivityList: List<Activity>): MyActivityListUiState()
     class Error(val message: String): MyActivityListUiState()
+}
+
+sealed class DeleteActivityState {
+    data object Loading: DeleteActivityState()
+    data object DeleteSuccess: DeleteActivityState()
+    class DeleteError(val message: String): DeleteActivityState()
 }

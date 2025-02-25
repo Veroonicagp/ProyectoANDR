@@ -90,6 +90,22 @@ class DefaultActivityRepository @Inject constructor(
         }
     }
 
+    override suspend fun deleteActivity(id: String): Result<Boolean> {
+        val result = remote.deleteActivity(id)
+
+        if (result.isSuccess) {
+            val currentList = _state.value.toMutableList()
+            val activityToRemove = currentList.find { activity -> activity.id == id }
+
+            if (activityToRemove != null) {
+                currentList.remove(activityToRemove)
+                _state.value = currentList
+            }
+        }
+
+        return result
+    }
+
     override fun setStream(): Flow<Result<List<Activity>>> {
         val activities = flow<Result<List<Activity>>> {
             val result = remote.getActivities()

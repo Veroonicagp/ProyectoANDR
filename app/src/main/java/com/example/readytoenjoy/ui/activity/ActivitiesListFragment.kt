@@ -65,15 +65,14 @@ class ActivitiesListFragment : Fragment() {
         //(rv.adapter as  ActivityListAdapter).submitList(repository.getActivities())
 
     }
-    //override fun onResume() {
-       // super.onResume()
-        //val recyclerView = binding.rvActivities
-        //(recyclerView.adapter as ActivityListAdapter).submitList(repository.getActivities())
+    override fun onResume() {
+       super.onResume()
+        refreshData()
+    }
+    private fun refreshData() {
+        viewModel.refreshActivities()
+    }
 
-
-   // }
-
-    //¡?
 
     private fun toActivityDetail(activity: Activity) {
         val action = ActivitiesListFragmentDirections.actionActivitiesListFragmentToActivityInfoFragment(activity.id)
