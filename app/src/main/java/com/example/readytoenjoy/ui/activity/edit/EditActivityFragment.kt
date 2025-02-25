@@ -46,7 +46,7 @@ class EditActivityFragment : Fragment() {
                     val price  = price.text.toString()
                     val description  = description.text.toString()
                     val location = location.text.toString()
-                   vm.updateActivity(id,title,price,location,description)
+                   vm.updateActivity(id,title,location,price,description)
                 }
             }
 
@@ -64,7 +64,7 @@ class EditActivityFragment : Fragment() {
                         updateUI(uiState.activity)
                         Snackbar.make(
                             binding.root,
-                            "Perfil actualizado correctamente",
+                            "Actividad actualizada correctamente",
                             Snackbar.LENGTH_SHORT
                         ).show()
 
@@ -78,6 +78,10 @@ class EditActivityFragment : Fragment() {
                         updateUI(uiState.activity)
                     }
 
+                    is EditActivityUiState.ActivityLoaded -> {
+                        binding.crearBttn.isEnabled = true
+                        updateUI(uiState.activity)
+                    }
                 }
             }
         }

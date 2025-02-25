@@ -1,6 +1,7 @@
 package com.example.readytoenjoy.core.data.repository.activity
 
 import android.net.Uri
+import android.util.Log
 import com.example.readytoenjoy.core.data.network.activity.ActivityNetworkRepositoryInterface
 import com.example.readytoenjoy.core.data.network.activity.model.toExternal
 import com.example.readytoenjoy.core.data.network.adevn.model.toExternal
@@ -74,6 +75,7 @@ class DefaultActivityRepository @Inject constructor(
         description: String
     ): Activity {
         //TODO ?¿¡
+        Log.d("Repository", "Llamando a updateActivity: id=$id")
         val response = remote.updateActivity(id, title,location,price,description)
         if (response.isSuccessful) {
             val updatedActivity = response.body()!!.data.toExternal()
