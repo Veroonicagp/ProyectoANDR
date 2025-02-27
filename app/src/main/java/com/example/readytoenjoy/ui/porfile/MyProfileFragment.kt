@@ -1,5 +1,6 @@
 package com.example.readytoenjoy.ui.porfile
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -34,21 +35,64 @@ class MyProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUI()
-        observeUiState()
-    }
 
-    private fun setupUI() {
-        with(binding) {
-            saveButton.setOnClickListener {
-                val name = nameEditText.text.toString()
-                val email = emailEditText.text.toString()
+        binding.saveButton.setOnClickListener {
+            val name = binding.nameEditText.text.toString()
+            val email = binding.emailEditText.text.toString()
 
-                if (validateInputs(name, email)) {
-                    viewModel.updateProfile(name, email)
+            if (validateInputs(name, email)) {
+                viewModel.updateProfile(name, email)
+            }
+        }
+
+        binding.shareButton.setOnClickListener {
+            shareProfile()
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiState.collect { uiState ->
+                when (uiState) {
+                    is ProfileUiState.Loading -> {
+                        binding.saveButton.isEnabled = false
+                    }
+                    is ProfileUiState.Success -> {
+                        binding.saveButton.isEnabled = true
+                        updateUI(uiState.adven)
+                        Snackbar.make(
+                            binding.root,
+                            "Perfil actualizado correctamente",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    is ProfileUiState.Error -> {
+                        binding.saveButton.isEnabled = true
+                        Snackbar.make(
+                            binding.root,
+                            "El perfil no se actualizado correctamente",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+
+                    is ProfileUiState.Wait ->{
+                        binding.saveButton.isEnabled = true
+                        updateUI(uiState.adven)
+                    }
+
                 }
             }
         }
+    }
+
+    private fun shareProfile() {
+        val userName = binding.nameEditText.text.toString()
+
+        val shareMessage = "Hola, soy $userName y estoy utilizando la aplicación ReadyToEnjoy"
+
+        val sendIntent = Intent(Intent.ACTION_SEND)
+        sendIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+        sendIntent.type = "text/plain"
+
+        startActivity(Intent.createChooser(sendIntent, "Compartir con..."))
     }
 
     private fun validateInputs(name: String, email: String): Boolean {
@@ -67,46 +111,8 @@ class MyProfileFragment : Fragment() {
         return isValid
     }
 
-    //??
-    private fun observeUiState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.uiState.collect { state ->
-                when (state) {
-                    is ProfileUiState.Loading -> {
-                        binding.saveButton.isEnabled = false
-                    }
-                    is ProfileUiState.Success -> {
-                        binding.saveButton.isEnabled = true
-                        updateUI(state.adven)
-                        Snackbar.make(
-                            binding.root,
-                            "Perfil actualizado correctamente",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    is ProfileUiState.Error -> {
-                        binding.saveButton.isEnabled = true
-                        Snackbar.make(
-                            binding.root,
-                            state.message,
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-
-                    is ProfileUiState.Wait ->{
-                        binding.saveButton.isEnabled = true
-                        updateUI(state.adven)
-                    }
-
-                }
-            }
-        }
-    }
-
     private fun updateUI(adven: Adven) {
-        with(binding) {
-            nameEditText.setText(adven.name)
-            emailEditText.setText(adven.email)
-        }
+            binding.nameEditText.setText(adven.name)
+            binding.emailEditText.setText(adven.email)
     }
 }
