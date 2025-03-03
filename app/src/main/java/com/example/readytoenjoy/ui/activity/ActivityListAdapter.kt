@@ -1,11 +1,13 @@
 package com.example.readytoenjoy.ui.activity
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.readytoenjoy.R
 import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.databinding.ActivityListItemBinding
 //
@@ -24,6 +26,8 @@ class ActivityListAdapter(private val toActivityDetail:((Activity)->Unit)): List
             }
             if (activity.img!=null) {
                 binding.crdImg.load(activity.img)
+            } else {
+                Log.w("ImageLoading", "No image URL for this activity")
             }
         }
     }

@@ -1,15 +1,20 @@
 package com.example.readytoenjoy.ui.activity.edit
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import coil.load
 import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.core.model.Adven
 import com.example.readytoenjoy.databinding.FragmentEditActivityBinding
@@ -19,9 +24,28 @@ import kotlinx.coroutines.launch
 
 class EditActivityFragment : Fragment() {
 
+
+    private var _img: Uri? = null
+    private var _photoUri: Uri? = null
     private lateinit var binding: FragmentEditActivityBinding
     private val vm: EditActivityViewModel by activityViewModels()
     private val args: EditActivityFragmentArgs by navArgs()
+
+    val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        // Si la uril no es nula, es que el usuario ha selccionado algín archivo
+        if (uri != null) {
+            // Lo carcagmos en el ImageView
+            //binding.incidentImage.load(uri)
+            loadPhoto(uri)
+        } else {
+            Log.d("PhotoPicker", "No media selected")
+        }
+    }
+
+    private fun loadPhoto(uri:Uri?) {
+        binding.imagenAct.load(uri)
+        _img = uri
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,9 +68,10 @@ class EditActivityFragment : Fragment() {
                    val id = args.activityId
                    val title = title.text.toString()
                     val price  = price.text.toString()
+                    val img = _photoUri
                     val description  = description.text.toString()
                     val location = location.text.toString()
-                   vm.updateActivity(id,title,location,price,description)
+                   vm.updateActivity(id,title,img,location,price,description)
                 }
             }
 
@@ -89,12 +114,17 @@ class EditActivityFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        binding.photoBttn.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
     }
     private fun updateUI(activity: Activity) {
         binding.apply {
             title.setText(activity.title)
             location.setText(activity.location)
             price.setText(activity.price)
+            imagenAct.load(activity.img)
             description.setText(activity.description)
         }
     }

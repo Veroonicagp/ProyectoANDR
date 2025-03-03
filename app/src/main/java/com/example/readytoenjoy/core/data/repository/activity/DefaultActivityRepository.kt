@@ -69,14 +69,12 @@ class DefaultActivityRepository @Inject constructor(
     override suspend fun updateActivity(
         id: String,
         title: String,
-        //img: Uri?,
+        img: Uri?,
         location: String,
         price: String,
         description: String
     ): Activity {
-        //TODO ?¿¡
-        Log.d("Repository", "Llamando a updateActivity: id=$id")
-        val response = remote.updateActivity(id, title,location,price,description)
+        val response = remote.updateActivity(id, title,location,price,description,img)
         if (response.isSuccessful) {
             val updatedActivity = response.body()!!.data.toExternal()
             // Actualizar el estado

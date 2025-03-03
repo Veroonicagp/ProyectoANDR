@@ -33,10 +33,8 @@ class MyActivityListViewModel @Inject constructor(
 
     fun load(){
         viewModelScope.launch {
-            // Obtener el advenId desde DataStore
             val advenId = loginRepository.getAdvenId()
             if (!advenId.isNullOrEmpty()) {
-                // Usar advenId para obtener actividades
                 loadActivities(advenId)
             } else {
                 _uiState.value = MyActivityListUiState.Error("No se encontró el ID del aventurero.")

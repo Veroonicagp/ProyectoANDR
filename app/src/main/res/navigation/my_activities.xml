@@ -35,5 +35,9 @@
         <argument
             android:name="activityId"
             app:argType="string" />
+        <argument
+            android:name="showNavbar"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 </navigation>

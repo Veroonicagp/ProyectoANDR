@@ -25,7 +25,7 @@ interface ActivityRepositoryInterface {
 
     suspend fun updateActivity(id: String,
                                title: String,
-                               //img: Uri?,
+                               img: Uri?,
                                location: String,
                                price: String,
                                description: String,): Activity

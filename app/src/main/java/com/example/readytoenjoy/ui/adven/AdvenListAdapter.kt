@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.readytoenjoy.core.model.Adven
 import com.example.readytoenjoy.databinding.AdvenListItemBinding
 
@@ -16,6 +17,7 @@ class AdvenListAdapter(): ListAdapter<Adven, AdvenListAdapter.AdvenViewHolder>(
             RecyclerView.ViewHolder(binding.root){
                 fun bind(adven: Adven){
                     binding.nombre.text=adven.name
+                    binding.profileImage.load(adven.media)
                 }
             }
 

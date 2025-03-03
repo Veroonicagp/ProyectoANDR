@@ -11,6 +11,6 @@ interface ActivityNetworkRepositoryInterface {
     suspend fun getActivitiesByAdvenId(id: String): Result<List<Activity>>
     suspend fun createActivity(title: String,location:String, price:String, description:String, img: Uri?, advenId:String?):Result<Activity>
     suspend fun readOne(id: String): Result<Activity>
-    suspend fun updateActivity(id: String, title: String,location:String, price:String, description:String, /**img: Uri?**/): Response<ActivityRawResponse>
+    suspend fun updateActivity(id: String, title: String,location:String, price:String, description:String,img: Uri?): Response<ActivityRawResponse>
     suspend fun deleteActivity(id: String): Result<Boolean>
 }

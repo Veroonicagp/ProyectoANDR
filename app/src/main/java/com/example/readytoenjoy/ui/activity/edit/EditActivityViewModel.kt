@@ -1,6 +1,7 @@
 package com.example.readytoenjoy.ui.activity.edit
 
 import android.icu.text.CaseMap.Title
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -46,11 +47,11 @@ class EditActivityViewModel @Inject constructor(
         }
     }
 
-    fun updateActivity(activityId: String,title: String, price: String, location:String, description:String) {
+    fun updateActivity(activityId: String, title: String, img: Uri?, price: String, location:String, description:String) {
         viewModelScope.launch {
             try {
                 _uiState.value = EditActivityUiState.Loading
-                val updatedActivity = repository.updateActivity(activityId, title, location, price, description)
+                val updatedActivity = repository.updateActivity(activityId,title,img, location, price, description)
                 _uiState.value = EditActivityUiState.Success(updatedActivity)
             } catch (e: Exception) {
                 _uiState.value = EditActivityUiState.Error(e.message ?: "Error al actualizar")
