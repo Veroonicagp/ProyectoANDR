@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.readytoenjoy.core.data.local.user.UserLocal
 import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
 import com.example.readytoenjoy.core.data.network.adevn.model.userResponseLR
 import com.example.readytoenjoy.core.data.network.adevn.model.LoginRequest
@@ -17,17 +18,19 @@ import javax.inject.Singleton
 
 private val Context.dataStore by preferencesDataStore(name = "user_prefs")
 private val ADVEN_ID_KEY = stringPreferencesKey("advenId")
+private val JWT_KEY = stringPreferencesKey("jwt")
 
 @Singleton
 class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiService,
-                                          @ApplicationContext private val context: Context
+                                          @ApplicationContext private val context: Context,private val userLocal: UserLocal
 ) {
     suspend fun login(identifier: String, password: String): String? {
         val response = api.login(LoginRequest(identifier, password))
 
         if (response.isSuccessful) {
             val userId = response.body()?.user?.id
-            println("DEBUG: UserId: $userId") // Log userId
+            val jwt = response.body()?.jwt
+            println("DEBUG: JWT: $jwt")
 
             userId?.let {
                 val advenResponse = api.getAdvenByUserId(userId)
@@ -40,6 +43,19 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
                     context.dataStore.edit { settings ->
                         settings[ADVEN_ID_KEY] = advenId!!
                     }
+                    val user = User(
+                        id = userId,
+                        name = response.body()?.user?.name ?: "",
+                        email = response.body()?.user?.email ?: "",
+                        advenId = advenId ?: "",
+                        token = jwt
+                    )
+                    userLocal.saveUser(user)
+                }
+            }
+            jwt?.let {
+                context.dataStore.edit { settings ->
+                    settings[JWT_KEY] = it
                 }
             }
             return response.body()?.jwt
@@ -51,6 +67,10 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
             .map { settings -> settings[ADVEN_ID_KEY] }
             .first()  // Obtener el valor guardado
 
+    }
+    suspend fun getToken(): String? {
+        val user = userLocal.retrieveUser()
+        return user?.token
     }
 }
 

@@ -30,7 +30,7 @@ object DatastoreModule {
         )
     }
 
-    @Singleton
+    /**@Singleton
     @Provides
     fun provideAuthenticatedAdvenDatastore(
         @ApplicationContext context: Context): DataStore<Preferences> {
@@ -38,5 +38,5 @@ object DatastoreModule {
             produceFile = { context.preferencesDataStoreFile(ADVEN_ID_KEY) }
 
         )
-    }
+    }**/
 }
