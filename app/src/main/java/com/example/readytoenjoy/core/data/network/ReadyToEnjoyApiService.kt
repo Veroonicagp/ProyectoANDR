@@ -3,18 +3,24 @@ package com.example.readytoenjoy.core.data.network
 import com.example.readytoenjoy.core.data.network.activity.model.ActivityListRawResponse
 import com.example.readytoenjoy.core.data.network.activity.model.ActivityRawResponse
 import com.example.readytoenjoy.core.data.network.activity.model.ActivityRequest
+import com.example.readytoenjoy.core.data.network.activity.model.CreatedMediaItemResponse
 import com.example.readytoenjoy.core.data.network.adevn.model.AdvenListRawResponse
 import com.example.readytoenjoy.core.data.network.adevn.model.AdvenRawResponse
 import com.example.readytoenjoy.core.data.network.adevn.model.AdvenRequest
 import com.example.readytoenjoy.core.data.network.adevn.model.UserRequest
 import com.example.readytoenjoy.core.data.network.adevn.model.userResponseLR
 import com.example.readytoenjoy.core.data.network.adevn.model.LoginRequest
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
+import retrofit2.http.PartMap
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -42,7 +48,7 @@ interface ReadyToEnjoyApiService {
 
     //muestra aventureros
     @GET("adventurers")
-    suspend fun getAllAdvensFromSercice(): Response<AdvenListRawResponse>
+    suspend fun getAllAdvensFromSercice(@Query("populate") populate: String = "media"): Response<AdvenListRawResponse>
 
     //muestra la info del aventurero
     @GET("adventurers/{id}")
@@ -61,15 +67,18 @@ interface ReadyToEnjoyApiService {
 
     //quiero obtener las actividades de el usuario registrado
     @GET("activities")
-    suspend fun getAllMyActivitiesFromSercice(@Query("filters[advenId]") advenId: String): Response<ActivityListRawResponse>
+    suspend fun getAllMyActivitiesFromSercice(@Query("filters[advenId]") advenId: String, @Query("populate") populate: String = "img"): Response<ActivityListRawResponse>
 
     //muestra las actividades
     @GET("activities")
-    suspend fun getAllActivitiesFromSercice(): Response<ActivityListRawResponse>
+    suspend fun getAllActivitiesFromSercice(
+        @Query("populate") populate: String = "img",
+    ): Response<ActivityListRawResponse>
 
     //muestra una actividad en especifico
     @GET("activities/{id}")
-    suspend fun readOneActFomService(@Path("id") id: String): Response<ActivityRawResponse>
+    suspend fun readOneActFomService(@Path("id") id: String,
+                                     @Query("populate") populate: String = "img"): Response<ActivityRawResponse>
 
     //edición actividades
     @PUT("activities/{id}")
@@ -78,6 +87,14 @@ interface ReadyToEnjoyApiService {
     //elimina
     @DELETE("activities/{id}")
     suspend fun deleteActivity(@Path("id") id: String): Response<Void>
+
+    //subida de fotos
+    @Multipart
+    @POST("upload")
+    suspend fun addActivityImg(@PartMap partMap: MutableMap<String, RequestBody>,
+                               @Part files: MultipartBody.Part ):Response<List<CreatedMediaItemResponse>>
+
+
 
 
 

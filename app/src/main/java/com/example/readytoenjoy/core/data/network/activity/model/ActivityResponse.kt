@@ -15,6 +15,22 @@ data class ActivityResponse(
 data class ActivityListRawResponse(
     val data: List<ActivityResponse>
 )
+data class Media(
+    val data: MediaData?
+)
+
+data class MediaData(
+    val id: Int?,
+    val attributes: MediaAttributes?
+)
+
+data class MediaAttributes(
+    val name: String?,
+    val width: Int?,
+    val height: Int?,
+    val formats: MediaFormats?
+)
+
 
 data class ActivityRawResponse(
     val data: ActivityResponse
@@ -26,10 +42,6 @@ data class MediaFormats(
 data class ImageAttributes(
     val url: String
 )
-data class Media(
-    val documentId: String,
-    val formats: MediaFormats
-)
 
 //modelo crear
 
@@ -40,7 +52,6 @@ data class ActivityRequest(
 // Cuerpo
 data class ActivityData(
     val title: String,
-    //val img:Uri?,
     val location: String,
     val price: String,
     val description: String,

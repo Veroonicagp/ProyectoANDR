@@ -1,5 +1,7 @@
 package com.example.readytoenjoy.core.data.network.activity.model
 
+import android.net.Uri
+import android.util.Log
 import androidx.core.net.toUri
 import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.di.NetworkServiceModule
@@ -11,7 +13,7 @@ fun ActivityResponse.toModel(): Activity {
         price = this.attributes.price,
         location = this.attributes.location,
         description = this.attributes.description,
-        img = "${NetworkServiceModule.STRAPI}${this.attributes.img?.formats?.small?.url}".toUri(),
+        img = "${this.attributes.img?.data?.attributes?.formats?.small?.url}".toUri(),
         advenId = this.attributes.advenId
     )
 }
@@ -30,14 +32,13 @@ fun Activity.toRemoteModel(): ActivityRequest {
 }
 
 fun ActivityResponse.toExternal(): Activity {
-
     return Activity(
         id = this.id,
         title = this.attributes.title,
         price = this.attributes.price,
         location = this.attributes.location,
         description = this.attributes.description,
-        img = this.attributes.img?.formats?.small?.url?.toUri(),
+        img = "${this.attributes.img?.data?.attributes?.formats?.small?.url}".toUri(),
         advenId = this.attributes.advenId
     )
 }

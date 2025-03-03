@@ -1,6 +1,7 @@
 package com.example.readytoenjoy.core.data.network.adevn.model
 
 import android.net.Uri
+import com.example.readytoenjoy.core.data.network.activity.model.MediaFormats
 import com.example.readytoenjoy.core.model.User
 
 data class AdvenListRawResponse(
@@ -18,7 +19,23 @@ data class AdvenResponseLR(
 data class AdvenAttributesResponse(
     val name: String,
     val email: String,
-    val media: Uri?
+    val media: Media?
+)
+
+data class Media(
+    val data: MediaData?
+)
+
+data class MediaData(
+    val id: Int?,
+    val attributes: MediaAttributes?
+)
+
+data class MediaAttributes(
+    val name: String?,
+    val width: Int?,
+    val height: Int?,
+    val formats: MediaFormats?
 )
 
 data class LoginRequest(

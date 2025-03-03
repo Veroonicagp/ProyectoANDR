@@ -47,7 +47,7 @@ abstract class Module {
 @InstallIn(SingletonComponent::class)
 class NetworkServiceModule {
     companion object {
-        const val STRAPI = "https://readytoenjoy2.onrender.com/api/"
+        const val STRAPI = "https://readytoenjoy2.onrender.com"
     }
 
     @Provides
@@ -60,7 +60,7 @@ class NetworkServiceModule {
             // TODO interceptor
             .build()
 
-        val readyToEnjoyUrl = STRAPI
+        val readyToEnjoyUrl = "https://readytoenjoy2.onrender.com/api/"
         return Retrofit.Builder()
             .baseUrl(readyToEnjoyUrl)
             .client(client)

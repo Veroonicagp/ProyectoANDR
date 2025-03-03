@@ -91,6 +91,26 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <Button
+        android:id="@+id/photoBttn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Foto"
+        app:layout_constraintStart_toStartOf="@+id/descriptionTF"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTF" />
+
+    <ImageView
+        android:id="@+id/imagenAct"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_margin="26dp"
+        android:contentDescription="foto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/photoBttn" />
+
 
     <Button
         android:id="@+id/crearBttn"
@@ -101,7 +121,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTF" />
+        app:layout_constraintTop_toBottomOf="@+id/imagenAct" />
 
 
 

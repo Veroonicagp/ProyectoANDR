@@ -1,11 +1,13 @@
 package com.example.readytoenjoy.ui.myActivities
 
 import android.app.AlertDialog
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.databinding.MyActivityListItemBinding
 
@@ -20,6 +22,11 @@ class MyActivityListAdapter(private val toActivityDetail:((Activity)->Unit), pri
             binding.crdTitle.text=activity.title
             binding.crdLocation.text=activity.location
             binding.crdPrice.text=activity.price
+            if (activity.img!=null) {
+                binding.crdImg.load(activity.img)
+            } else {
+                Log.w("ImageLoading", "No image URL for this activity")
+            }
             binding.deleteButton.setOnClickListener{
                 AlertDialog.Builder(binding.root.context)
                     .setTitle("Confirmar eliminación")

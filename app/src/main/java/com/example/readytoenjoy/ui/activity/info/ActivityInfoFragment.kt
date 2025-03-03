@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import coil.load
 import com.example.readytoenjoy.R
 import com.example.readytoenjoy.core.data.network.activity.ActivityNetworkRepositoryInterface
 import com.example.readytoenjoy.databinding.FragmentActivityInfoBinding
@@ -57,6 +58,7 @@ class ActivityInfoFragment : Fragment() {
                             binding.appBarLayout
                             topAppBar.title = (activity.title)
                             location.setText(activity.location)
+                            crdImg.load(activity.img)
                             price.setText(activity.price)
                             description.setText(activity.description)
                         }

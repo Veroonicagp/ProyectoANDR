@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     //Hilt
     implementation (libs.hilt.android)
+    implementation(libs.androidx.camera.view)
     kapt(libs.hilt.android.compiler)
     // Retrofit
     implementation(libs.retrofit)
