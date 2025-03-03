@@ -11,8 +11,6 @@ import com.example.readytoenjoy.core.data.network.activity.model.ActivityRawResp
 import com.example.readytoenjoy.core.data.network.activity.model.toExternal
 import com.example.readytoenjoy.core.data.network.activity.model.toModel
 import com.example.readytoenjoy.core.data.network.activity.model.toRemoteModel
-import com.example.readytoenjoy.core.data.network.adevn.model.AdvenRequest
-import com.example.readytoenjoy.core.data.network.adevn.model.AventureroData
 import com.example.readytoenjoy.di.NetworkServiceModule
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -77,7 +75,7 @@ class ActivityNetworkRepository @Inject constructor(
         if (response.isSuccessful) {
             var uploadedActivity = response.body()!!.data.toExternal()
             img?.let { uri ->
-                val imageUploaded = uploadIncidentEvidence(uri,response.body()!!.data.id)
+                val imageUploaded = uploadActivity(uri,response.body()!!.data.id)
                 // Si ha subido obtenemos la Uri
                 if( imageUploaded.isSuccess) {
                     val uploadedUri = imageUploaded.getOrNull()!!
@@ -87,7 +85,7 @@ class ActivityNetworkRepository @Inject constructor(
                 }
 
             }
-            return Result.success(response.body()!!.data.toModel())
+            return Result.success(uploadedActivity)
         } else {
             return Result.failure(UserNotAuthorizedException())
         }
@@ -141,11 +139,12 @@ class ActivityNetworkRepository @Inject constructor(
 
     }
 
-    private suspend fun uploadIncidentEvidence(
+    private suspend fun uploadActivity(
         uri: Uri,
         activityId: String,
     ): Result<Uri> {
         try {
+            android.util.Log.d("ImageUpload", "Starting upload for activity ID: $activityId")
 
             // Obtenemos el resolver de MediaStore
             val resolver = context.contentResolver
@@ -155,38 +154,47 @@ class ActivityNetworkRepository @Inject constructor(
             // Obtenemos el tipo del fichero
             val mimeType = resolver.getType(uri) ?: "image/*"
             // Obtenemos el nombre local, esto podiamos cambiarlo a otro patrón
-            val fileName = uri.lastPathSegment ?: "evidence.jpg"
+            val fileName = uri.lastPathSegment ?: "activity.jpg"
             // Convertimos el fichero a cuerpo de la petición
             val requestBody = inputStream.readBytes().toRequestBody(mimeType.toMediaTypeOrNull())
-
-
             // Construimos la parte de la petición
             val part = MultipartBody.Part.createFormData("files", fileName, requestBody)
             // Map con el resto de parámetros
             val partMap: MutableMap<String, RequestBody> = mutableMapOf()
 
             // Referencia
-            partMap["ref"] = "api::incident.incident".toRequestBody("text/plain".toMediaType())
+            partMap["ref"] = "api::activity.activity".toRequestBody("text/plain".toMediaType())
             // Id del incidente
-
-            partMap["refId"] = activityId.toString().toRequestBody("text/plain".toMediaType())
+            partMap["refId"] = activityId.toRequestBody("text/plain".toMediaType())
             // Campo de la colección
-            partMap["field"] = "evidence".toRequestBody("text/plain".toMediaType())
-
+            partMap["field"] = "img".toRequestBody("text/plain".toMediaType())
+            android.util.Log.d("ImageUpload", "Request params: ref=api::activity.activity, refId=$activityId, field=img")
             // Subimos el fichero
             val imageResponse = api.addActivityImg(
                 partMap,
                 files = part,
             )
+
+            android.util.Log.d("ImageUpload", "Response code: ${imageResponse.code()}")
             // Si ha ido mal la subida, salimos con error
             if (!imageResponse.isSuccessful) {
+                android.util.Log.e("ImageUpload", "Error uploading image: ${imageResponse.errorBody()?.string()}")
                 return Result.failure(UserNotAuthorizedException())
             }
             else {
+                val responseBody = imageResponse.body()
+                android.util.Log.d("ImageUpload", "Response body: $responseBody")
+
+                if (responseBody == null || responseBody.isEmpty()) {
+                    return Result.failure(Exception("Empty response body"))
+                }
+
                 val remoteUri= "${NetworkServiceModule.STRAPI}${imageResponse.body()!!.first().formats.small.url}"
+                android.util.Log.d("ImageUpload", "Generated URI: $remoteUri")
                 return Result.success(remoteUri.toUri())
             }
         } catch (e: Exception) {
+            android.util.Log.e("ImageUpload", "Error uploading image", e)
             return Result.failure(e)
         }
     }

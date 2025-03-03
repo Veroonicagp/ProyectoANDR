@@ -10,7 +10,8 @@ fun userResponseLR.toExternal(): User {
         id = this.user.id,
         name = this.user.name,
         email =  this.user.email,
-        advenId = this.user.advenId
+        advenId = this.user.advenId,
+        token = this.jwt
     )
 }
 
