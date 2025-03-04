@@ -64,7 +64,6 @@ class MyActivityListViewModel @Inject constructor(
 
                     if (result.isSuccess) {
                         _deleteState.value = DeleteActivityState.DeleteSuccess
-                        // Recargar actividades después de eliminar
                         load()
                     } else {
                         _deleteState.value = DeleteActivityState.DeleteError(

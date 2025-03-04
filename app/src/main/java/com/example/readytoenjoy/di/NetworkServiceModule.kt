@@ -12,7 +12,6 @@ import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
 import com.example.readytoenjoy.core.data.network.adevn.AdvenNetworkRepository
 import com.example.readytoenjoy.core.data.network.adevn.AdvenNetworkRepositoryInterface
 import com.example.readytoenjoy.core.data.network.user.AuthenticationInterceptor
-import com.example.readytoenjoy.core.data.repository.adven.LoginRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -86,6 +85,7 @@ class NetworkServiceModule {
     @Provides
     @Singleton
     fun provideNetworkService(client: OkHttpClient): ReadyToEnjoyApiService {
+
         val readyToEnjoyUrl = "https://readytoenjoy2.onrender.com/api/"
         return Retrofit.Builder()
             .baseUrl(readyToEnjoyUrl)

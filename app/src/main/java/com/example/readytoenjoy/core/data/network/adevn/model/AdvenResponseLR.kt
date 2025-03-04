@@ -53,7 +53,7 @@ data class AventureroData(
     val email: String,
     val password: String,
     val media:Uri? = null,
-    val userId: String//relacion con el usuario creado
+    val user: String//relacion con el usuario creado
 )
 
 //USER

@@ -24,13 +24,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        /**
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }**/
-        ///??
         val navegationBar = binding.bottomNavigation
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navigation_container) as NavHostFragment
         val navController = navHostFragment.navController

@@ -35,8 +35,6 @@ class EditActivityFragment : Fragment() {
     val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         // Si la uril no es nula, es que el usuario ha selccionado algín archivo
         if (uri != null) {
-            // Lo carcagmos en el ImageView
-            //binding.incidentImage.load(uri)
             loadPhoto(uri)
         } else {
             Log.d("PhotoPicker", "No media selected")

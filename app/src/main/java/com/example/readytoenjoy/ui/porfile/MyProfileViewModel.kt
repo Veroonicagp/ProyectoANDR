@@ -1,9 +1,9 @@
 package com.example.readytoenjoy.ui.porfile
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.readytoenjoy.core.data.network.adevn.AdvenNetworkRepository
 import com.example.readytoenjoy.core.data.repository.adven.AdvenRepositoryInterface
 import com.example.readytoenjoy.core.data.repository.adven.LoginRepository
 import com.example.readytoenjoy.core.model.Adven
@@ -29,22 +29,17 @@ class MyProfileViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _uiState.value = ProfileUiState.Loading
-            try {
-                val advenId = loginRepository.getAdvenId()
-                if (advenId != null) {
-                    val adven = advenRepository.getOne(advenId)
-                    _uiState.value = ProfileUiState.Wait(adven)
-                } else {
-                    _uiState.value = ProfileUiState.Error("No se encontró el ID del aventurero")
-                }
-            } catch (e: Exception) {
-                _uiState.value = ProfileUiState.Error(e.message ?: "Error desconocido")
+            val advenId = loginRepository.getAdvenId()
+            if (advenId != null) {
+                val adven = advenRepository.getOne(advenId)
+                _uiState.value = ProfileUiState.Wait(adven)
+            } else {
+                _uiState.value = ProfileUiState.Error("No se encontró el ID del aventurero")
             }
         }
-
     }
 
-    fun updateProfile(name: String,media:Uri?, email: String) {
+    fun updateProfile(name: String, media: Uri?, email: String) {
         viewModelScope.launch {
             try {
                 val advenId = loginRepository.getAdvenId()
@@ -65,11 +60,13 @@ class MyProfileViewModel @Inject constructor(
     fun onImageCaptured(uri: Uri?) {
         viewModelScope.launch {
             uri?.let {
+                Log.d("MyProfileViewModel", "Actualizando URI de imagen: $uri")
                 _photo.value = uri
             }
         }
-
     }
+
+
 }
 
 sealed class ProfileUiState {

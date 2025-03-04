@@ -21,10 +21,6 @@ class DefaultActivityRepository @Inject constructor(
 ): ActivityRepositoryInterface {
     private val _state = MutableStateFlow<List<Activity>>(listOf())
 
-
-    /**override val setStream: StateFlow<List<Activity>>
-        get() = _state.asStateFlow()**/
-
     //obtiene la lista de actividades de todos los usuarios
     override suspend fun getActivities(): Result<List<Activity>> {
        val result = remote.getActivities()
@@ -63,8 +59,6 @@ class DefaultActivityRepository @Inject constructor(
         return result
 
     }
-
-
 
     override suspend fun updateActivity(
         id: String,

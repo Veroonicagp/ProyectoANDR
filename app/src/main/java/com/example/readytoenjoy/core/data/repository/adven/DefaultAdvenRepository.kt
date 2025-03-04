@@ -16,7 +16,6 @@ import javax.inject.Singleton
 class DefaultAdvenRepository @Inject constructor(private val advenNetworkRepository: AdvenNetworkRepositoryInterface,):
     AdvenRepositoryInterface {
 
-    //preguntar uso
     private val _state = MutableStateFlow<List<Adven>>(listOf())
     override suspend fun getAdvens(): List<Adven> {
         val response = advenNetworkRepository.readAdven()
