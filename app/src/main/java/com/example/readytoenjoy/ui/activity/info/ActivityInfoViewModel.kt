@@ -3,9 +3,7 @@ package com.example.readytoenjoy.ui.activity.info
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.readytoenjoy.core.data.repository.activity.ActivityRepositoryInterface
-import com.example.readytoenjoy.core.data.repository.adven.LoginRepository
 import com.example.readytoenjoy.core.model.Activity
-import com.example.readytoenjoy.ui.activity.edit.EditActivityUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ActivityInfoViewModel @Inject constructor (private val repository: ActivityRepositoryInterface, private val loginRepository: LoginRepository):
+class ActivityInfoViewModel @Inject constructor (private val repository: ActivityRepositoryInterface):
     ViewModel() {
 
     private val _uiState = MutableStateFlow<InfoActivityUiState>(InfoActivityUiState.Loading)

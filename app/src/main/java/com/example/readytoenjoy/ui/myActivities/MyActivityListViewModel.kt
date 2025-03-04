@@ -57,24 +57,17 @@ class MyActivityListViewModel @Inject constructor(
     fun deleteActivity(activity: Activity) {
         viewModelScope.launch {
             _deleteState.value = DeleteActivityState.Loading
+            withContext(Dispatchers.IO) {
+                val result = defaultMyActivityRepository.deleteActivity(activity.id)
 
-            try {
-                withContext(Dispatchers.IO) {
-                    val result = defaultMyActivityRepository.deleteActivity(activity.id)
-
-                    if (result.isSuccess) {
-                        _deleteState.value = DeleteActivityState.DeleteSuccess
-                        load()
-                    } else {
-                        _deleteState.value = DeleteActivityState.DeleteError(
-                            result.exceptionOrNull()?.message ?: "Error al eliminar la actividad"
-                        )
-                    }
+                if (result.isSuccess) {
+                    _deleteState.value = DeleteActivityState.DeleteSuccess
+                    load()
+                } else {
+                    _deleteState.value = DeleteActivityState.DeleteError(
+                        result.exceptionOrNull()?.message ?: "Error al eliminar la actividad"
+                    )
                 }
-            } catch (e: Exception) {
-                _deleteState.value = DeleteActivityState.DeleteError(
-                    e.message ?: "Error al eliminar la actividad"
-                )
             }
         }
     }

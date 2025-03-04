@@ -41,26 +41,22 @@ class MyProfileViewModel @Inject constructor(
 
     fun updateProfile(name: String, media: Uri?, email: String) {
         viewModelScope.launch {
-            try {
-                val advenId = loginRepository.getAdvenId()
-                if (advenId != null) {
-                    _uiState.value = ProfileUiState.Loading
-                    val updatedAdven = advenRepository.updateAdven(advenId, media, name, email)
-                    _uiState.value = ProfileUiState.Success(updatedAdven)
-                    _uiState.value = ProfileUiState.Wait(updatedAdven)
-                } else {
-                    _uiState.value = ProfileUiState.Error("No se encontró el ID del aventurero")
-                }
-            } catch (e: Exception) {
-                _uiState.value = ProfileUiState.Error(e.message ?: "Error al actualizar")
+            val advenId = loginRepository.getAdvenId()
+            if (advenId != null) {
+                _uiState.value = ProfileUiState.Loading
+                val updatedAdven = advenRepository.updateAdven(advenId, media, name, email)
+                _uiState.value = ProfileUiState.Success(updatedAdven)
+                _uiState.value = ProfileUiState.Wait(updatedAdven)
+            } else {
+                _uiState.value = ProfileUiState.Error("No se encontró el ID del aventurero")
             }
+
         }
     }
 
     fun onImageCaptured(uri: Uri?) {
         viewModelScope.launch {
             uri?.let {
-                Log.d("MyProfileViewModel", "Actualizando URI de imagen: $uri")
                 _photo.value = uri
             }
         }

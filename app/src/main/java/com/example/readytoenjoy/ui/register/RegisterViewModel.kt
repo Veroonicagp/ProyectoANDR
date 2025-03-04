@@ -1,8 +1,6 @@
 package com.example.readytoenjoy.ui.register
 
 
-import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.readytoenjoy.core.data.repository.adven.RegisterRepository
@@ -35,11 +33,9 @@ class RegisterViewModel @Inject constructor(private val repository: RegisterRepo
             val jwt = repository.register(username, email, password)
             _user.value = UiState.Loading
              if ( jwt==null) {
-                Log.d("arranca","no")
                  _user.value = UiState.Error("El usuario ya existe")
 
             }else {
-                Log.d("arranca","si")
                  _user.value = UiState.Success
 
             }

@@ -1,10 +1,7 @@
 package com.example.readytoenjoy.core.data.network.activity.model
 
-import android.net.Uri
-import android.util.Log
 import androidx.core.net.toUri
 import com.example.readytoenjoy.core.model.Activity
-import com.example.readytoenjoy.di.NetworkServiceModule
 
 fun ActivityResponse.toModel(): Activity {
     return Activity(

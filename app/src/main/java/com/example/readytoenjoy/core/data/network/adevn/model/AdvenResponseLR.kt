@@ -19,7 +19,7 @@ data class AdvenResponseLR(
 data class AdvenAttributesResponse(
     val name: String,
     val email: String,
-    val media: Media?
+    val media: Media?,
 )
 
 data class Media(
@@ -53,7 +53,7 @@ data class AventureroData(
     val email: String,
     val password: String,
     val media:Uri? = null,
-    val user: String//relacion con el usuario creado
+    val user: String? = null,//relacion con el usuario creado
 )
 
 //USER

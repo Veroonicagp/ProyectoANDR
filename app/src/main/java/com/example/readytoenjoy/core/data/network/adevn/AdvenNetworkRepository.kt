@@ -40,13 +40,12 @@ class AdvenNetworkRepository @Inject constructor(
         name: String,
         email: String,
     ): Response<AdvenRawResponse> {
-        val advenRequest = AdvenRequest(
+     val advenRequest = AdvenRequest(
             data = AventureroData(
                 name = name,
                 email = email,
                 media = null,
                 password = "",
-                user = ""
             )
         )
         val response = api.updateAdven(id, advenRequest)

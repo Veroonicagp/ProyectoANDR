@@ -9,9 +9,7 @@ import coil.load
 import com.example.readytoenjoy.core.model.Adven
 import com.example.readytoenjoy.databinding.AdvenListItemBinding
 
-class AdvenListAdapter(): ListAdapter<Adven, AdvenListAdapter.AdvenViewHolder>(
-    AdvenDiffCallBack
-) {
+class AdvenListAdapter(): ListAdapter<Adven, AdvenListAdapter.AdvenViewHolder>(AdvenDiffCallBack) {
 
     inner class AdvenViewHolder(private val binding: AdvenListItemBinding):
             RecyclerView.ViewHolder(binding.root){

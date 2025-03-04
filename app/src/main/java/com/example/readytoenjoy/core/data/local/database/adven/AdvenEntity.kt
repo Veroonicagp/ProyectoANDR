@@ -9,4 +9,5 @@ data class AdvenEntity(
     val id: String,
     val name: String,
     val email: String,
+    val media: String?
 )
