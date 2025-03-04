@@ -26,6 +26,7 @@ class EditActivityFragment : Fragment() {
 
 
     private var _img: Uri? = null
+    private var _currentImageUri: Uri? = null
     private var _photoUri: Uri? = null
     private lateinit var binding: FragmentEditActivityBinding
     private val vm: EditActivityViewModel by activityViewModels()
@@ -71,7 +72,9 @@ class EditActivityFragment : Fragment() {
                     val img = _photoUri
                     val description  = description.text.toString()
                     val location = location.text.toString()
-                   vm.updateActivity(id,title,img,location,price,description)
+                   // Usamos la imagen seleccionada si existe, o mantenemos la actual
+                   val imageToUpload = _img ?: _currentImageUri
+                   vm.updateActivity(id,title,imageToUpload,location,price,description)
                 }
             }
 
@@ -92,6 +95,7 @@ class EditActivityFragment : Fragment() {
                             "Actividad actualizada correctamente",
                             Snackbar.LENGTH_SHORT
                         ).show()
+                        findNavController().popBackStack()
 
                     }
                     is EditActivityUiState.Error -> {
@@ -126,6 +130,7 @@ class EditActivityFragment : Fragment() {
             price.setText(activity.price)
             imagenAct.load(activity.img)
             description.setText(activity.description)
+            _currentImageUri = activity.img
         }
     }
 

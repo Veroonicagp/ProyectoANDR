@@ -76,7 +76,14 @@ class DefaultActivityRepository @Inject constructor(
     ): Activity {
         val response = remote.updateActivity(id, title,location,price,description,img)
         if (response.isSuccessful) {
-            val updatedActivity = response.body()!!.data.toExternal()
+            var updatedActivity = response.body()!!.data.toExternal()
+            if (img != null) {
+                // Obtenemos los datos más recientes para asegurarnos de tener la URI de imagen actualizada
+                val refreshResult = remote.readOne(id)
+                if (refreshResult.isSuccess) {
+                    updatedActivity = refreshResult.getOrNull()!!
+                }
+            }
             // Actualizar el estado
             val currentList = _state.value.toMutableList()
             val index = currentList.indexOfFirst { it.id == id }

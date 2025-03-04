@@ -9,5 +9,18 @@
         android:id="@+id/myProfileFragment"
         android:name="com.example.readytoenjoy.ui.porfile.MyProfileFragment"
         android:label="fragment_my_profile"
-        tools:layout="@layout/fragment_my_profile" />
+        tools:layout="@layout/fragment_my_profile" >
+        <action
+            android:id="@+id/action_myProfileFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.readytoenjoy.ui.porfile.camera.CameraFragment"
+        android:label="CameraFragment" >
+        <argument
+            android:name="showNavbar"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
 </navigation>

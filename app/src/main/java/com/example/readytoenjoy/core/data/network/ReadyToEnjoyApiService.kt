@@ -52,7 +52,7 @@ interface ReadyToEnjoyApiService {
 
     //muestra la info del aventurero
     @GET("adventurers/{id}")
-    suspend fun readOneAdvenFromService(@Path("id") id: String): Response<AdvenRawResponse>
+    suspend fun readOneAdvenFromService(@Path("id") id: String,@Query("populate") populate: String = "media"): Response<AdvenRawResponse>
 
     //edición aventureros
     @PUT("adventurers/{id}")

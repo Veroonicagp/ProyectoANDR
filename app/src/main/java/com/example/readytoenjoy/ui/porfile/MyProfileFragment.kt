@@ -1,14 +1,25 @@
 package com.example.readytoenjoy.ui.porfile
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
 import com.example.readytoenjoy.R
 import com.example.readytoenjoy.core.model.Adven
 import com.example.readytoenjoy.databinding.FragmentActivityListBinding
@@ -21,8 +32,30 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MyProfileFragment : Fragment() {
+    private var _img: Uri? = null
     private lateinit var binding: FragmentMyProfileBinding
     private val viewModel: MyProfileViewModel by viewModels()
+    private val cameraPermissionContract = ActivityResultContracts.RequestPermission()
+    private val cameraPermissionLauncher = registerForActivityResult(cameraPermissionContract) {
+            isGranted ->
+        if (isGranted)
+            navigateToCamera()
+        else
+            Toast.makeText(requireContext(),
+                "No hay permisos para la camara",
+                Toast.LENGTH_LONG,
+            ).show()
+    }
+    val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        // Si la uril no es nula, es que el usuario ha selccionado algín archivo
+        if (uri != null) {
+            // Lo carcagmos en el ImageView
+            //binding.incidentImage.load(uri)
+            loadPhoto(uri)
+        } else {
+            Log.d("PhotoPicker", "No media selected")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,14 +72,31 @@ class MyProfileFragment : Fragment() {
         binding.saveButton.setOnClickListener {
             val name = binding.nameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
+            val media = _img
 
             if (validateInputs(name, email)) {
-                viewModel.updateProfile(name, email)
+                viewModel.updateProfile(name, media,email)
             }
         }
 
         binding.shareButton.setOnClickListener {
             shareProfile()
+        }
+
+        binding.camera.setOnClickListener {
+
+            // SI TENEMOS PERMISOS NAVEGAMOS A LA CAMARA
+            if (hasCameraPermissions(requireContext())) {
+                navigateToCamera()
+            }
+            else {
+                // SI NO TENEMOS PERMISOS, LOS PEDIMOS
+                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+            }
+        }
+
+        binding.galeria.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -114,5 +164,20 @@ class MyProfileFragment : Fragment() {
     private fun updateUI(adven: Adven) {
             binding.nameEditText.setText(adven.name)
             binding.emailEditText.setText(adven.email)
+            binding.profileImage.load(adven.media)
+    }
+
+    private fun loadPhoto(uri: Uri?) {
+        binding.profileImage.load(uri)
+        _img = uri
+    }
+
+    private fun hasCameraPermissions(context: Context) =
+        ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+
+
+    private fun navigateToCamera() {
+        val action = MyProfileFragmentDirections.actionMyProfileFragmentToCameraFragment()
+        findNavController().navigate(action)
     }
 }
