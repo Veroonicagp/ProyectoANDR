@@ -1,7 +1,6 @@
 package com.example.readytoenjoy.core.data.network.adevn.model
 
 import androidx.core.net.toUri
-import com.example.readytoenjoy.core.data.network.activity.model.toModel
 import com.example.readytoenjoy.core.model.Adven
 import com.example.readytoenjoy.core.model.User
 

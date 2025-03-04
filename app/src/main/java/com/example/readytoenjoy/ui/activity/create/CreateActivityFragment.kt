@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
@@ -64,7 +65,7 @@ class CreateActivityFragment : Fragment() {
                         uiState ->
                     when(uiState) {
                         is UiState.Created -> {
-                            // Se ha creado el incidente, volvemos
+                            Toast.makeText(context, "Actividad creada correctamente", Toast.LENGTH_SHORT).show()
                             findNavController().popBackStack()
                         }
                         is UiState.Error -> {

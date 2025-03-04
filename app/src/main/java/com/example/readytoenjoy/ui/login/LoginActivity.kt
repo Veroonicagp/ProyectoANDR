@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.readytoenjoy.databinding.ActivityLoginBinding
 import com.example.readytoenjoy.ui.MainActivity
 import com.example.readytoenjoy.ui.adven.AdvenListAdapter

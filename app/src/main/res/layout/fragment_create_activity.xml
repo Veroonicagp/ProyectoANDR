@@ -105,10 +105,12 @@
     <ImageView
         android:id="@+id/imagenAct"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="160dp"
+        android:layout_margin="26dp"
         android:contentDescription="foto"
-        app:layout_constraintTop_toBottomOf="@id/photoBttn"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/photoBttn" />
 
     <Button
         android:id="@+id/crearBttn"
@@ -116,9 +118,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/crear"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenAct" />
 
 
 

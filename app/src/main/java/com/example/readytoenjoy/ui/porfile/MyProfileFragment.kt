@@ -2,7 +2,6 @@ package com.example.readytoenjoy.ui.porfile
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -23,15 +22,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import coil.load
-import com.example.readytoenjoy.R
-import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.core.model.Adven
 import com.example.readytoenjoy.databinding.FragmentMyProfileBinding
-import com.example.readytoenjoy.ui.activity.ActivitiesListFragmentDirections
-import com.example.readytoenjoy.ui.login.LoginActivity
 import com.example.readytoenjoy.ui.logout.LogoutState
 import com.example.readytoenjoy.ui.logout.LogoutViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -76,12 +70,10 @@ class MyProfileFragment @Inject constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Observamos cambios en photo usando repeatOnLifecycle para gestionar el ciclo de vida
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.photo.collect { uri ->
                     if (uri != Uri.EMPTY) {
-                        Log.d("ProfileFragment", "Recibida URI de imagen: $uri")
                         loadPhoto(uri)
                     }
                 }
@@ -96,12 +88,10 @@ class MyProfileFragment @Inject constructor() : Fragment() {
             logoutViewModel.logoutState.collect { state ->
                 when (state) {
                     is LogoutState.Loading -> {
-                        // Mostrar indicador de carga
                         binding.closeButton.isEnabled = true
                     }
                     is LogoutState.Success -> {
                         binding.closeButton.visibility = View.GONE
-                        // Navegar a la pantalla de login
                         navigateToLogin()
                     }
                     is LogoutState.Error -> {
@@ -150,19 +140,12 @@ class MyProfileFragment @Inject constructor() : Fragment() {
                     is ProfileUiState.Success -> {
                         binding.saveButton.isEnabled = true
                         updateUI(uiState.adven)
-                        Snackbar.make(
-                            binding.root,
-                            "Perfil actualizado correctamente",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(context, "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show()
                     }
                     is ProfileUiState.Error -> {
                         binding.saveButton.isEnabled = true
-                        Snackbar.make(
-                            binding.root,
-                            "El perfil no se ha actualizado correctamente: ${uiState.message}",
-                            Snackbar.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(context, "Perfil no se actualizado correctamente", Toast.LENGTH_SHORT).show()
+
                     }
                     is ProfileUiState.Wait -> {
                         binding.saveButton.isEnabled = true
@@ -224,7 +207,4 @@ class MyProfileFragment @Inject constructor() : Fragment() {
         findNavController().navigate(action)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
 }

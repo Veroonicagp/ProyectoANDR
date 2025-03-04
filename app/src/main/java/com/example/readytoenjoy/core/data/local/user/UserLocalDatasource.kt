@@ -3,7 +3,6 @@ package com.example.readytoenjoy.core.data.local.user
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.readytoenjoy.core.model.User
 import kotlinx.coroutines.flow.firstOrNull

@@ -85,7 +85,6 @@ class NetworkServiceModule {
     @Provides
     @Singleton
     fun provideNetworkService(client: OkHttpClient): ReadyToEnjoyApiService {
-
         val readyToEnjoyUrl = "https://readytoenjoy2.onrender.com/api/"
         return Retrofit.Builder()
             .baseUrl(readyToEnjoyUrl)

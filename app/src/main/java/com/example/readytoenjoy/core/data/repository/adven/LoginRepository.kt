@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.readytoenjoy.core.data.local.user.UserLocal
 import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
-import com.example.readytoenjoy.core.data.network.adevn.model.userResponseLR
 import com.example.readytoenjoy.core.data.network.adevn.model.LoginRequest
 import com.example.readytoenjoy.core.model.User
 import dagger.hilt.android.qualifiers.ApplicationContext

@@ -130,7 +130,6 @@ class ActivityNetworkRepository @Inject constructor(
             try {
                 android.util.Log.d("ImageUpdate", "Uploading new image for activity: $id")
 
-                // Utilizamos el método existente uploadActivity para subir la imagen
                 val imageResult = uploadActivity(img, id)
 
                 if (imageResult.isSuccess) {
@@ -160,7 +159,6 @@ class ActivityNetworkRepository @Inject constructor(
         activityId: String,
     ): Result<Uri> {
         try {
-            android.util.Log.d("ImageUpload", "Starting upload for activity ID: $activityId")
 
             // Obtenemos el resolver de MediaStore
             val resolver = context.contentResolver

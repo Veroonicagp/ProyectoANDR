@@ -72,13 +72,11 @@ class DefaultActivityRepository @Inject constructor(
         if (response.isSuccessful) {
             var updatedActivity = response.body()!!.data.toExternal()
             if (img != null) {
-                // Obtenemos los datos más recientes para asegurarnos de tener la URI de imagen actualizada
                 val refreshResult = remote.readOne(id)
                 if (refreshResult.isSuccess) {
                     updatedActivity = refreshResult.getOrNull()!!
                 }
             }
-            // Actualizar el estado
             val currentList = _state.value.toMutableList()
             val index = currentList.indexOfFirst { it.id == id }
             if (index != -1) {
