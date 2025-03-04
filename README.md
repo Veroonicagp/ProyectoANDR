@@ -24,15 +24,6 @@ ReadyToEnjoy es una aplicación social para compartir y descubrir actividades. L
 - **Strapi**: Backend headless CMS para la gestión de datos en el servidor
 - **Architecture**: MVVM (Model-View-ViewModel)
 
-## 📸 Capturas de pantalla
-
-<p align="center">
-  <img src="screenshot_login.png" width="200" />
-  <img src="screenshot_feed.png" width="200" /> 
-  <img src="screenshot_create.png" width="200" />
-  <img src="screenshot_profile.png" width="200" />
-</p>
-
 ## 🏗️ Arquitectura
 
 La aplicación sigue el patrón de arquitectura MVVM (Model-View-ViewModel) y está estructurada en las siguientes capas:
@@ -40,30 +31,6 @@ La aplicación sigue el patrón de arquitectura MVVM (Model-View-ViewModel) y es
 - **Presentación**: Activities, Fragments y ViewModels
 - **Dominio**: Casos de uso e interfaces de repositorios
 - **Datos**: Implementación de repositorios, fuentes de datos (API y local)
-
-```
-app/
-├── data/
-│   ├── local/
-│   │   ├── dao/
-│   │   └── database/
-│   ├── remote/
-│   │   ├── api/
-│   │   └── dto/
-│   └── repositories/
-├── di/
-│   └── modules/
-├── domain/
-│   ├── models/
-│   ├── repositories/
-│   └── usecases/
-├── presentation/
-│   ├── activities/
-│   ├── adapters/
-│   ├── fragments/
-│   └── viewmodels/
-└── utils/
-```
 
 ## 🚀 Instalación
 
@@ -81,20 +48,6 @@ app/
 2. Explora el feed de actividades creadas por otros usuarios
 3. Puede crear sus propias actividades con título, descripción, localización, precio e imagen
 4. Las actividades creadas se muestran tanto en el feed global como en el perfil personal
-
-## 👥 Contribuciones
-
-Las contribuciones son bienvenidas. Para contribuir:
-
-1. Haz fork del proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-caracteristica`)
-3. Haz commit de tus cambios (`git commit -m 'Añadir nueva característica'`)
-4. Haz push a la rama (`git push origin feature/nueva-caracteristica`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
 
 ## 📞 Contacto
 
