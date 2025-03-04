@@ -52,7 +52,7 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
             }
             jwt?.let {
                 context.dataStore.edit { settings ->
-                    settings[JWT_KEY] = it
+                    settings[JWT_KEY] = jwt
                 }
             }
             return response.body()?.jwt
@@ -62,6 +62,13 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
     suspend fun getAdvenId(): String? {
         return context.dataStore.data
             .map { settings -> settings[ADVEN_ID_KEY] }
+            .first()
+
+    }
+
+    suspend fun getToken(): String? {
+        return context.dataStore.data
+            .map { settings -> settings[JWT_KEY] }
             .first()
 
     }
