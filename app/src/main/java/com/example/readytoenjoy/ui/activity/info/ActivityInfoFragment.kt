@@ -11,15 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
-import com.example.readytoenjoy.R
-import com.example.readytoenjoy.core.data.network.activity.ActivityNetworkRepositoryInterface
 import com.example.readytoenjoy.databinding.FragmentActivityInfoBinding
-import com.example.readytoenjoy.databinding.FragmentEditActivityBinding
-import com.example.readytoenjoy.ui.activity.edit.EditActivityFragmentArgs
-import com.example.readytoenjoy.ui.activity.edit.EditActivityUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ActivityInfoFragment : Fragment() {
 
     private lateinit var binding: FragmentActivityInfoBinding

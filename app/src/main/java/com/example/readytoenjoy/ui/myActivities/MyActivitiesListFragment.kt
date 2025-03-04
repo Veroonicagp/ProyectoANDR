@@ -60,7 +60,6 @@ class MyActivitiesListFragment : Fragment() {
             viewModel.deleteState.collect { state ->
                 when (state) {
                     DeleteActivityState.Loading -> {
-                        // No hacer nada
                     }
                     DeleteActivityState.DeleteSuccess -> {
                         Toast.makeText(context, "Actividad eliminada correctamente", Toast.LENGTH_SHORT).show()

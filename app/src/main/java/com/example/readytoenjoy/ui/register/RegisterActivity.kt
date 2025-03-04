@@ -9,7 +9,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.readytoenjoy.databinding.ActivityRegisterBinding
-import com.example.readytoenjoy.ui.MainActivity
 import com.example.readytoenjoy.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

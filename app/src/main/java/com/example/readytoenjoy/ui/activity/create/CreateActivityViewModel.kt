@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.readytoenjoy.core.data.repository.activity.ActivityRepositoryInterface
-import com.example.readytoenjoy.core.data.repository.activity.DefaultActivityRepository
 import com.example.readytoenjoy.core.data.repository.adven.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +15,6 @@ import javax.inject.Inject
 
 sealed class UiState {
 
-    object Started: UiState()
     object Loading: UiState()
     class Created(val id:String): UiState()
     class Error(val message: String): UiState()

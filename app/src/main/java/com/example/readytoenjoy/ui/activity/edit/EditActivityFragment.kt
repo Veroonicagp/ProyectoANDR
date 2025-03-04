@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -16,9 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.readytoenjoy.core.model.Activity
-import com.example.readytoenjoy.core.model.Adven
 import com.example.readytoenjoy.databinding.FragmentEditActivityBinding
-import com.example.readytoenjoy.ui.myActivities.MyActivityListViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -50,7 +49,7 @@ class EditActivityFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentEditActivityBinding.inflate(
             inflater,
             container,
@@ -88,15 +87,12 @@ class EditActivityFragment : Fragment() {
                     is EditActivityUiState.Success -> {
                         binding.crearBttn.isEnabled = true
                         updateUI(uiState.activity)
-                        Snackbar.make(
-                            binding.root,
-                            "Actividad actualizada correctamente",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(context, "Actividad editada correctamente", Toast.LENGTH_SHORT).show()
                         findNavController().popBackStack()
 
                     }
                     is EditActivityUiState.Error -> {
+                        Toast.makeText(context, "Actividad no editada", Toast.LENGTH_SHORT).show()
                         binding.crearBttn.isEnabled = true
                     }
 

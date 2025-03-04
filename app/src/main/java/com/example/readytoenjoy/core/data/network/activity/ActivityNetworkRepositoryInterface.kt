@@ -2,7 +2,6 @@ package com.example.readytoenjoy.core.data.network.activity
 
 import android.net.Uri
 import com.example.readytoenjoy.core.data.network.activity.model.ActivityRawResponse
-import com.example.readytoenjoy.core.data.network.adevn.model.AdvenRawResponse
 import com.example.readytoenjoy.core.model.Activity
 import retrofit2.Response
 
