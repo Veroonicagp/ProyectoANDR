@@ -31,7 +31,7 @@ class ActivityInfoFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentActivityInfoBinding.inflate(
             inflater,
             container,
@@ -49,7 +49,6 @@ class ActivityInfoFragment : Fragment() {
             vm.uiState.collect { uiState ->
                 when (uiState) {
                     is InfoActivityUiState.Loading -> {
-                        // Mostrar progreso
                     }
 
                     is InfoActivityUiState.Success -> {
@@ -65,7 +64,6 @@ class ActivityInfoFragment : Fragment() {
                     }
 
                     is InfoActivityUiState.Error -> {
-                        // Mostrar error
                     }
                 }
             }

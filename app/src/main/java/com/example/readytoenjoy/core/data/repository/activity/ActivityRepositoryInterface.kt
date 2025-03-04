@@ -5,11 +5,10 @@ import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.core.model.Adven
 import kotlinx.coroutines.flow.Flow
 
-//mirar diferencia State flow y flow
+
 interface ActivityRepositoryInterface {
 
     suspend fun getActivities(): Result<List<Activity>>
-    //para myActivities
 
     suspend fun getActivitiesByAdvenId(advenId: String): Result<List<Activity>>
 

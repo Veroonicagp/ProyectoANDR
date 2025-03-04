@@ -29,9 +29,6 @@ class LoginActivity : AppCompatActivity() {
             val name = binding.logName.text.toString()
             val password = binding.logPssw.text.toString()
             viewModel.login(name, password)
-            //val intent = Intent(this@LoginActivity, MainActivity::class.java)
-            //startActivity(intent)
-            //finish()
         }
         binding.regBttn.setOnClickListener() {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
@@ -39,7 +36,6 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
-        //añadido nuevo
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {

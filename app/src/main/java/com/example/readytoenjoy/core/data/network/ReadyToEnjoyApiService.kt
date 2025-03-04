@@ -91,8 +91,8 @@ interface ReadyToEnjoyApiService {
     //subida de fotos
     @Multipart
     @POST("upload")
-    suspend fun addActivityImg(@PartMap partMap: MutableMap<String, RequestBody>,
-                               @Part files: MultipartBody.Part ):Response<List<CreatedMediaItemResponse>>
+    suspend fun addImg(@PartMap partMap: MutableMap<String, RequestBody>,
+                       @Part files: MultipartBody.Part ):Response<List<CreatedMediaItemResponse>>
 
 
 

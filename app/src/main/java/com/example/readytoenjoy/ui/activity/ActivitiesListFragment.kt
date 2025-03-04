@@ -59,11 +59,6 @@ class ActivitiesListFragment : Fragment() {
 
         }
 
-
-
-
-        //(rv.adapter as  ActivityListAdapter).submitList(repository.getActivities())
-
     }
     override fun onResume() {
        super.onResume()

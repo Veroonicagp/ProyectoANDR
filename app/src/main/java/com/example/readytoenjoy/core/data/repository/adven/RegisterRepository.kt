@@ -46,7 +46,7 @@ class RegisterRepository @Inject constructor(@ApplicationContext val context: Co
                         name = username,
                         email = email,
                         password = password,
-                        userId = userId
+                        user = userId
                     )
                 )
 
@@ -61,7 +61,6 @@ class RegisterRepository @Inject constructor(@ApplicationContext val context: Co
                 null
             }
         }
-        // No me he logueado
         else {
             null
         }

@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 import javax.inject.Inject
 
-@HiltViewModel// me da error si lo pongo
+@HiltViewModel
 class AdvenListViewModel @Inject constructor(
     private val defaultAdvenRepository: AdvenRepositoryInterface
 ): ViewModel(){

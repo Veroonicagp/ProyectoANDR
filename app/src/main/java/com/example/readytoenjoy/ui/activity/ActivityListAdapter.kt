@@ -10,7 +10,6 @@ import coil.load
 import com.example.readytoenjoy.R
 import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.databinding.ActivityListItemBinding
-//
 class ActivityListAdapter(private val toActivityDetail:((Activity)->Unit)): ListAdapter<Activity, ActivityListAdapter.ActivityViewHolder>(
     ActivityDiffCallback
 ) {
@@ -33,7 +32,6 @@ class ActivityListAdapter(private val toActivityDetail:((Activity)->Unit)): List
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
-        //intanciamos el xml y lo pasamos al itemViewHolder
         val binding: ActivityListItemBinding = ActivityListItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,

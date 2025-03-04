@@ -47,7 +47,6 @@ class ActivityNetworkRepository @Inject constructor(
         if (response.isSuccessful) {
             return Result.success(response.body()!!.data.toModel())
         } else {
-            // No se ha creado
             return Result.failure(UserNotAuthorizedException())
         }
     }
@@ -76,7 +75,6 @@ class ActivityNetworkRepository @Inject constructor(
             var uploadedActivity = response.body()!!.data.toExternal()
             img?.let { uri ->
                 val imageUploaded = uploadActivity(uri,response.body()!!.data.id)
-                // Si ha subido obtenemos la Uri
                 if( imageUploaded.isSuccess) {
                     val uploadedUri = imageUploaded.getOrNull()!!
                     uploadedActivity = uploadedActivity.copy(
@@ -188,7 +186,7 @@ class ActivityNetworkRepository @Inject constructor(
             partMap["field"] = "img".toRequestBody("text/plain".toMediaType())
             android.util.Log.d("ImageUpload", "Request params: ref=api::activity.activity, refId=$activityId, field=img")
             // Subimos el fichero
-            val imageResponse = api.addActivityImg(
+            val imageResponse = api.addImg(
                 partMap,
                 files = part,
             )

@@ -24,8 +24,6 @@ class MyActivityListAdapter(private val toActivityDetail:((Activity)->Unit), pri
             binding.crdPrice.text=activity.price
             if (activity.img!=null) {
                 binding.crdImg.load(activity.img)
-            } else {
-                Log.w("ImageLoading", "No image URL for this activity")
             }
             binding.deleteButton.setOnClickListener{
                 AlertDialog.Builder(binding.root.context)
@@ -47,7 +45,6 @@ class MyActivityListAdapter(private val toActivityDetail:((Activity)->Unit), pri
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyActivityViewHolder {
-        //intanciamos el xml y lo pasamos al itemViewHolder
         val binding: MyActivityListItemBinding = MyActivityListItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,

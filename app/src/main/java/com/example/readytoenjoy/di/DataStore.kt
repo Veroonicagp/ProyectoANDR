@@ -29,14 +29,4 @@ object DatastoreModule {
 
         )
     }
-
-    /**@Singleton
-    @Provides
-    fun provideAuthenticatedAdvenDatastore(
-        @ApplicationContext context: Context): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.create(
-            produceFile = { context.preferencesDataStoreFile(ADVEN_ID_KEY) }
-
-        )
-    }**/
 }

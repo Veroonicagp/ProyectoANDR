@@ -30,15 +30,12 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
         if (response.isSuccessful) {
             val userId = response.body()?.user?.id
             val jwt = response.body()?.jwt
-            println("DEBUG: JWT: $jwt")
 
             userId?.let {
                 val advenResponse = api.getAdvenByUserId(userId)
-                println("DEBUG: AdvenResponse: ${advenResponse.body()}") // Log adven response
 
                 if (advenResponse.isSuccessful && advenResponse.body()?.data?.isNotEmpty() == true) {
                     val advenId = advenResponse.body()?.data?.first()?.id
-                    println("DEBUG: AdvenId: $advenId") // Log advenId
 
                     context.dataStore.edit { settings ->
                         settings[ADVEN_ID_KEY] = advenId!!
@@ -65,12 +62,22 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
     suspend fun getAdvenId(): String? {
         return context.dataStore.data
             .map { settings -> settings[ADVEN_ID_KEY] }
-            .first()  // Obtener el valor guardado
+            .first()
 
     }
-    suspend fun getToken(): String? {
-        val user = userLocal.retrieveUser()
-        return user?.token
+
+    suspend fun logout(): Boolean {
+        return try {
+            context.dataStore.edit { settings ->
+                settings.remove(ADVEN_ID_KEY)
+                settings.remove(JWT_KEY)
+            }
+            userLocal.clearUser()
+
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 }
 

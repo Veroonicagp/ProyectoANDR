@@ -56,9 +56,6 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.registerEmail.text.toString()
             val password = binding.registerPasword.text.toString()
             val rePasword = binding.registerRePasword.text.toString()
-            //val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-            //startActivity(intent)
-            //finish()
             if (email.isNullOrBlank()){
                 binding.emailTF.error = "Introduzca email"
             }else {
