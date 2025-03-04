@@ -1,5 +1,6 @@
 package com.example.readytoenjoy.core.data.network.adevn
 
+import android.net.Uri
 import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
 import com.example.readytoenjoy.core.data.network.adevn.model.AdvenListRawResponse
 import com.example.readytoenjoy.core.data.network.adevn.model.AdvenRawResponse
@@ -24,13 +25,15 @@ class AdvenNetworkRepository @Inject constructor(
 
     override suspend fun updateAdven(
         id: String,
+        media: Uri?,
         name: String,
-        email: String
+        email: String,
     ): Response<AdvenRawResponse> {
         val advenRequest = AdvenRequest(
             data = AventureroData(
                 name = name,
                 email = email,
+                media = media,
                 password = "", // No necesitamos actualizar la contraseña
                 userId = "" // No necesitamos actualizar el userId
             )

@@ -22,27 +22,45 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <FrameLayout
-                android:layout_width="120dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:layout_gravity="center_horizontal">
+                android:orientation="horizontal">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/profileImage"
-                    android:layout_width="match_parent"
+                    android:layout_width="155dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/editPhotoButton"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end|bottom"
-                    android:contentDescription="Edit photo"
-                    app:fabSize="mini"
-                    app:srcCompat="@drawable/mas" />
-            </FrameLayout>
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/camera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|start"
+                        android:layout_margin="16dp"
+                        android:contentDescription="Compartir perfil"
+                        android:src="@drawable/camera"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profileCard" />
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/galeria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|start"
+                        android:layout_margin="16dp"
+                        android:contentDescription="Compartir perfil"
+                        android:src="@drawable/galeri"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profileCard" />
+                </LinearLayout>
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/nameInputLayout"

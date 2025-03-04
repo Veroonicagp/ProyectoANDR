@@ -120,13 +120,31 @@ class ActivityNetworkRepository @Inject constructor(
             location = location,
             price = price,
             description = description,
-            img = img,
+            img = currentActivity.img,
             advenId = currentActivity.advenId
         )
 
         val activityRequest = updatedActivity.toRemoteModel()
+        val response = api.updateActivity(id, activityRequest)
 
-        return api.updateActivity(id, activityRequest)
+
+        if (img != null && response.isSuccessful) {
+            try {
+                android.util.Log.d("ImageUpdate", "Uploading new image for activity: $id")
+
+                // Utilizamos el método existente uploadActivity para subir la imagen
+                val imageResult = uploadActivity(img, id)
+
+                if (imageResult.isSuccess) {
+                    android.util.Log.d("ImageUpdate", "Image updated successfully")
+                } else {
+                    android.util.Log.e("ImageUpdate", "Failed to update image: ${imageResult.exceptionOrNull()}")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("ImageUpdate", "Exception during image update: ${e.message}")
+            }
+        }
+        return response
     }
 
     override suspend fun deleteActivity(id: String): Result<Boolean> {
@@ -194,7 +212,6 @@ class ActivityNetworkRepository @Inject constructor(
                 return Result.success(remoteUri.toUri())
             }
         } catch (e: Exception) {
-            android.util.Log.e("ImageUpload", "Error uploading image", e)
             return Result.failure(e)
         }
     }

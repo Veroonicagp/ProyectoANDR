@@ -1,5 +1,6 @@
 package com.example.readytoenjoy.core.data.repository.adven
 
+import android.net.Uri
 import com.example.readytoenjoy.core.data.network.adevn.AdvenNetworkRepositoryInterface
 import com.example.readytoenjoy.core.data.network.adevn.model.AdvenResponseLR
 import com.example.readytoenjoy.core.data.network.adevn.model.toExternal
@@ -38,8 +39,8 @@ class DefaultAdvenRepository @Inject constructor(private val advenNetworkReposit
         }
     }
 
-    override suspend fun updateAdven(id: String, name: String, email: String): Adven {
-        val response = advenNetworkRepository.updateAdven(id, name, email)
+    override suspend fun updateAdven(id: String, media: Uri?, name: String, email: String): Adven {
+        val response = advenNetworkRepository.updateAdven(id,media, name, email)
         if (response.isSuccessful) {
             val updatedAdven = response.body()!!.data.toExternal()
             // Actualizar el estado

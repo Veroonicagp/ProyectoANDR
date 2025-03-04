@@ -52,6 +52,7 @@ data class AventureroData(
     val name:String,
     val email: String,
     val password: String,
+    val media:Uri? = null,
     val userId: String//relacion con el usuario creado
 )
 

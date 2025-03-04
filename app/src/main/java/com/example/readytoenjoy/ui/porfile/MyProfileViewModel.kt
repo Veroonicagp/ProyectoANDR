@@ -1,5 +1,6 @@
 package com.example.readytoenjoy.ui.porfile
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.readytoenjoy.core.data.network.adevn.AdvenNetworkRepository
@@ -21,6 +22,10 @@ class MyProfileViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
+    private val _photo = MutableStateFlow<Uri>(Uri.EMPTY)
+    val photo: StateFlow<Uri>
+        get() = _photo.asStateFlow()
+
     init {
         viewModelScope.launch {
             _uiState.value = ProfileUiState.Loading
@@ -39,13 +44,13 @@ class MyProfileViewModel @Inject constructor(
 
     }
 
-    fun updateProfile(name: String, email: String) {
+    fun updateProfile(name: String,media:Uri?, email: String) {
         viewModelScope.launch {
             try {
                 val advenId = loginRepository.getAdvenId()
                 if (advenId != null) {
                     _uiState.value = ProfileUiState.Loading
-                    val updatedAdven = advenRepository.updateAdven(advenId, name, email)
+                    val updatedAdven = advenRepository.updateAdven(advenId, media, name, email)
                     _uiState.value = ProfileUiState.Success(updatedAdven)
                     _uiState.value = ProfileUiState.Wait(updatedAdven)
                 } else {
@@ -55,6 +60,15 @@ class MyProfileViewModel @Inject constructor(
                 _uiState.value = ProfileUiState.Error(e.message ?: "Error al actualizar")
             }
         }
+    }
+
+    fun onImageCaptured(uri: Uri?) {
+        viewModelScope.launch {
+            uri?.let {
+                _photo.value = uri
+            }
+        }
+
     }
 }
 
