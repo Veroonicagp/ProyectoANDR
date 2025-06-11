@@ -9,14 +9,19 @@ import coil.load
 import com.example.readytoenjoy.core.model.Adven
 import com.example.readytoenjoy.databinding.AdvenListItemBinding
 
-class AdvenListAdapter(): ListAdapter<Adven, AdvenListAdapter.AdvenViewHolder>(AdvenDiffCallBack) {
+class AdvenListAdapter(private val onAdvenClick: (Adven) -> Unit): ListAdapter<Adven, AdvenListAdapter.AdvenViewHolder>(AdvenDiffCallBack) {
 
     inner class AdvenViewHolder(private val binding: AdvenListItemBinding):
             RecyclerView.ViewHolder(binding.root){
                 fun bind(adven: Adven){
                     binding.nombre.text=adven.name
                     binding.profileImage.load(adven.media)
+                    binding.root.setOnClickListener {
+                        onAdvenClick(adven)
+                    }
                 }
+
+
             }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdvenViewHolder {

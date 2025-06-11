@@ -2,6 +2,7 @@ package com.example.readytoenjoy.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -28,6 +29,17 @@ class LoginActivity : AppCompatActivity() {
             val name = binding.logName.text.toString()
             val password = binding.logPssw.text.toString()
             viewModel.login(name, password)
+
+            var valid = true
+            if (name.isBlank()) {
+                Toast.makeText(this, "El campo de usuario es obligatorio", Toast.LENGTH_SHORT).show()
+                valid = false
+            }
+
+            if (password.isBlank()) {
+                Toast.makeText(this, "El campo de password es obligatorio", Toast.LENGTH_SHORT).show()
+                valid = false
+            }
         }
         binding.regBttn.setOnClickListener() {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)

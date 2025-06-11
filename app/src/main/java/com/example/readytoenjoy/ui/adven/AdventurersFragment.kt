@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.readytoenjoy.core.model.Adven
 import com.example.readytoenjoy.databinding.FragmentAdventurersBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -34,7 +36,7 @@ class AdventurersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
             val rv = binding.rvAventureros
-            rv.adapter = AdvenListAdapter()
+            rv.adapter = AdvenListAdapter(::onAdvenClick)
             binding.rvAventureros.layoutManager = LinearLayoutManager(context)
 
             viewModel.uiState.collect{
@@ -50,6 +52,11 @@ class AdventurersFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun onAdvenClick(adven: Adven) {
+        val action = AdventurersFragmentDirections.actionAdventurersFragmentToActivitiesAdvenList(adven.id)
+        findNavController().navigate(action)
     }
 
 

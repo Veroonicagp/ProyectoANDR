@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/adventurers"
     app:startDestination="@id/adventurersFragment">
@@ -9,5 +9,33 @@
         android:id="@+id/adventurersFragment"
         android:name="com.example.readytoenjoy.ui.adven.AdventurersFragment"
         android:label="fragment_adventurers"
-        tools:layout="@layout/fragment_adventurers" />
+        tools:layout="@layout/fragment_adventurers" >
+        <action
+            android:id="@+id/action_adventurersFragment_to_activitiesAdvenList"
+            app:destination="@id/activitiesAdvenList" />
+    </fragment>
+    <fragment
+        android:id="@+id/activitiesAdvenList"
+        android:name="com.example.readytoenjoy.ui.adven.activitiesAdvenList.ActivitiesAdvenList"
+        android:label="fragment_activities_adven_list"
+        tools:layout="@layout/fragment_activities_adven_list" >
+        <argument
+            android:name="advenId"
+            app:argType="string" />
+        <argument
+            android:name="showNavbar"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_activitiesAdvenList_to_activityInfoFragment2"
+            app:destination="@id/activityInfoFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/activityInfoFragment2"
+        android:name="com.example.readytoenjoy.ui.activity.info.ActivityInfoFragment"
+        android:label="ActivityInfoFragment" >
+        <argument
+            android:name="activityId"
+            app:argType="string" />
+    </fragment>
 </navigation>
