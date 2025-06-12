@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -35,25 +35,24 @@ class MyProfileFragment @Inject constructor() : Fragment() {
     private var _img: Uri? = null
     private var _currentImageUri: Uri? = null
     private lateinit var binding: FragmentMyProfileBinding
-    private val viewModel: MyProfileViewModel by viewModels()
+    private val viewModel: MyProfileViewModel by activityViewModels()
     private val logoutViewModel: LogoutViewModel by viewModels()
-    private val cameraPermissionContract = ActivityResultContracts.RequestPermission()
-    private val cameraPermissionLauncher = registerForActivityResult(cameraPermissionContract) { isGranted ->
-        if (isGranted)
+
+    private val cameraPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
             navigateToCamera()
-        else
-            Toast.makeText(
-                requireContext(),
-                "No hay permisos para la cámara",
-                Toast.LENGTH_LONG,
-            ).show()
+        } else {
+            showCameraPermissionError()
+        }
     }
 
-    val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+    private val pickMedia = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
         if (uri != null) {
             loadPhoto(uri)
-        } else {
-            Log.d("PhotoPicker", "No media selected")
         }
     }
 
@@ -70,20 +69,47 @@ class MyProfileFragment @Inject constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupClickListeners()
+        observeCameraPhoto()
+        observeLogoutState()
+        observeProfileState()
+    }
+
+    private fun setupClickListeners() {
+        binding.closeButton.setOnClickListener {
+            logoutViewModel.logout()
+        }
+
+        binding.saveButton.setOnClickListener {
+            saveProfile()
+        }
+
+        binding.shareButton.setOnClickListener {
+            shareProfile()
+        }
+
+        binding.camera.setOnClickListener {
+            handleCameraClick()
+        }
+
+        binding.galeria.setOnClickListener {
+            openGallery()
+        }
+    }
+
+    private fun observeCameraPhoto() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.photo.collect { uri ->
-                    if (uri != Uri.EMPTY) {
+                    if (uri != null && uri != Uri.EMPTY) {
                         loadPhoto(uri)
                     }
                 }
             }
         }
+    }
 
-        binding.closeButton.setOnClickListener {
-            logoutViewModel.logout()
-        }
-
+    private fun observeLogoutState() {
         viewLifecycleOwner.lifecycleScope.launch {
             logoutViewModel.logoutState.collect { state ->
                 when (state) {
@@ -102,35 +128,9 @@ class MyProfileFragment @Inject constructor() : Fragment() {
                 }
             }
         }
+    }
 
-
-
-        binding.saveButton.setOnClickListener {
-            val name = binding.nameEditText.text.toString()
-            val email = binding.emailEditText.text.toString()
-            val imageToUpload = _img ?: _currentImageUri
-
-            if (validateInputs(name, email)) {
-                viewModel.updateProfile(name, imageToUpload, email)
-            }
-        }
-
-        binding.shareButton.setOnClickListener {
-            shareProfile()
-        }
-
-        binding.camera.setOnClickListener {
-            if (hasCameraPermissions(requireContext())) {
-                navigateToCamera()
-            } else {
-                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-            }
-        }
-
-        binding.galeria.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
-
+    private fun observeProfileState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 when (uiState) {
@@ -145,7 +145,6 @@ class MyProfileFragment @Inject constructor() : Fragment() {
                     is ProfileUiState.Error -> {
                         binding.saveButton.isEnabled = true
                         Toast.makeText(context, "Perfil no se actualizado correctamente", Toast.LENGTH_SHORT).show()
-
                     }
                     is ProfileUiState.Wait -> {
                         binding.saveButton.isEnabled = true
@@ -154,6 +153,28 @@ class MyProfileFragment @Inject constructor() : Fragment() {
                 }
             }
         }
+    }
+
+    private fun saveProfile() {
+        val name = binding.nameEditText.text.toString()
+        val email = binding.emailEditText.text.toString()
+        val imageToUpload = _img ?: _currentImageUri
+
+        if (validateInputs(name, email)) {
+            viewModel.updateProfile(name, imageToUpload, email)
+        }
+    }
+
+    private fun handleCameraClick() {
+        if (hasCameraPermissions()) {
+            navigateToCamera()
+        } else {
+            requestCameraPermission()
+        }
+    }
+
+    private fun openGallery() {
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private fun navigateToLogin() {
@@ -165,9 +186,10 @@ class MyProfileFragment @Inject constructor() : Fragment() {
     private fun shareProfile() {
         val userName = binding.nameEditText.text.toString()
         val shareMessage = "Hola, soy $userName y estoy utilizando la aplicación ReadyToEnjoy"
-        val sendIntent = Intent(Intent.ACTION_SEND)
-        sendIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
-        sendIntent.type = "text/plain"
+        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+            putExtra(Intent.EXTRA_TEXT, shareMessage)
+            type = "text/plain"
+        }
         startActivity(Intent.createChooser(sendIntent, "Compartir con..."))
     }
 
@@ -192,19 +214,34 @@ class MyProfileFragment @Inject constructor() : Fragment() {
         binding.emailEditText.setText(adven.email)
         binding.profileImage.load(adven.media)
         _currentImageUri = adven.media
-
     }
 
-    private fun loadPhoto(uri:Uri?) {
+    private fun loadPhoto(uri: Uri?) {
         binding.profileImage.load(uri)
         _img = uri
     }
-    private fun hasCameraPermissions(context: Context) =
-        ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+
+    private fun hasCameraPermissions(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestCameraPermission() {
+        cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+    }
+
+    private fun showCameraPermissionError() {
+        Toast.makeText(
+            requireContext(),
+            "No hay permisos para la cámara",
+            Toast.LENGTH_LONG
+        ).show()
+    }
 
     private fun navigateToCamera() {
         val action = MyProfileFragmentDirections.actionMyProfileFragmentToCameraFragment()
         findNavController().navigate(action)
     }
-
 }

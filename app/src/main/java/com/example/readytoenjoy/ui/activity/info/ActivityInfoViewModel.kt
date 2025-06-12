@@ -11,36 +11,42 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ActivityInfoViewModel @Inject constructor (private val repository: ActivityRepositoryInterface):
-    ViewModel() {
+class ActivityInfoViewModel @Inject constructor(
+    private val repository: ActivityRepositoryInterface
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<InfoActivityUiState>(InfoActivityUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     fun loadActivity(activityId: String?) {
-        if (activityId == null) return
+        if (activityId == null) {
+            return
+        }
 
         viewModelScope.launch {
             _uiState.value = InfoActivityUiState.Loading
+
             try {
                 val result = repository.getOne(activityId)
-                if (result.isSuccess) {
-                    val activity = result.getOrNull()
-                    if (activity != null) {
-                        _uiState.value = InfoActivityUiState.Success(activity)
-                    } else {
-                        _uiState.value = InfoActivityUiState.Error("No se encontró la actividad")
-                    }
-                } else {
-                    _uiState.value = InfoActivityUiState.Error("Error al cargar la actividad")
-                }
+                handleRepositoryResult(result)
             } catch (e: Exception) {
                 _uiState.value = InfoActivityUiState.Error(e.message ?: "Error desconocido")
             }
         }
     }
 
-
+    private fun handleRepositoryResult(result: Result<Activity>) {
+        if (result.isSuccess) {
+            val activity = result.getOrNull()
+            if (activity != null) {
+                _uiState.value = InfoActivityUiState.Success(activity)
+            } else {
+                _uiState.value = InfoActivityUiState.Error("No se encontró la actividad")
+            }
+        } else {
+            _uiState.value = InfoActivityUiState.Error("Error al cargar la actividad")
+        }
+    }
 }
 
 sealed class InfoActivityUiState {

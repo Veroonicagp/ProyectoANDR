@@ -42,71 +42,93 @@ class ActivityInfoFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentActivityInfoBinding.inflate(
-            inflater,
-            container,
-            false
-        )
-
-        // Inicializar MapView
-        mapView = binding.mapView
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
-
+        binding = FragmentActivityInfoBinding.inflate(inflater, container, false)
+        setupMapView(savedInstanceState)
         return binding.root
     }
 
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        vm.loadActivity(args.activityId)
-        lifecycleScope.launch {
-            vm.uiState.collect { uiState ->
-                when (uiState) {
-                    is InfoActivityUiState.Loading -> {
-                        // Mostrar loading si es necesario
-                    }
+        setupClickListeners()
+        loadActivityData()
+        observeUiState()
+    }
 
-                    is InfoActivityUiState.Success -> {
-                        val activity = uiState.activity
-                        binding.apply {
-                            topAppBar.title = activity.title
-                            location.text = activity.location
-                            crdImg.load(activity.img)
-                            price.text = activity.price
-                            description.text = activity.description
-                        }
+    private fun setupMapView(savedInstanceState: Bundle?) {
+        mapView = binding.mapView
+        mapView.onCreate(savedInstanceState)
+        mapView.getMapAsync(this)
+    }
 
-                        // Guardar datos para el mapa
-                        activityLocation = activity.location
-                        activityTitle = activity.title
-
-                        // Si el mapa ya está listo, mostrar la ubicación
-                        googleMap?.let { map ->
-                            showLocationOnMap(map, activity.location, activity.title)
-                        }
-                    }
-
-                    is InfoActivityUiState.Error -> {
-                        // Manejar error si es necesario
-                    }
-                }
-            }
-        }
-
+    private fun setupClickListeners() {
         binding.topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
     }
 
+    private fun loadActivityData() {
+        vm.loadActivity(args.activityId)
+    }
+
+    private fun observeUiState() {
+        lifecycleScope.launch {
+            vm.uiState.collect { uiState ->
+                when (uiState) {
+                    is InfoActivityUiState.Loading -> {
+                        // Loading state
+                    }
+                    is InfoActivityUiState.Success -> {
+                        handleActivityLoaded(uiState.activity)
+                    }
+                    is InfoActivityUiState.Error -> {
+                        // Error state
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleActivityLoaded(activity: com.example.readytoenjoy.core.model.Activity) {
+        updateUI(activity)
+        saveActivityDataForMap(activity)
+        updateMapIfReady(activity)
+    }
+
+    private fun updateUI(activity: com.example.readytoenjoy.core.model.Activity) {
+        binding.apply {
+            topAppBar.title = activity.title
+            location.text = activity.location
+            crdImg.load(activity.img)
+            price.text = activity.price
+            description.text = activity.description
+        }
+    }
+
+    private fun saveActivityDataForMap(activity: com.example.readytoenjoy.core.model.Activity) {
+        activityLocation = activity.location
+        activityTitle = activity.title
+    }
+
+    private fun updateMapIfReady(activity: com.example.readytoenjoy.core.model.Activity) {
+        googleMap?.let { map ->
+            showLocationOnMap(map, activity.location, activity.title)
+        }
+    }
+
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
+        setupMapConfiguration(map)
+        showLocationIfAvailable(map)
+    }
 
-        // Configurar el mapa
+    private fun setupMapConfiguration(map: GoogleMap) {
         map.uiSettings.isZoomControlsEnabled = true
         map.uiSettings.isMyLocationButtonEnabled = false
+    }
 
-        // Si ya tenemos la ubicación, mostrarla
+    private fun showLocationIfAvailable(map: GoogleMap) {
         activityLocation?.let { location ->
             showLocationOnMap(map, location, activityTitle ?: "Actividad")
         }
@@ -116,37 +138,39 @@ class ActivityInfoFragment : Fragment(), OnMapReadyCallback {
         lifecycleScope.launch {
             try {
                 val latLng = getLocationFromAddress(locationName)
-                latLng?.let { coordinates ->
-                    withContext(Dispatchers.Main) {
-                        // Agregar marcador
-                        map.addMarker(
-                            MarkerOptions()
-                                .position(coordinates)
-                                .title(title)
-                                .snippet(locationName)
-                        )
-
-                        // Mover cámara a la ubicación
-                        map.moveCamera(
-                            CameraUpdateFactory.newLatLngZoom(coordinates, 15f)
-                        )
-                    }
+                if (latLng != null) {
+                    showLocationMarker(map, latLng, title, locationName)
+                } else {
+                    showDefaultLocation(map, title)
                 }
             } catch (e: Exception) {
-                // Si no se puede geocodificar, mostrar ubicación por defecto (ej: Granada)
-                withContext(Dispatchers.Main) {
-                    val defaultLocation = LatLng(37.1773, -3.5986) // Granada, España
-                    map.addMarker(
-                        MarkerOptions()
-                            .position(defaultLocation)
-                            .title(title)
-                            .snippet("Ubicación aproximada")
-                    )
-                    map.moveCamera(
-                        CameraUpdateFactory.newLatLngZoom(defaultLocation, 12f)
-                    )
-                }
+                showDefaultLocation(map, title)
             }
+        }
+    }
+
+    private suspend fun showLocationMarker(map: GoogleMap, coordinates: LatLng, title: String, locationName: String) {
+        withContext(Dispatchers.Main) {
+            map.addMarker(
+                MarkerOptions()
+                    .position(coordinates)
+                    .title(title)
+                    .snippet(locationName)
+            )
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
+        }
+    }
+
+    private suspend fun showDefaultLocation(map: GoogleMap, title: String) {
+        withContext(Dispatchers.Main) {
+            val defaultLocation = LatLng(37.1773, -3.5986) // Granada, España
+            map.addMarker(
+                MarkerOptions()
+                    .position(defaultLocation)
+                    .title(title)
+                    .snippet("Ubicación aproximada")
+            )
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 12f))
         }
     }
 

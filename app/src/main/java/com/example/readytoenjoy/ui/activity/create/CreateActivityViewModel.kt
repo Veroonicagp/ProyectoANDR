@@ -14,53 +14,80 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed class UiState {
-
     object Loading: UiState()
-    class Created(val id:String): UiState()
+    object Ready: UiState()
+    class Created(val id: String): UiState()
     class Error(val message: String): UiState()
 }
 
 @HiltViewModel
-class CreateActivityViewModel @Inject constructor(private val repository: ActivityRepositoryInterface, private val loginRepository: LoginRepository):ViewModel() {
+class CreateActivityViewModel @Inject constructor(
+    private val repository: ActivityRepositoryInterface,
+    private val loginRepository: LoginRepository
+): ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState>
-        get()= _uiState.asStateFlow()
+        get() = _uiState.asStateFlow()
+
+    init {
+        resetState()
+    }
+
+    fun resetState() {
+        _uiState.value = UiState.Ready
+    }
 
     private val _photo = MutableStateFlow<Uri>(Uri.EMPTY)
     val photo: StateFlow<Uri>
         get() = _photo.asStateFlow()
 
-
-
-
     fun onImageCaptured(uri: Uri?) {
         viewModelScope.launch {
-
             uri?.let {
                 _photo.value = uri
             }
         }
-
     }
 
     @SuppressLint("MissingPermission")
-    fun create( title: String, img:Uri?, location:String, price:String, description: String, advenId: String){
+    fun create(title: String, img: Uri?, location: String, price: String, description: String, advenId: String) {
         viewModelScope.launch {
-            val advenId = loginRepository.getAdvenId()
-            val result = repository.createActivity(
-                title,
-                img,
-                location,
-                price,
-                description,
-                advenId = advenId
-            )
-            if(result.isSuccess){
-                _uiState.value = UiState.Created(result.getOrNull()!!.id)
+            try {
+                _uiState.value = UiState.Loading
+                val actualAdvenId = loginRepository.getAdvenId()
+
+                if (actualAdvenId != null) {
+                    val result = repository.createActivity(
+                        title,
+                        img,
+                        location,
+                        price,
+                        description,
+                        advenId = actualAdvenId
+                    )
+
+                    handleCreateResult(result)
+                } else {
+                    _uiState.value = UiState.Error("No se encontró el ID del aventurero")
+                }
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error("Error inesperado: ${e.message}")
             }
         }
     }
 
-
+    private fun handleCreateResult(result: Result<com.example.readytoenjoy.core.model.Activity>) {
+        if (result.isSuccess) {
+            val activityId = result.getOrNull()?.id
+            if (activityId != null) {
+                _uiState.value = UiState.Created(activityId)
+            } else {
+                _uiState.value = UiState.Error("Error al obtener el ID de la actividad creada")
+            }
+        } else {
+            val error = result.exceptionOrNull()?.message ?: "Error desconocido"
+            _uiState.value = UiState.Error("Error al crear la actividad: $error")
+        }
+    }
 }
