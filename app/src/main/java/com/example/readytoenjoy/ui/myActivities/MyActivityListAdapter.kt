@@ -20,8 +20,6 @@ class MyActivityListAdapter(private val toActivityDetail:((Activity)->Unit), pri
         RecyclerView.ViewHolder(binding.root){
         fun bind(activity: Activity){
             binding.crdTitle.text=activity.title
-            binding.crdLocation.text=activity.location
-            binding.crdPrice.text=activity.price
             if (activity.img!=null) {
                 binding.crdImg.load(activity.img)
             }

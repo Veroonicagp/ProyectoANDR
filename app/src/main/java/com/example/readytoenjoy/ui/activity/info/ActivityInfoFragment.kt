@@ -77,13 +77,11 @@ class ActivityInfoFragment : Fragment(), OnMapReadyCallback {
             vm.uiState.collect { uiState ->
                 when (uiState) {
                     is InfoActivityUiState.Loading -> {
-                        // Loading state
                     }
                     is InfoActivityUiState.Success -> {
                         handleActivityLoaded(uiState.activity)
                     }
                     is InfoActivityUiState.Error -> {
-                        // Error state
                     }
                 }
             }
@@ -98,10 +96,10 @@ class ActivityInfoFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateUI(activity: com.example.readytoenjoy.core.model.Activity) {
         binding.apply {
-            topAppBar.title = activity.title
+            collapsingToolbar.title = activity.title
             location.text = activity.location
             crdImg.load(activity.img)
-            price.text = activity.price
+            price.text = "${activity.price}€"
             description.text = activity.description
         }
     }
@@ -163,7 +161,7 @@ class ActivityInfoFragment : Fragment(), OnMapReadyCallback {
 
     private suspend fun showDefaultLocation(map: GoogleMap, title: String) {
         withContext(Dispatchers.Main) {
-            val defaultLocation = LatLng(37.1773, -3.5986) // Granada, España
+            val defaultLocation = LatLng(37.1773, -3.5986)
             map.addMarker(
                 MarkerOptions()
                     .position(defaultLocation)
@@ -192,7 +190,6 @@ class ActivityInfoFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    // Métodos del ciclo de vida del MapView
     override fun onResume() {
         super.onResume()
         mapView.onResume()

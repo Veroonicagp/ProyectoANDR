@@ -96,7 +96,7 @@
         android:id="@+id/photoBttn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="15dp"
         android:layout_marginTop="4dp"
         android:text="Foto"
         app:layout_constraintStart_toStartOf="@+id/descriptionTF"
@@ -115,7 +115,8 @@
     <Button
         android:id="@+id/crearBttn"
         style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="15dp"
         android:layout_height="wrap_content"
         android:text="@string/crear"
         app:layout_constraintEnd_toEndOf="parent"
