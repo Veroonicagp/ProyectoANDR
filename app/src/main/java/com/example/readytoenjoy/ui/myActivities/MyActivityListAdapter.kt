@@ -11,7 +11,6 @@ import coil.load
 import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.databinding.MyActivityListItemBinding
 
-//
 class MyActivityListAdapter(private val toActivityDetail:((Activity)->Unit), private val onDeleteActivity: ((Activity) -> Unit)): ListAdapter<Activity, MyActivityListAdapter.MyActivityViewHolder>(
     MyActivityDiffCallback
 ) {

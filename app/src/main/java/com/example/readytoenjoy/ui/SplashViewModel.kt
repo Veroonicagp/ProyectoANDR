@@ -11,9 +11,21 @@ class SplashViewModel @Inject constructor(
 ) : ViewModel() {
 
     suspend fun isUserLoggedIn(): Boolean {
-        val jwt = loginRepository.getToken()
-        val advenId = loginRepository.getAdvenId()
+        return try {
+            val jwt = loginRepository.getToken()
+            val advenId = loginRepository.getAdvenId()
+            !jwt.isNullOrEmpty() && !advenId.isNullOrEmpty()
+        } catch (e: Exception) {
+            false
+        }
+    }
 
-        return !jwt.isNullOrEmpty() && !advenId.isNullOrEmpty()
+    suspend fun hasLocalUserData(): Boolean {
+        return try {
+            val advenId = loginRepository.getAdvenId()
+            !advenId.isNullOrEmpty()
+        } catch (e: Exception) {
+            false
+        }
     }
 }

@@ -1,12 +1,11 @@
 package com.example.readytoenjoy.core.data.local.adven
 
-import com.example.readytoenjoy.core.model.Activity
+import com.example.readytoenjoy.core.model.Adven
 import kotlinx.coroutines.flow.Flow
 
 interface AdvenLocal {
-    suspend fun readAll():Result<List<Activity>>
-    suspend fun readOne(id:String):Result<Activity>
-    suspend fun createOne(activity: Activity):Result<Activity>
-
-    fun observeAll(): Flow<Result<List<Activity>>>
+    suspend fun readAll(): Result<List<Adven>>
+    suspend fun readOne(id: String): Result<Adven>
+    suspend fun createOne(adven: Adven): Result<Adven>
+    fun observeAll(): Flow<Result<List<Adven>>>
 }

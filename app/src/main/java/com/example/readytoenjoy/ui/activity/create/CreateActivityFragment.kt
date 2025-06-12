@@ -1,7 +1,14 @@
 package com.example.readytoenjoy.ui.activity.create
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.readytoenjoy.worker.NotificationWorker
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,20 +17,29 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import coil.load
+import com.example.readytoenjoy.core.utils.ConnectivityHelper
 import com.example.readytoenjoy.databinding.FragmentCreateActivityBinding
+import com.example.readytoenjoy.ui.utils.OfflineUtils
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CreateActivityFragment : Fragment() {
 
     private var _img: Uri? = null
     private lateinit var binding: FragmentCreateActivityBinding
     private val vm: CreateActivityViewModel by activityViewModels()
+
+    @Inject
+    lateinit var connectivityHelper: ConnectivityHelper
 
     val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
@@ -35,8 +51,6 @@ class CreateActivityFragment : Fragment() {
         binding.imagenAct.load(uri)
         _img = uri
     }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,15 +68,39 @@ class CreateActivityFragment : Fragment() {
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
+            }
+        }
 
+
+        checkConnectivity()
         vm.resetState()
         setupClickListeners()
         observeUiState()
     }
 
+    private fun checkConnectivity() {
+        if (!connectivityHelper.isNetworkAvailable()) {
+            OfflineUtils.showNeedConnectionMessage(binding.root, "crear actividades")
+        }
+    }
+
     private fun setupClickListeners() {
         binding.crearBttn.setOnClickListener {
-            createActivity()
+            if (connectivityHelper.isNetworkAvailable()) {
+                createActivity()
+            } else {
+                OfflineUtils.showNeedConnectionMessage(binding.root, "crear actividades")
+            }
         }
 
         binding.photoBttn.setOnClickListener {
@@ -118,7 +156,7 @@ class CreateActivityFragment : Fragment() {
                 vm.uiState.collect { uiState ->
                     when(uiState) {
                         is UiState.Created -> {
-                            Toast.makeText(context, "Actividad creada correctamente", Toast.LENGTH_SHORT).show()
+                            lanzarNotificacion("Actividad creada", "Has creado una nueva actividad exitosamente.")
                             findNavController().popBackStack()
                         }
                         is UiState.Error -> {
@@ -136,4 +174,18 @@ class CreateActivityFragment : Fragment() {
             }
         }
     }
+
+    private fun lanzarNotificacion(titulo: String, mensaje: String) {
+        val data = Data.Builder()
+            .putString("title", titulo)
+            .putString("message", mensaje)
+            .build()
+
+        val request = OneTimeWorkRequestBuilder<NotificationWorker>()
+            .setInputData(data)
+            .build()
+
+        WorkManager.getInstance(requireContext()).enqueue(request)
+    }
+
 }

@@ -10,38 +10,48 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
-class DefaultAdvenRepository @Inject constructor(private val advenNetworkRepository: AdvenNetworkRepositoryInterface,):
-    AdvenRepositoryInterface {
+class DefaultAdvenRepository @Inject constructor(
+    private val advenNetworkRepository: AdvenNetworkRepositoryInterface,
+): AdvenRepositoryInterface {
 
     private val _state = MutableStateFlow<List<Adven>>(listOf())
+
     override suspend fun getAdvens(): List<Adven> {
-        val response = advenNetworkRepository.readAdven()
-        return if(response.isSuccessful){
-            val advens = response.body()!!.data.toExternal()
-            _state.value = advens
-            advens
-        }else{
-            _state.value = listOf()
-            listOf()
+        return try {
+            val response = advenNetworkRepository.readAdven()
+            if (response.isSuccessful && response.body() != null) {
+                val advens = response.body()!!.data.toExternal()
+                _state.value = advens
+                advens
+            } else {
+                // En caso de error, devolver lista vacía pero mantener estado anterior
+                _state.value.ifEmpty { emptyList() }
+            }
+        } catch (e: Exception) {
+            // En caso de excepción, devolver estado anterior o lista vacía
+            _state.value.ifEmpty { emptyList() }
         }
     }
 
     override suspend fun getOne(id: String): Adven {
-        val response = advenNetworkRepository.readOneAdven(id)
-        return if (response.isSuccessful) {
-            response.body()!!.data.toExternal()
-        } else {
-            Adven("", "", "",null)
+        return try {
+            val response = advenNetworkRepository.readOneAdven(id)
+            if (response.isSuccessful && response.body() != null) {
+                response.body()!!.data.toExternal()
+            } else {
+                Adven("", "", "", null)
+            }
+        } catch (e: Exception) {
+            Adven("", "", "", null)
         }
     }
 
     override suspend fun updateAdven(id: String, media: Uri?, name: String, email: String): Adven {
-        val response = advenNetworkRepository.updateAdven(id,media, name, email)
-        if (response.isSuccessful) {
+        val response = advenNetworkRepository.updateAdven(id, media, name, email)
+        if (response.isSuccessful && response.body() != null) {
             val updatedAdven = response.body()!!.data.toExternal()
-            // Actualizar el estado
+
             val currentList = _state.value.toMutableList()
             val index = currentList.indexOfFirst { it.id == id }
             if (index != -1) {
@@ -55,6 +65,5 @@ class DefaultAdvenRepository @Inject constructor(private val advenNetworkReposit
     }
 
     override val setStream: StateFlow<List<Adven>>
-            get() = _state.asStateFlow()
-
+        get() = _state.asStateFlow()
 }

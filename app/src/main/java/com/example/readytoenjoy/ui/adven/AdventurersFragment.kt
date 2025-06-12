@@ -10,20 +10,25 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.readytoenjoy.core.model.Adven
+import com.example.readytoenjoy.core.utils.ConnectivityHelper
 import com.example.readytoenjoy.databinding.FragmentAdventurersBinding
+import com.example.readytoenjoy.ui.utils.OfflineUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AdventurersFragment : Fragment() {
     private lateinit var binding: FragmentAdventurersBinding
     private val viewModel: AdvenListViewModel by viewModels()
 
+    @Inject
+    lateinit var connectivityHelper: ConnectivityHelper
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentAdventurersBinding.inflate(
             inflater,
             container,
@@ -32,22 +37,35 @@ class AdventurersFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view:View, savedInstanceState: Bundle?){
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        checkConnectivityOnStart()
+        setupRecyclerView()
+    }
+
+    private fun checkConnectivityOnStart() {
+        if (!connectivityHelper.isNetworkAvailable()) {
+            OfflineUtils.showOfflineMessage(binding.root)
+        }
+    }
+
+    private fun setupRecyclerView() {
         lifecycleScope.launch {
             val rv = binding.rvAventureros
             rv.adapter = AdvenListAdapter(::onAdvenClick)
             binding.rvAventureros.layoutManager = LinearLayoutManager(context)
 
-            viewModel.uiState.collect{
-                uiState->
-                when (uiState){
-                    AdvenListUiState.Loading->{}
-                    is AdvenListUiState.Success->{
+            viewModel.uiState.collect { uiState ->
+                when (uiState) {
+                    AdvenListUiState.Loading -> {}
+                    is AdvenListUiState.Success -> {
                         (rv.adapter as AdvenListAdapter).submitList(uiState.advenList)
                     }
-                    is AdvenListUiState.Error->{
-
+                    is AdvenListUiState.Error -> {
+                        if (!connectivityHelper.isNetworkAvailable()) {
+                            OfflineUtils.showOfflineMessage(binding.root)
+                        }
                     }
                 }
             }
@@ -58,6 +76,4 @@ class AdventurersFragment : Fragment() {
         val action = AdventurersFragmentDirections.actionAdventurersFragmentToActivitiesAdvenList(adven.id)
         findNavController().navigate(action)
     }
-
-
 }

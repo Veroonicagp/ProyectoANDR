@@ -48,6 +48,10 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
+    //worker
+    implementation ("androidx.work:work-runtime:2.9.0") 
+
+
     //nav
     implementation(libs.androidx.navigation.fragment.v284)
     //fragment
@@ -59,6 +63,8 @@ dependencies {
     //Hilt
     implementation (libs.hilt.android)
     implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.common)
     kapt(libs.hilt.android.compiler)
     // Retrofit
     implementation(libs.retrofit)

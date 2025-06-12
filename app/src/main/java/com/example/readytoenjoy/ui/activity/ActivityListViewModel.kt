@@ -23,27 +23,35 @@ class ActivityListViewModel @Inject constructor(
         get() = _uiState.asStateFlow()
 
     init {
-        refreshActivities()
+        loadActivities()
     }
 
-    fun refreshActivities() {
+    fun loadActivities() {
         viewModelScope.launch {
-            withContext(Dispatchers.Main) {
-                defaultActivityRepository.setStream().collect {
-                        activityList ->
-                    if (activityList.isSuccess)
-                        _uiState.value = ActivityListUiState.Success(activityList.getOrNull()!!)
-                    else
-                        _uiState.value = ActivityListUiState.Error("Error recuperando")
+            try {
+                _uiState.value = ActivityListUiState.Loading
+
+                withContext(Dispatchers.Main) {
+                    defaultActivityRepository.setStream().collect { result ->
+                        if (result.isSuccess) {
+                            val activities = result.getOrNull() ?: emptyList()
+                            _uiState.value = ActivityListUiState.Success(activities)
+                        } else {
+                            _uiState.value = ActivityListUiState.Error(
+                                result.exceptionOrNull()?.message ?: "Error al recuperar actividades"
+                            )
+                        }
+                    }
                 }
+            } catch (e: Exception) {
+                _uiState.value = ActivityListUiState.Error("Error inesperado: ${e.message}")
             }
         }
     }
 
-
 }
 
-sealed class ActivityListUiState() {
+sealed class ActivityListUiState {
     data object Loading: ActivityListUiState()
     class Success(val activityList: List<Activity>): ActivityListUiState()
     class Error(val message: String): ActivityListUiState()
