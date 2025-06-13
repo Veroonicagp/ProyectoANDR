@@ -14,14 +14,15 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 private val Context.dataStore by preferencesDataStore(name = "user_prefs")
 private val ADVEN_ID_KEY = stringPreferencesKey("advenId")
 private val JWT_KEY = stringPreferencesKey("jwt")
 
 @Singleton
-class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiService,
-                                          @ApplicationContext private val context: Context,private val userLocal: UserLocal
+class LoginRepository @Inject constructor(
+    private val api: ReadyToEnjoyApiService,
+    @ApplicationContext private val context: Context,
+    private val userLocal: UserLocal
 ) {
     suspend fun login(identifier: String, password: String): String? {
         val response = api.login(LoginRequest(identifier, password))
@@ -29,6 +30,7 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
         if (response.isSuccessful) {
             val userId = response.body()?.user?.id
             val jwt = response.body()?.jwt
+            val isAdmin = response.body()?.user?.isAdmin ?: false
 
             userId?.let {
                 val advenResponse = api.getAdvenByUserId(userId)
@@ -39,12 +41,14 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
                     context.dataStore.edit { settings ->
                         settings[ADVEN_ID_KEY] = advenId!!
                     }
+
                     val user = User(
                         id = userId,
                         name = response.body()?.user?.name ?: "",
                         email = response.body()?.user?.email ?: "",
                         advenId = advenId ?: "",
-                        token = jwt
+                        token = jwt,
+                        isAdmin = isAdmin
                     )
                     userLocal.saveUser(user)
                 }
@@ -58,18 +62,17 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
         }
         return null
     }
+
     suspend fun getAdvenId(): String? {
         return context.dataStore.data
             .map { settings -> settings[ADVEN_ID_KEY] }
             .first()
-
     }
 
     suspend fun getToken(): String? {
         return context.dataStore.data
             .map { settings -> settings[JWT_KEY] }
             .first()
-
     }
 
     suspend fun logout(): Boolean {
@@ -79,11 +82,9 @@ class LoginRepository @Inject constructor(private val api: ReadyToEnjoyApiServic
                 settings.remove(JWT_KEY)
             }
             userLocal.clearUser()
-
             true
         } catch (e: Exception) {
             false
         }
     }
 }
-

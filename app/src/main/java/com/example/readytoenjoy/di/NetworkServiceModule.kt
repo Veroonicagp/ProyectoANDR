@@ -17,6 +17,8 @@ import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
 import com.example.readytoenjoy.core.data.network.adevn.AdvenNetworkRepository
 import com.example.readytoenjoy.core.data.network.adevn.AdvenNetworkRepositoryInterface
 import com.example.readytoenjoy.core.data.network.user.AuthenticationInterceptor
+import com.example.readytoenjoy.core.data.repository.user.UserRepository
+import com.example.readytoenjoy.core.data.repository.user.UserRepositoryInterface
 import com.example.readytoenjoy.core.utils.ConnectivityHelper
 import dagger.Binds
 import dagger.Module
@@ -64,6 +66,10 @@ abstract class AppModule {
     @Binds
     @Singleton
     abstract fun bindUserDatasourceLocal(ds: UserLocalDatasource): UserLocal
+
+    @Binds
+    @Singleton
+    abstract fun bindUserRepository(userRepository: UserRepository): UserRepositoryInterface
 }
 
 @Module

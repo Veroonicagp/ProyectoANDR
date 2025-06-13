@@ -1,6 +1,7 @@
 package com.example.readytoenjoy.core.data.repository.adven
 
 import android.net.Uri
+import com.example.readytoenjoy.core.data.network.ReadyToEnjoyApiService
 import com.example.readytoenjoy.core.data.network.adevn.AdvenNetworkRepositoryInterface
 import com.example.readytoenjoy.core.data.network.adevn.model.toExternal
 import com.example.readytoenjoy.core.model.Adven
@@ -13,6 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class DefaultAdvenRepository @Inject constructor(
     private val advenNetworkRepository: AdvenNetworkRepositoryInterface,
+    private val api: ReadyToEnjoyApiService
 ): AdvenRepositoryInterface {
 
     private val _state = MutableStateFlow<List<Adven>>(listOf())
@@ -25,11 +27,9 @@ class DefaultAdvenRepository @Inject constructor(
                 _state.value = advens
                 advens
             } else {
-                // En caso de error, devolver lista vacía pero mantener estado anterior
                 _state.value.ifEmpty { emptyList() }
             }
         } catch (e: Exception) {
-            // En caso de excepción, devolver estado anterior o lista vacía
             _state.value.ifEmpty { emptyList() }
         }
     }
@@ -61,6 +61,22 @@ class DefaultAdvenRepository @Inject constructor(
             return updatedAdven
         } else {
             throw Exception("Error al actualizar el aventurero")
+        }
+    }
+
+    override suspend fun deleteAdven(advenId: String): Result<Unit> {
+        return try {
+            val response = api.deleteAdven(advenId)
+            if (response.isSuccessful) {
+                val currentList = _state.value.toMutableList()
+                currentList.removeAll { it.id == advenId }
+                _state.value = currentList
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Error al eliminar aventurero"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

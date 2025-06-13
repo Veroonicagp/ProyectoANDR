@@ -6,9 +6,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
-/**
- * Implementación de [Interceptor] para autenticar a usuarios con un token JWT
- */
+
 class AuthenticationInterceptor @Inject constructor(
     private val userLocalDatasource: UserLocal
 ):Interceptor {
@@ -17,25 +15,22 @@ class AuthenticationInterceptor @Inject constructor(
         if (chain.request().method == "POST" && chain.request().url.encodedPath == "/api/auth/local") {
             return chain.proceed(chain.request())
         }
-        // Leemos el token desde el repositorio local de usuarios
         val token: String? =
                 runBlocking {
-                    userLocalDatasource.retrieveUser()?.let {
+                    userLocalDatasource.getUser()?.let {
                     return@runBlocking it.token
                 }
                     return@runBlocking null
                 }
 
         android.util.Log.d("AuthInterceptor", "Using token: $token")
-        // Si tenemos un token almacenado, lo añadiremos como una cabecera de autenticación
         token?.let {
             val newRequest = chain.request().newBuilder()
                 .addHeader("Authorization","Bearer $it")
                 .build()
             return chain.proceed(newRequest)
         }
-        // Si hemos llegado aquí no tenemos un token valido, continuamos con la petición
-        // original
+
         return chain.proceed(chain.request())
 
 

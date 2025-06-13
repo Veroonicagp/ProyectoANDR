@@ -36,6 +36,9 @@ interface ReadyToEnjoyApiService {
     @POST("auth/local")
     suspend fun login(@Body loginData: LoginRequest): Response<userResponseLR>
 
+    @DELETE("users/{id}")
+    suspend fun deleteUser(@Path("id") userId: String): Response<Void>
+
 /////////AVENTUREROS/////
 
     //registroadven
@@ -58,7 +61,9 @@ interface ReadyToEnjoyApiService {
     @PUT("adventurers/{id}")
     suspend fun updateAdven( @Path("id") id: String, @Body advenRequest: AdvenRequest): Response<AdvenRawResponse>
 
-
+    //eliminaAventureros
+    @DELETE("adventurers/{id}")
+    suspend fun deleteAdven(@Path("id") id: String): Response<Void>
 ////////ACTIVITIES/////
 
     //creacion de actividades

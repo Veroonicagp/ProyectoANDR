@@ -2,6 +2,7 @@ package com.example.readytoenjoy.core.data.local.user
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.readytoenjoy.core.model.User
@@ -16,45 +17,55 @@ class UserLocalDatasource @Inject constructor(
     private val tokenKey = stringPreferencesKey("token")
     private val emailKey = stringPreferencesKey("email")
     private val idKey = stringPreferencesKey("id")
-    private val advenId = stringPreferencesKey("advenId")
+    private val nameKey = stringPreferencesKey("name")
+    private val advenIdKey = stringPreferencesKey("advenId")
+    private val isAdminKey = booleanPreferencesKey("isAdmin")
 
     override suspend fun saveUser(user: User) {
-        preferences.edit {
-                p ->
+        preferences.edit { p ->
             p[idKey] = user.id
+            p[nameKey] = user.name
             p[emailKey] = user.email
+            p[advenIdKey] = user.advenId
+            p[isAdminKey] = user.isAdmin
             user.token?.let {
                 p[tokenKey] = it
             }
         }
     }
 
-    override suspend fun retrieveUser(): User? {
-        val tokenFlow = preferences.data.map { p ->
-            p[tokenKey]
-        }
+    override suspend fun getUser(): User? {
+        return try {
+            val userFlow = preferences.data.map { p ->
+                val token = p[tokenKey]
+                val id = p[idKey]
+                val name = p[nameKey]
+                val email = p[emailKey]
+                val advenIdValue = p[advenIdKey]
+                val isAdmin = p[isAdminKey] ?: false
 
-        val token = tokenFlow.firstOrNull()
-        token?.let {
-            return User(
-                id = "",
-                name = "",
-                advenId = "",
-                email = "",
-                token = token
-            )
+                if (token != null && id != null && name != null && email != null && advenIdValue != null) {
+                    User(
+                        id = id,
+                        name = name,
+                        advenId = advenIdValue,
+                        email = email,
+                        token = token,
+                        isAdmin = isAdmin
+                    )
+                } else {
+                    null
+                }
+            }
+            userFlow.firstOrNull()
+        } catch (e: Exception) {
+            null
         }
-        return null
     }
 
     override suspend fun clearUser() {
-        preferences.edit {
-                p ->
-            p[idKey] = ""
-            p[advenId] = ""
-            p[emailKey] = ""
-            p[tokenKey] = ""
-
+        preferences.edit { p ->
+            p.clear()
         }
     }
 }

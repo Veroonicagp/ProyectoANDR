@@ -161,7 +161,7 @@ class ActivityInfoFragment : Fragment(), OnMapReadyCallback {
 
     private suspend fun showDefaultLocation(map: GoogleMap, title: String) {
         withContext(Dispatchers.Main) {
-            val defaultLocation = LatLng(37.1773, -3.5986)
+            val defaultLocation = LatLng(36.7213, -4.4214)
             map.addMarker(
                 MarkerOptions()
                     .position(defaultLocation)
