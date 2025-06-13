@@ -1,3 +1,11 @@
+/**
+ * @file RegisterActivity.kt
+ * @brief Activity para el registro de nuevos usuarios
+ * @details Maneja el formulario de registro con validaciones y verificación de conectividad
+ * @author ReadyToEnjoy Team
+ * @version 1.0
+ */
+
 package com.example.readytoenjoy.ui.register
 
 import android.content.Intent
@@ -16,14 +24,30 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * @class RegisterActivity
+ * @brief Activity para el registro de nuevos usuarios en la aplicación
+ * @details Proporciona un formulario de registro con validaciones del lado cliente,
+ *          verificación de conectividad y manejo de estados de UI
+ * @activity
+ */
 @AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
+
+    /** @brief ViewModel para operaciones de registro @viewmodel */
     private val vm: RegisterViewModel by viewModels()
+
+    /** @brief Binding para el layout de registro */
     private lateinit var binding: ActivityRegisterBinding
 
+    /** @brief Helper para verificar conectividad @inject */
     @Inject
     lateinit var connectivityHelper: ConnectivityHelper
 
+    /**
+     * @brief Inicializa la activity de registro
+     * @param savedInstanceState Estado guardado anterior
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -33,6 +57,10 @@ class RegisterActivity : AppCompatActivity() {
         observeViewModel()
     }
 
+    /**
+     * @brief Configura los listeners de los botones
+     * @details Establece las acciones para navegar al login y procesar el registro
+     */
     private fun setupClickListeners() {
         binding.logBttn.setOnClickListener {
             navigateToLogin()
@@ -43,6 +71,10 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * @brief Intenta registrar un nuevo usuario
+     * @details Verifica conectividad, valida datos y procesa el registro
+     */
     private fun attemptRegister() {
         if (!connectivityHelper.isNetworkAvailable()) {
             OfflineUtils.showNeedConnectionMessage(binding.root, "registrarse")
@@ -59,6 +91,15 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * @brief Valida los datos de entrada del formulario
+     * @details Verifica que todos los campos estén completos y sean válidos
+     * @param username Nombre de usuario
+     * @param email Dirección de correo electrónico
+     * @param password Contraseña
+     * @param rePassword Confirmación de contraseña
+     * @return Boolean true si todos los datos son válidos, false en caso contrario
+     */
     private fun validateInputs(username: String, email: String, password: String, rePassword: String): Boolean {
         var isValid = true
 
@@ -94,20 +135,30 @@ class RegisterActivity : AppCompatActivity() {
         return isValid
     }
 
+    /**
+     * @brief Navega a la activity de login
+     * @details Cierra la activity actual y abre LoginActivity
+     */
     private fun navigateToLogin() {
         val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
 
+    /**
+     * @brief Observa los cambios en el ViewModel de registro
+     * @details Reacciona a los diferentes estados del proceso de registro
+     */
     private fun observeViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 vm.user.collect { uiState ->
                     when (uiState) {
-                        is UiState.Started -> {}
+                        is UiState.Started -> {
+                            // Estado inicial, no requiere acción
+                        }
                         is UiState.Loading -> {
-                            binding.regBttn.isEnabled = true
+                            binding.regBttn.isEnabled = false
                         }
                         is UiState.Error -> {
                             binding.regBttn.isEnabled = true
