@@ -4,12 +4,14 @@ import android.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.readytoenjoy.core.model.Activity
 import com.example.readytoenjoy.databinding.MyActivityListItemBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MyActivityListAdapter(private val toActivityDetail:((Activity)->Unit), private val onDeleteActivity: ((Activity) -> Unit)): ListAdapter<Activity, MyActivityListAdapter.MyActivityViewHolder>(
     MyActivityDiffCallback
@@ -23,16 +25,13 @@ class MyActivityListAdapter(private val toActivityDetail:((Activity)->Unit), pri
                 binding.crdImg.load(activity.img)
             }
             binding.deleteButton.setOnClickListener{
-                AlertDialog.Builder(binding.root.context)
+                MaterialAlertDialogBuilder(binding.root.context)
                     .setTitle("Confirmar eliminación")
                     .setMessage("¿Estás seguro de que deseas eliminar la actividad '${activity.title}'?")
-                    .setPositiveButton("Eliminar") { dialog, _ ->
+                    .setPositiveButton("Eliminar") { _, _ ->
                         onDeleteActivity(activity)
-                        dialog.dismiss()
                     }
-                    .setNegativeButton("Cancelar") { dialog, _ ->
-                        dialog.dismiss()
-                    }
+                    .setNegativeButton("Cancelar", null)
                     .show()
             }
             binding.root.setOnClickListener  {
